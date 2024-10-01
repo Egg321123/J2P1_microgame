@@ -27,41 +27,49 @@
 - Battle cats
 
 # Game concept
+- Genre: rouge-lite tower defense (progression between deaths)
 
-## Genre: rouge-lite tower defense (progression between deaths)
+## Data to show:
+-	Level
+-	Tower level (above tower)
+-	Enemies killed (total)
+-	Towers placed (total)
+-	Upgrades done to towers (total)
+-	Total amount of money earned
+-	Total amount of money spent
+-	Money dropped by enemy (shown where enemy was when it died)
+
+## Current actions:
+-	Placing (purchases that tower)
+-	Clicking continue (continues wave)
+-	Click to upgrade (click on towers to upgrade them)
 
 ## Levels:
-- Levels are randomly generated.
-- Levels are infinite (using a seed-based system using level as seed).
-- No real progression (doesn’t feel harder).
-- Every new level your money is reset to a set amount for that level.
+-	Every level will be a new (seed-based) randomly generated level.
+-	When you go to the next level, the map gets cleared of towers.
+-	Remove the persons money every new level.
 
-## Waves:
-- Every level is 10 waves
+## Waves: 
+-	Every level is 10 waves
 
-- ### Buying - placing - battle
-  - During the buying phase you can buy units/towers (you cannot change the towers you bought during the battle phase).
-  - During the placing phase you can place your towers (towers can only be moved in the battle phase by sacrificing currency used in buying phase).
-  - During the battle phase you can’t do anything unless you have leftover currency from the buying phase (you can still mover the towers).
+## Buying - placing - battle
+-	During the buying and placing phase you can buy towers. (you see 4 of them at random) and place them from the purchase menu (click shop, place to purchase), you can click continue to continue
+-	During the battle phase you can upgrade your towers by clicking on them, after wave is done, you go back into buying phase.
 
-- ### Wave lose behavior:
-  - Keep all the money you currently still have.
-  - Losing “resets” you back to wave 1.
+## Wave lose behavior:
+-	Same behavior as going to the next level, but you restart at the start of this level (basically luck-based if you progress, no pity)
 
-- ### Wave Win behavior:
-  - Go to next wave.
+## Wave Win behavior:
+-	Go to next wave
 
 ## Towers:
-  - Different types of tower (with different abilities)
-  - towers can be destroyed but only by specific enemies (like exploding enemies)
+-	Click to upgrade
+-	Multiple different towers
 
 ## Enemies:
-  - Defeating enemies rewards a random number of coins dependent on its type.
-  - Different types of enemies (can explode, slow tower rate of fire, etc).
+-	Multiple types of enemies
+-	rewards a random number of coins dependent on its type
+-	Show amount of money dropped by enemy
 
 ## Important:
-  - Save data every wave (save positions, level, etc).
-  - properly show the path the ai (enemies) take.
-
-## UPS:
- - infinite gameplay with random levels and challenging gameplay.
+-	Save data every wave (save positions, level, etc).
