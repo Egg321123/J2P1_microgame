@@ -7,27 +7,8 @@
 - Theme: show data
 - Needs to be quick to play, easy to put down again.
 
-## Progressions
-- Idea for progress similar to Cookie Clicker (incremental permanent progress).
-- Gacha? (reason to keep returning)
-- Achievements
-- Score (3 stars)
-- Levels van user/characters
-- Game levels (probably not, takes a lot of dev time)
-- Skill tree (give the player more choice)
-
-## Game styles
-- Clicker *
-- Puzzle **
-- Tower defense ***
-
-## Games to reference
-- WarioWare
-- Cookie clicker
-- Battle cats
-
 # Game concept
-- Genre: rouge-lite tower defense (progression between deaths).
+- Genre: tower defense.
 
 ## Data to show:
 - currrent level.
