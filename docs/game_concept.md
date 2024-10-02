@@ -32,7 +32,7 @@
 - Remove the persons money every new level.
 - Reward player extra money for the next level if the player won this level in one go.
 
-## Waves: 
+## Waves:
 - Every level is 10 waves.
 
 ## Buying - placing - battle
