@@ -12,10 +12,10 @@ public class Level
     private const byte UP = 0b10;           // binary notation of the UP direction
     private const byte LEFT = 0b11;         // binary notation of the LEFT direction
 
+    public readonly int width;             // sets the width of the level
+    public readonly int height;            // sets the height of the level
     private readonly TileData[,] tiles;     // contains the tiles in the world
     private readonly List<Vector2Int> path; // contains the positions of the tiles
-    private readonly int width;             // sets the width of the level
-    private readonly int height;            // sets the height of the level
 
     /// <summary>
     /// creates a new level instance
@@ -29,7 +29,7 @@ public class Level
     }
 
     // attempt to generate a new path, return TRUE if successful, FALSE if unsuccessful
-    private bool Generate(System.Random rand)
+    private bool GeneratePath(System.Random rand)
     {
         // fill the level with empty tiles
         for (int x = 0; x < width; x++)
@@ -99,7 +99,7 @@ public class Level
     }
 
     /// <summary>
-    /// generates the level until <see cref="MAX_ATTEMPTS"/> has been reached.
+    /// attempts to generate a valid level with a random path until <see cref="MAX_ATTEMPTS"/> has been reached.
     /// </summary>
     /// <exception cref="IndexOutOfRangeException"></exception>
     public void GenerateLevel(int level)
@@ -111,7 +111,7 @@ public class Level
         // generate a new level until successful or MAX_ATTEMPTS has been reached
         while (success == false && attempts < MAX_ATTEMPTS)
         {
-            success = Generate(rand);
+            success = GeneratePath(rand);
             attempts++;
         }
 
@@ -141,4 +141,7 @@ public class Level
     // gets the tile at the position
     public TileData GetTile(int x, int y) => tiles[x, y];
     public TileData GetTile(Vector2Int pos) => tiles[pos.x, pos.y];
+
+    // gets the path
+    public IReadOnlyList<Vector2Int> GetPath() => path;
 }
