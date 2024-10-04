@@ -5,7 +5,8 @@ using UnityEngine;
 public class Level
 {
     // constants
-    private const int MAX_ATTEMPTS = 100;   // the amount of times a new path is allowed to be generated
+    private const int MAX_ATTEMPTS = 100;   // the amount of times a new path is allowed to be regenerated
+    private const int MAX_SKIPS = 10;       // the amount of times a tile is allowed to be skipped in generation (tiles are skipped if the picked direction can't be placed)
     private const byte DOWN = 0b00;         // binary notation of the DOWN direction
     private const byte RIGHT = 0b01;        // binary notation of the RIGHT direction
     private const byte UP = 0b10;           // binary notation of the UP direction
@@ -13,15 +14,17 @@ public class Level
 
     private readonly TileData[,] tiles;     // contains the tiles in the world
     private readonly List<Vector2Int> path; // contains the positions of the tiles
-    private readonly int scale;             // sets the width and height of the level
+    private readonly int width;             // sets the width of the level
+    private readonly int height;            // sets the height of the level
 
     /// <summary>
-    /// creates a new level
+    /// creates a new level instance
     /// </summary>
-    public Level(int scale)
+    public Level(int width, int height)
     {
-        this.scale = scale;
-        tiles = new TileData[scale, scale];
+        this.width = width;
+        this.height = height;
+        tiles = new TileData[width, height];
         path = new List<Vector2Int>();
     }
 
@@ -29,8 +32,8 @@ public class Level
     private bool Generate(System.Random rand)
     {
         // fill the level with empty tiles
-        for (int x = 0; x < scale; x++)
-            for (int y = 0; y < scale; y++)
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
                 tiles[x, y] = new TileData(TileType.EMPTY, new Vector2Int(x, y));
 
         // clear the path list
@@ -40,20 +43,22 @@ public class Level
         int posX = 0;                               // the current tile X position
         int posY = 0;                               // the current tile Y position
         int bitOffset = 0;                          // the offset in bits that is being read from directions
-        int attempts = 0;                           // the amount of times the code has attempted to select a tile
+        int skipCount = 0;                          // the amount of times that a a tile is skipped
 
-        // run while posX and posY haven't reached their destination or scale^2 (surface area) hasn't been reached
-        while ((posX != (scale - 1) || posY != (scale - 1)) && attempts < (scale * scale))
+        // run while posX and posY haven't reached their destination
+        // or if MAX_SKIPS count has been reached
+        while ((posX != (width - 1) || posY != (height - 1)) && skipCount < MAX_SKIPS)
         {
-            // if the current type is empty, create a new path node
+            // if the current type is empty, create a new path at this location
             if (tiles[posX, posY].type == TileType.EMPTY)
             {
                 tiles[posX, posY].type = TileType.PATH; // set the tile's type to PATH
                 path.Add(new Vector2Int(posX, posY));   // add the path node
+                skipCount = 0;                          // reset the skip count
             }
 
             // get the current movement data
-            byte data = (byte)((directions >> bitOffset) & 0b11); // exclude the bits that are about the direction
+            byte data = (byte)((directions >> bitOffset) & 0b11); // isolate 2 bits which will contain the direction information
             int x = posX;
             int y = posY;
 
@@ -73,19 +78,21 @@ public class Level
             else if (data == UP) y--;
             else if (data == LEFT) x--;
 
-            // if the new location is valid to place a tile at, store the new HEAD tile position
-            if (IsValidPlacement(x, y))
+            // if the new location is invalid to place a tile at
+            if (IsValidPlacement(x, y) == false)
             {
-                posX = x;
-                posY = y;
+                // increase the skip count
+                skipCount++;
+                continue; // skip to the next loop
             }
 
-            // increase the attempt
-            attempts++;
+            // set this as the HEAD / newest tile position
+            posX = x;
+            posY = y;
         }
 
         // return the success of the operation
-        if (attempts >= (scale * scale))
+        if (skipCount >= MAX_SKIPS)
             return false;
 
         return true;
@@ -121,7 +128,7 @@ public class Level
     public bool IsValidPlacement(int x, int y)
     {
         // check if the position is outside the level
-        if (x < 0 || x >= scale || y < 0 || y >= scale)
+        if (x < 0 || x >= width || y < 0 || y >= height)
             return false;
 
         // check if the position is not an empty tile
