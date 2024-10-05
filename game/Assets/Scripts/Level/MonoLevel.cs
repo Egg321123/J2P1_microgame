@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.IO;
 
 public class MonoLevel : MonoBehaviour
 {
@@ -8,11 +10,13 @@ public class MonoLevel : MonoBehaviour
 
     public Level level = null;
 
+    // called when the script is being loaded
     private void Awake()
     {
         level = new Level(width, height);
-        level.GenerateLevel(0);
+        level.GenerateLevel(new System.Random().Next());
 
+        // generate the path
         foreach (Vector2Int pathPos in level.GetPath())
         {
             MonoTile tile = Instantiate(pathPrefab, new Vector3(pathPos.x + 0.5F, 0, pathPos.y + 0.5F), Quaternion.identity, transform);
@@ -21,9 +25,11 @@ public class MonoLevel : MonoBehaviour
         }
     }
 
+# if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireCube(new Vector3(width / 2, 0, height / 2), new Vector3(width, 0, height));
     }
+#endif
 }
