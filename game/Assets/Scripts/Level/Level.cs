@@ -28,6 +28,12 @@ public class Level
         path = new List<Vector2Int>();
     }
 
+    private void AddPathNode(int x, int y)
+    {
+        tiles[x, y].type = TileType.PATH; // set the tile's type to PATH
+        path.Add(new Vector2Int(x, y));   // add the path node
+    }
+
     // attempt to generate a new path, return TRUE if successful, FALSE if unsuccessful
     private bool GeneratePath(System.Random rand)
     {
@@ -47,14 +53,13 @@ public class Level
 
         // run while posX and posY haven't reached their destination
         // or if MAX_SKIPS count has been reached
-        while ((posX != (width - 1) || posY != (height - 1)) && skipCount < MAX_SKIPS)
+        while ((posX != (width - 1) || posY < (height - 1)) && skipCount < MAX_SKIPS)
         {
             // if the current type is empty, create a new path at this location
             if (tiles[posX, posY].type == TileType.EMPTY)
             {
-                tiles[posX, posY].type = TileType.PATH; // set the tile's type to PATH
-                path.Add(new Vector2Int(posX, posY));   // add the path node
-                skipCount = 0;                          // reset the skip count
+                AddPathNode(posX, posY);    // add the node
+                skipCount = 0;              // reset the skip count
             }
 
             // get the current movement data
@@ -90,6 +95,8 @@ public class Level
             posX = x;
             posY = y;
         }
+
+        AddPathNode(posX, posY);    // add the final node
 
         // return the success of the operation
         if (skipCount >= MAX_SKIPS)
