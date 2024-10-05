@@ -1,6 +1,4 @@
 using UnityEngine;
-using System;
-using System.IO;
 
 public class MonoLevel : MonoBehaviour
 {
