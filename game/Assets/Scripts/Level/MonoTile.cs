@@ -13,7 +13,7 @@ public class MonoTile : MonoBehaviour
     /// </summary>
     public void SetLevel(Level level)
     {
-        if (level != null) throw new InvalidOperationException("attempted to set level whilst level was already set!");
+        if (this.level != null) throw new InvalidOperationException("attempted to set level whilst level was already set!");
         this.level = level;
     }
 
@@ -22,7 +22,7 @@ public class MonoTile : MonoBehaviour
     /// </summary>
     public void SetTilePos(Vector2Int tilePos)
     {
-        if (tilePos != (Vector2Int.one * -1)) throw new InvalidOperationException("attempted to set the tile position whilst the tile position was already set");
+        if (this.tilePos != (Vector2Int.one * -1)) throw new InvalidOperationException("attempted to set the tile position whilst the tile position was already set");
         this.tilePos = tilePos;
     }
 }
