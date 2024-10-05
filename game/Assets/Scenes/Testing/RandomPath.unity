@@ -259,8 +259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7868d8bdddf23d8a5b86b67e4318bad3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 10
-  height: 13
+  width: 20
+  height: 20
   pathPrefab: {fileID: 6684835302866944944, guid: 491dce4e49ed2614a8661d95dbba51a8,
     type: 3}
 --- !u!1 &2024805740
