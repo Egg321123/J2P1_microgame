@@ -15,11 +15,15 @@ public class Save
         {
             Debug.Log($"loading the data from '{savePath}'.");
 
+            // initialize the data from JSON
             string json = File.ReadAllText(savePath);
             data = JsonUtility.FromJson<SaveData>(json);
+            return;
         }
 
+        // initialize the data with default values
         data = new();
+        data.Initialize();
     }
 
     /// <summary>
