@@ -28,12 +28,9 @@ public class Save
     public void SaveFile()
     {
         // get how long it took to perform this action
-        float duration = Util.GetTime(() =>
-        {
-            string json = JsonUtility.ToJson(data); // convert the save data to JSON
-            File.WriteAllText(savePath, json);      // write the serialized JSON data to the file
-        });
+        string json = JsonUtility.ToJson(data); // convert the save data to JSON
+        File.WriteAllText(savePath, json);      // write the serialized JSON data to the file
 
-        Debug.Log($"saved the data to '{savePath}' in {duration}s");
+        Debug.Log($"saved the data to '{savePath}'.");
     }
 }
