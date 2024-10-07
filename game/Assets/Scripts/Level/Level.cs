@@ -78,7 +78,7 @@ public class Level
             }
 
             // decide the direction to travel
-            if (data == DOWN) y++;  // DOWN is first, because DOWN is 0b00, and otherwise cause an error
+            if (data == DOWN) y++;
             else if (data == RIGHT) x++;
             else if (data == UP) y--;
             else if (data == LEFT) x--;
