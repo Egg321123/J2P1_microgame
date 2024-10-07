@@ -21,13 +21,14 @@ public class MonoLevel : MonoBehaviour
     {
         // get the empty neighbors as a binary string
         // 1: occupied, 0: not occupied
-        // from left to right, first positive X, Y then negative X, Y
+        // from left to right, in the binary the first two bits/booleans is positive X/Y last two is negative X/Y
         byte neighbors = 0;
         if (!level.IsValidPlacement(pos.x + 1, pos.y, true)) neighbors |= 1 << 0; // use bitwise OR operator to add 1 in the integer
         if (!level.IsValidPlacement(pos.x, pos.y + 1, true)) neighbors |= 1 << 1; // the bitwise shift operator is used to shift it that many "booleans" to the left
         if (!level.IsValidPlacement(pos.x - 1, pos.y, true)) neighbors |= 1 << 2;
         if (!level.IsValidPlacement(pos.x, pos.y - 1, true)) neighbors |= 1 << 3;
 
+        // get the data for which prefab to use and what rotation
         (GameObject obj, float rot) data = neighbors switch
         {
             0b0000 => (pathFull, 0.0F),         // tile has no neighbours
@@ -42,10 +43,12 @@ public class MonoLevel : MonoBehaviour
             0b1011 => (pathSingle, 90.0F),      // only +Y is free
             0b1101 => (pathSingle, 180.0F),     // only -X is free
             0b1110 => (pathSingle, -90.0F),     // only -Y is free
-            0b1000 => (pathEmpty, 0.0F),        // UwU
-            0b0100 => (pathEmpty, 0.0F),        // UwU
-            0b0010 => (pathEmpty, 0.0F),        // UwU
-            0b0001 => (pathEmpty, 0.0F),        // UwU
+
+            // if there is just a singular neighbor, just return the empty path type
+            0b1000 => (pathEmpty, 0.0F),
+            0b0100 => (pathEmpty, 0.0F),
+            0b0010 => (pathEmpty, 0.0F),
+            0b0001 => (pathEmpty, 0.0F),
             _ => throw new Exception($"invalid state: 0b{Convert.ToString(neighbors, 2).PadLeft(4, '0')}"),
         };
 
