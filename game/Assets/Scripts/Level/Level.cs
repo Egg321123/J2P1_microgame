@@ -102,6 +102,8 @@ public class Level
         if (skipCount >= MAX_SKIPS)
             return false;
 
+        path.Reverse(); // reverse the path, uwu
+
         return true;
     }
 
@@ -132,11 +134,11 @@ public class Level
     /// <returns>
     /// <see langword="true"/> if the location is within the bounds of the level, and on an empty tile, otherwise <see langword="false"/> is returned
     /// </returns>
-    public bool IsValidPlacement(int x, int y)
+    public bool IsValidPlacement(int x, int y, bool ignoreLevelBounds = false)
     {
         // check if the position is outside the level
         if (x < 0 || x >= width || y < 0 || y >= height)
-            return false;
+            return ignoreLevelBounds;
 
         // check if the position is not an empty tile
         if (tiles[x, y].type != TileType.EMPTY)
