@@ -11,6 +11,7 @@ public class MonoLevel : MonoBehaviour
     [Header("Path Prefabs")]
     [SerializeField] private GameObject pathStraight;
     [SerializeField] private GameObject pathCorner;
+    [SerializeField] private GameObject pathSingle;
     [SerializeField] private GameObject pathFull;
     [SerializeField] private GameObject pathEmpty;
 
@@ -22,10 +23,10 @@ public class MonoLevel : MonoBehaviour
         // 1: occupied, 0: not occupied
         // from left to right, first positive X, Y then negative X, Y
         byte neighbors = 0;
-        if (!level.IsValidPlacement(pos.x + 1, pos.y)) neighbors |= 1 << 0; // use bitwise OR operator to add 1 in the integer
-        if (!level.IsValidPlacement(pos.x, pos.y + 1)) neighbors |= 1 << 1; // the bitwise shift operator is used to shift it that many "booleans" to the left
-        if (!level.IsValidPlacement(pos.x - 1, pos.y)) neighbors |= 1 << 2;
-        if (!level.IsValidPlacement(pos.x, pos.y - 1)) neighbors |= 1 << 3;
+        if (!level.IsValidPlacement(pos.x + 1, pos.y, true)) neighbors |= 1 << 0; // use bitwise OR operator to add 1 in the integer
+        if (!level.IsValidPlacement(pos.x, pos.y + 1, true)) neighbors |= 1 << 1; // the bitwise shift operator is used to shift it that many "booleans" to the left
+        if (!level.IsValidPlacement(pos.x - 1, pos.y, true)) neighbors |= 1 << 2;
+        if (!level.IsValidPlacement(pos.x, pos.y - 1, true)) neighbors |= 1 << 3;
 
         (GameObject obj, float rot) data = neighbors switch
         {
@@ -33,11 +34,19 @@ public class MonoLevel : MonoBehaviour
             0b1111 => (pathEmpty, 0.0F),        // tile has all neighbours
             0b0101 => (pathStraight, 0.0F),     // tile has neighbours in the Y direction
             0b1010 => (pathStraight, 90.0F),    // tile has neighbours in the X direction
-            0b1100 => (pathCorner, 0.0F),       // +X +Y
-            0b1001 => (pathCorner, 90.0F),      // +X -Y
-            0b0011 => (pathCorner, 180.0F),     // -X -Y
-            0b0110 => (pathCorner, -90.0F),     // -X +Y
-            _ => throw new Exception($"invalid state: {Convert.ToString(neighbors, 2)}"),
+            0b1100 => (pathCorner, -90.0F),     // +X +Y
+            0b1001 => (pathCorner, 180.0F),     // +X -Y
+            0b0011 => (pathCorner, 90.0F),      // -X -Y
+            0b0110 => (pathCorner, 0.0F),       // -X +Y
+            0b0111 => (pathSingle, 0.0F),       // only +X is free
+            0b1011 => (pathSingle, 90.0F),      // only +Y is free
+            0b1101 => (pathSingle, 180.0F),     // only -X is free
+            0b1110 => (pathSingle, -90.0F),     // only -Y is free
+            0b1000 => (pathEmpty, 0.0F),        // UwU
+            0b0100 => (pathEmpty, 0.0F),        // UwU
+            0b0010 => (pathEmpty, 0.0F),        // UwU
+            0b0001 => (pathEmpty, 0.0F),        // UwU
+            _ => throw new Exception($"invalid state: 0b{Convert.ToString(neighbors, 2).PadLeft(4, '0')}"),
         };
 
         SetPath(data.obj, pos, new Vector3(-90.0F, data.rot, 0.0F));
