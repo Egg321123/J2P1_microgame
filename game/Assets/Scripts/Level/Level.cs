@@ -102,6 +102,8 @@ public class Level
         if (skipCount >= MAX_SKIPS)
             return false;
 
+        path.Reverse(); // reverse the path, uwu
+
         return true;
     }
 
