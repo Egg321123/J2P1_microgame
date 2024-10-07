@@ -55,6 +55,7 @@ public class MonoLevel : MonoBehaviour
     private void SetPath(GameObject prefab, Vector2Int pos, Vector3 rotation)
     {
         GameObject obj = Instantiate(prefab, new Vector3(pos.x + 0.5F, 0, pos.y + 0.5F), Quaternion.Euler(rotation), transform);
+        obj.name = pos.ToString();
         MonoTile tile = obj.AddComponent<MonoTile>();
         tile.SetLevel(level);
         tile.SetTilePos(pos);
