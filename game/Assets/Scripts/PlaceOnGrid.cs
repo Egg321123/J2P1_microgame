@@ -9,11 +9,15 @@ public class PlaceOnGrid : MonoBehaviour
 
     private bool isInPlaceMode = false;
     private GameObject gridObj = null;
+    private GameObject objectToPlace = null;
 
     private void Start() => CreateGrid();
 
-    public void PlaceModeToggle(GameObject objectToPlace = null)
+    public void PlaceModeToggle(GameObject pObjectToPlace = null)
     {
+        //update the object the user wants to place
+        objectToPlace = pObjectToPlace; 
+
         isInPlaceMode = !isInPlaceMode;
         gridObj.SetActive(!gridObj.activeInHierarchy);
 
@@ -21,13 +25,14 @@ public class PlaceOnGrid : MonoBehaviour
         StartCoroutine(PlacingMode(objectToPlace));
     }
 
-    public void ChangeTower()
+    public void ChangeTower(GameObject pObjectToPlace)
     {
-
+        //update the object the user wants to place
+        objectToPlace = pObjectToPlace;
     }
 
 
-    IEnumerator PlacingMode(GameObject placeObject)
+    private IEnumerator PlacingMode(GameObject placeObject)
     {
         while (isInPlaceMode)
         {
@@ -54,9 +59,9 @@ public class PlaceOnGrid : MonoBehaviour
                         Vector3 worldPos = hit.point;
 
                         //rounds down on the .5 instead of using casting, which always rounds it in one way regardless of how high or low the decimal is
-                        worldPos.x = (float)Math.Round(worldPos.x);
+                        worldPos.x = (float)Math.Round(worldPos.x) + 0.5f;
                         worldPos.y = 0;
-                        worldPos.z = (float)Math.Round(worldPos.z);
+                        worldPos.z = (float)Math.Round(worldPos.z) + 0.5f;
 
                         //creates quat rot
                         Quaternion rot = Quaternion.Euler(new(-90, 0, 0));
@@ -78,24 +83,21 @@ public class PlaceOnGrid : MonoBehaviour
     /// </summary>
     private void CreateGrid()
     {
-        //Level level = FindFirstObjectByType<MonoLevel>().level;
+        Level level = FindFirstObjectByType<MonoLevel>().Level;
 
         //temporarly setting manually, will use grid size of level generator later
-        int width = 10;
-        int height = 20;
-
-        //create origin for object
-        Vector3 origin = new(0.5f, 0, 0.5f);
+        int width = level.width;
+        int height = level.height;
 
         //spawn in object
-        gridObj = Instantiate(grid, origin, Quaternion.identity);
+        gridObj = Instantiate(grid, Vector3.zero, Quaternion.identity);
 
         //set scale to fit grid size
         gridObj.transform.localScale = new(width, .01f, height);
 
         //edit texture scale to fit with grid size
         Material mat = gridObj.GetComponent<MeshRenderer>().material;
-        mat.mainTextureScale = new(width, height);
+        mat.mainTextureScale = new(height, width);
 
         //parent the object to this object, and hide it
         gridObj.transform.parent = transform;
