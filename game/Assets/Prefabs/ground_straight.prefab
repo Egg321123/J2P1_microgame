@@ -61,7 +61,12 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 105ae3c88776ee048ad6b106b2fd213c,
         type: 3}
       propertyPath: m_Name
-      value: Ground_2Way
+      value: ground_straight
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 105ae3c88776ee048ad6b106b2fd213c,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

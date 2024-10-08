@@ -52,23 +52,24 @@ public class PlaceOnGrid : MonoBehaviour
                     //creates the ray with proper parameters
                     Ray ray = Camera.main.ScreenPointToRay(new(touch.position.x, touch.position.y, 0));
 
-                    //does the raycast check
+                    // Does the raycast check
                     if (Physics.Raycast(ray, out RaycastHit hit, 1000f, targetLayer))
                     {
-                        //gets the world position
+                        // Gets the world position
                         Vector3 worldPos = hit.point;
 
-                        //rounds down on the .5 instead of using casting, which always rounds it in one way regardless of how high or low the decimal is
-                        worldPos.x = (float)Math.Round(worldPos.x) + 0.5f;
-                        worldPos.y = 0;
-                        worldPos.z = (float)Math.Round(worldPos.z) + 0.5f;
+                        // Snaps to the nearest 0.5f tile center
+                        worldPos.x = Mathf.Floor(worldPos.x) + 0.5f;
+                        worldPos.y = 0;  // Assuming you want the y to be fixed
+                        worldPos.z = Mathf.Floor(worldPos.z) + 0.5f;
 
-                        //creates quat rot
-                        Quaternion rot = Quaternion.Euler(new(-90, 0, 0));
+                        // Creates the quaternion for rotation
+                        Quaternion rot = Quaternion.Euler(new Vector3(-90, 0, 0));
 
-                        //places object in scene
+                        // Places object in the scene
                         Instantiate(placeObject, worldPos, rot);
                     }
+
                 }
             }
 
@@ -94,10 +95,6 @@ public class PlaceOnGrid : MonoBehaviour
 
         //set scale to fit grid size
         gridObj.transform.localScale = new(width, .01f, height);
-
-        //edit texture scale to fit with grid size
-        Material mat = gridObj.GetComponent<MeshRenderer>().material;
-        mat.mainTextureScale = new(height, width);
 
         //parent the object to this object, and hide it
         gridObj.transform.parent = transform;
