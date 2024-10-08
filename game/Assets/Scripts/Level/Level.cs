@@ -12,8 +12,8 @@ public class Level
     private const byte UP = 0b10;           // binary notation of the UP direction
     private const byte LEFT = 0b11;         // binary notation of the LEFT direction
 
-    public readonly int width;             // sets the width of the level
-    public readonly int height;            // sets the height of the level
+    public readonly int width;              // sets the width of the level
+    public readonly int height;             // sets the height of the level
     private readonly TileData[,] tiles;     // contains the tiles in the world
     private readonly List<Vector2Int> path; // contains the positions of the tiles
 
