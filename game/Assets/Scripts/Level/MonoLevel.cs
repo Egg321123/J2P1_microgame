@@ -3,16 +3,11 @@ using UnityEngine;
 
 public class MonoLevel : MonoBehaviour
 {
-    [SerializeField, Min(1)] private int width = 10;    // non-negative value corresponding to the maximum amount of tiles on the horizontal axis
-    [SerializeField, Min(1)] private int height = 10;   // non-negative value corresponding to the maximum amount of tiles on the vertucal axis
+    [SerializeField, Min(1)] private int width = 10;        // non-negative value corresponding to the maximum amount of tiles on the horizontal axis
+    [SerializeField, Min(1)] private int height = 10;       // non-negative value corresponding to the maximum amount of tiles on the vertucal axis
 
     // the prefabs containing the path models
-    [Header("Path Prefabs")]
-    [SerializeField] private GameObject pathStraight;   // has 2 opposing neighbours
-    [SerializeField] private GameObject pathCorner;     // has 2 adjointed neighbours
-    [SerializeField] private GameObject pathSingle;     // has 3 adjointed neighbours
-    [SerializeField] private GameObject pathFull;       // has no neighbours
-    [SerializeField] private GameObject pathEmpty;      // has neighbours on each side
+    [SerializeField] private TilePrefabData pathPrefabs;    // contains the path prefabs
 
     [Obsolete("use Level, not level")] public Level level => Level; // for compatibility reasons
     public Level Level { get; private set; }
@@ -33,24 +28,24 @@ public class MonoLevel : MonoBehaviour
         // get the data for which prefab to use and what rotation
         (GameObject obj, float rot) data = neighbors switch
         {
-            0b0000 => (pathFull, 0.0F),         // tile has no neighbours
-            0b1111 => (pathEmpty, 0.0F),        // tile has all neighbours
-            0b0101 => (pathStraight, 0.0F),     // tile has neighbours in the Y direction, (+Y, -Y)
-            0b1010 => (pathStraight, 90.0F),    // tile has neighbours in the X direction, (+X, -X)
-            0b1100 => (pathCorner, -90.0F),     // +X, +Y
-            0b1001 => (pathCorner, 180.0F),     // +X, -Y
-            0b0011 => (pathCorner, 90.0F),      // -X, -Y
-            0b0110 => (pathCorner, 0.0F),       // -X, +Y
-            0b0111 => (pathSingle, 0.0F),       // only +X is free
-            0b1011 => (pathSingle, 90.0F),      // only +Y is free
-            0b1101 => (pathSingle, 180.0F),     // only -X is free
-            0b1110 => (pathSingle, -90.0F),     // only -Y is free
+            0b0000 => (pathPrefabs.full, 0.0F),         // tile has no neighbours
+            0b1111 => (pathPrefabs.empty, 0.0F),        // tile has all neighbours
+            0b0101 => (pathPrefabs.straight, 0.0F),     // tile has neighbours in the Y direction, (+Y, -Y)
+            0b1010 => (pathPrefabs.straight, 90.0F),    // tile has neighbours in the X direction, (+X, -X)
+            0b1100 => (pathPrefabs.corner, -90.0F),     // +X, +Y
+            0b1001 => (pathPrefabs.corner, 180.0F),     // +X, -Y
+            0b0011 => (pathPrefabs.corner, 90.0F),      // -X, -Y
+            0b0110 => (pathPrefabs.corner, 0.0F),       // -X, +Y
+            0b0111 => (pathPrefabs.single, 0.0F),       // only +X is free
+            0b1011 => (pathPrefabs.single, 90.0F),      // only +Y is free
+            0b1101 => (pathPrefabs.single, 180.0F),     // only -X is free
+            0b1110 => (pathPrefabs.single, -90.0F),     // only -Y is free
 
             // if there is just a singular neighbor, just return the empty path type
-            0b1000 => (pathEmpty, 0.0F),
-            0b0100 => (pathEmpty, 0.0F),
-            0b0010 => (pathEmpty, 0.0F),
-            0b0001 => (pathEmpty, 0.0F),
+            0b1000 => (pathPrefabs.empty, 0.0F),
+            0b0100 => (pathPrefabs.empty, 0.0F),
+            0b0010 => (pathPrefabs.empty, 0.0F),
+            0b0001 => (pathPrefabs.empty, 0.0F),
 
             // if it's none of these options, throw an error, with the binary string
             _ => throw new Exception($"invalid state: 0b{Convert.ToString(neighbors, 2).PadLeft(4, '0')}"),
@@ -66,8 +61,7 @@ public class MonoLevel : MonoBehaviour
         GameObject obj = Instantiate(prefab, new Vector3(pos.x + 0.5F, 0, pos.y + 0.5F), Quaternion.Euler(-90.0F, rotation, 0.0F), transform);
         obj.name = pos.ToString();
         MonoTile tile = obj.AddComponent<MonoTile>();
-        tile.SetLevel(Level);
-        tile.SetTilePos(pos);
+        tile.Initialize(Level, pos, pathPrefabs);
     }
 
     // called when the script is being loaded
