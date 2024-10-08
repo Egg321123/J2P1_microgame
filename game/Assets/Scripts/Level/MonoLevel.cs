@@ -14,7 +14,8 @@ public class MonoLevel : MonoBehaviour
     [SerializeField] private GameObject pathFull;       // has no neighbours
     [SerializeField] private GameObject pathEmpty;      // has neighbours on each side
 
-    public Level level = null;
+    [Obsolete("use Level, not level")] public Level level => Level; // for compatibility reasons
+    public Level Level { get; private set; }
 
     // selects which prefab to use for the path tile depending on the tile position & level state, and sets it in the Unity scene
     private void SetPath(Vector2Int pos)
@@ -24,10 +25,10 @@ public class MonoLevel : MonoBehaviour
         // In binary, from left to right, the first two bits/booleans represent whether there is a neighbour at positive X, then Y
         // the last two represent negative X, then Y.
         byte neighbors = 0;
-        if (!level.IsValidPlacement(pos.x + 1, pos.y, true)) neighbors |= 0b1000;   // +X
-        if (!level.IsValidPlacement(pos.x, pos.y + 1, true)) neighbors |= 0b0100;   // +Y
-        if (!level.IsValidPlacement(pos.x - 1, pos.y, true)) neighbors |= 0b0010;   // -X
-        if (!level.IsValidPlacement(pos.x, pos.y - 1, true)) neighbors |= 0b0001;   // -Y
+        if (!Level.IsValidPlacement(pos.x + 1, pos.y, true)) neighbors |= 0b1000;   // +X
+        if (!Level.IsValidPlacement(pos.x, pos.y + 1, true)) neighbors |= 0b0100;   // +Y
+        if (!Level.IsValidPlacement(pos.x - 1, pos.y, true)) neighbors |= 0b0010;   // -X
+        if (!Level.IsValidPlacement(pos.x, pos.y - 1, true)) neighbors |= 0b0001;   // -Y
 
         // get the data for which prefab to use and what rotation
         (GameObject obj, float rot) data = neighbors switch
@@ -65,18 +66,18 @@ public class MonoLevel : MonoBehaviour
         GameObject obj = Instantiate(prefab, new Vector3(pos.x + 0.5F, 0, pos.y + 0.5F), Quaternion.Euler(-90.0F, rotation, 0.0F), transform);
         obj.name = pos.ToString();
         MonoTile tile = obj.AddComponent<MonoTile>();
-        tile.SetLevel(level);
+        tile.SetLevel(Level);
         tile.SetTilePos(pos);
     }
 
     // called when the script is being loaded
     private void Awake()
     {
-        level = new Level(width, height);
-        level.GenerateLevel(new System.Random().Next());
+        Level = new Level(width, height);
+        Level.GenerateLevel(new System.Random().Next());
 
         // generate the path
-        foreach (Vector2Int pathPos in level.GetPath())
+        foreach (Vector2Int pathPos in Level.GetPath())
         {
             SetPath(pathPos);
         }
