@@ -5,7 +5,7 @@ using UnityEngine;
 public class Level
 {
     // constants
-    private const int MAX_ATTEMPTS = 100;   // the amount of times a new path is allowed to be regenerated
+    private const int MAX_ATTEMPTS = 1000;  // the amount of times a new path is allowed to be regenerated
     private const int MAX_SKIPS = 10;       // the amount of times a tile is allowed to be skipped in generation (tiles are skipped if the picked direction can't be placed)
     private const byte DOWN = 0b00;         // binary notation of the DOWN direction
     private const byte RIGHT = 0b01;        // binary notation of the RIGHT direction
