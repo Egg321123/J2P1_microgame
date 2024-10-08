@@ -5,15 +5,15 @@ using UnityEngine;
 public class Level
 {
     // constants
-    private const int MAX_ATTEMPTS = 100;   // the amount of times a new path is allowed to be regenerated
+    private const int MAX_ATTEMPTS = 1000;  // the amount of times a new path is allowed to be regenerated
     private const int MAX_SKIPS = 10;       // the amount of times a tile is allowed to be skipped in generation (tiles are skipped if the picked direction can't be placed)
     private const byte DOWN = 0b00;         // binary notation of the DOWN direction
     private const byte RIGHT = 0b01;        // binary notation of the RIGHT direction
     private const byte UP = 0b10;           // binary notation of the UP direction
     private const byte LEFT = 0b11;         // binary notation of the LEFT direction
 
-    public readonly int width;             // sets the width of the level
-    public readonly int height;            // sets the height of the level
+    public readonly int width;              // sets the width of the level
+    public readonly int height;             // sets the height of the level
     private readonly TileData[,] tiles;     // contains the tiles in the world
     private readonly List<Vector2Int> path; // contains the positions of the tiles
 
@@ -78,7 +78,7 @@ public class Level
             }
 
             // decide the direction to travel
-            if (data == DOWN) y++;  // DOWN is first, because DOWN is 0b00, and otherwise cause an error
+            if (data == DOWN) y++;
             else if (data == RIGHT) x++;
             else if (data == UP) y--;
             else if (data == LEFT) x--;
