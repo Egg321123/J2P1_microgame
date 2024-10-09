@@ -27,10 +27,10 @@ public class MonoTile : MonoBehaviour
         // In binary, from left to right, the first two bits/booleans represent whether there is a neighbour at positive X, then Y
         // the last two represent negative X, then Y.
         byte neighbors = 0;
-        if (!level.IsValidPlacement(north, true)) neighbors |= 0b1000;   // +X
-        if (!level.IsValidPlacement(east, true)) neighbors |= 0b0100;   // +Y
-        if (!level.IsValidPlacement(south, true)) neighbors |= 0b0010;   // -X
-        if (!level.IsValidPlacement(west, true)) neighbors |= 0b0001;   // -Y
+        if (!level.IsEmpty(north, true)) neighbors |= 0b1000;   // +X
+        if (!level.IsEmpty(east, true)) neighbors |= 0b0100;   // +Y
+        if (!level.IsEmpty(south, true)) neighbors |= 0b0010;   // -X
+        if (!level.IsEmpty(west, true)) neighbors |= 0b0001;   // -Y
 
         // get the data for which prefab to use and what rotation
         (Mesh mesh, float rotation) data = neighbors switch
