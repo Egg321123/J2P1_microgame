@@ -7,14 +7,14 @@ public class PlaceOnGrid : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private GameObject grid;
 
-    private MonoLevel level = null;
+    private MonoLevel monoLevel = null;
     private bool isInPlaceMode = false;
     private GameObject gridObj = null;
     private MonoTile objectToPlace = null;
 
     private void Start()
     {
-        level = FindFirstObjectByType<MonoLevel>();
+        monoLevel = FindFirstObjectByType<MonoLevel>();
         CreateGrid();
     }
 
@@ -37,7 +37,8 @@ public class PlaceOnGrid : MonoBehaviour
     }
 
 
-    private IEnumerator PlacingMode(MonoTile placeObject)
+    private IEnumerator PlacingMode(MonoTile placeObject, TowerData towerData) => PlacingMode(placeObject, TileType.TOWER, towerData);
+    private IEnumerator PlacingMode(MonoTile placeObject, TileType tileType = TileType.TOWER, TowerData? towerData = null)
     {
         while (isInPlaceMode)
         {
@@ -64,7 +65,7 @@ public class PlaceOnGrid : MonoBehaviour
                         Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
 
                         // Places object in the scene if you are allowed to place there
-                        if (level.Level.IsValidPlacement(pos)) level.AddTile(placeObject, pos);
+                        if (monoLevel.Level.IsValidPlacement(pos)) monoLevel.SetTile(placeObject, pos, TileType.TOWER, null, true);
                     }
 
                 }
@@ -81,7 +82,7 @@ public class PlaceOnGrid : MonoBehaviour
     /// </summary>
     private void CreateGrid()
     {
-        Level level = FindFirstObjectByType<MonoLevel>().Level;
+        Level level = monoLevel.Level;
 
         //temporarly setting manually, will use grid size of level generator later
         int width = level.width;
