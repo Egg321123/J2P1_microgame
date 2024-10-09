@@ -1,21 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Level
 {
     // constants
-    private const int MAX_ATTEMPTS = 1000;  // the amount of times a new path is allowed to be regenerated
-    private const int MAX_SKIPS = 10;       // the amount of times a tile is allowed to be skipped in generation (tiles are skipped if the picked direction can't be placed)
-    private const byte DOWN = 0b00;         // binary notation of the DOWN direction
-    private const byte RIGHT = 0b01;        // binary notation of the RIGHT direction
-    private const byte UP = 0b10;           // binary notation of the UP direction
-    private const byte LEFT = 0b11;         // binary notation of the LEFT direction
+    private const int MAX_ATTEMPTS = 1000;      // the amount of times a new path is allowed to be regenerated
+    private const int MAX_SKIPS = 10;           // the amount of times a tile is allowed to be skipped in generation (tiles are skipped if the picked direction can't be placed)
+    private const byte DOWN = 0b00;             // binary notation of the DOWN direction
+    private const byte RIGHT = 0b01;            // binary notation of the RIGHT direction
+    private const byte UP = 0b10;               // binary notation of the UP direction
+    private const byte LEFT = 0b11;             // binary notation of the LEFT direction
 
-    public readonly int width;              // sets the width of the level
-    public readonly int height;             // sets the height of the level
-    private readonly TileData[,] tiles;     // contains the tiles in the world
-    private readonly List<Vector2Int> path; // contains the positions of the tiles
+    public readonly int width;                  // sets the width of the level
+    public readonly int height;                 // sets the height of the level
+    public readonly TileData[,] tiles;          // contains the tiles in the world
+    private readonly List<Vector2Int> path;     // contains the positions of the tiles
+    private readonly List<Vector2Int> towers;   // contains the positions of the tower tiles
 
     /// <summary>
     /// creates a new level instance
@@ -26,6 +28,7 @@ public class Level
         this.height = height;
         tiles = new TileData[width, height];
         path = new List<Vector2Int>();
+        towers = new List<Vector2Int>();
     }
 
     private void AddPathNode(int x, int y)
@@ -84,7 +87,7 @@ public class Level
             else if (data == LEFT) x--;
 
             // if the new location is invalid to place a tile at
-            if (IsValidPlacement(x, y) == false)
+            if (IsEmpty(x, y) == false)
             {
                 // increase the skip count
                 skipCount++;
@@ -131,10 +134,11 @@ public class Level
         Debug.Log($"Generated level {level} in {attempts} attempts.");
     }
 
-    /// <returns>
-    /// <see langword="true"/> if the location is within the bounds of the level, and on an empty tile, otherwise <see langword="false"/> is returned
-    /// </returns>
-    public bool IsValidPlacement(int x, int y, bool ignoreLevelBounds = false)
+    [Obsolete("IsValidPlacement is deprecated, use IsEmpty")] public bool IsValidPlacement(Vector2Int pos, bool ignoreLevelBounds = false) => throw new NotImplementedException("IsValidPlacement is deprecated, use IsEmpty");
+    [Obsolete("IsValidPlacement is deprecated, use IsEmpty")] public bool IsValidPlacement(int x, int y, bool ignoreLevelBounds = false) => throw new NotImplementedException("IsValidPlacement is deprecated, use IsEmpty");
+
+    public bool IsEmpty(Vector2Int pos, bool ignoreLevelBounds = false) => IsEmpty(pos.x, pos.y, ignoreLevelBounds);
+    public bool IsEmpty(int x, int y, bool ignoreLevelBounds = false)
     {
         // check if the position is outside the level
         if (x < 0 || x >= width || y < 0 || y >= height)
@@ -146,12 +150,23 @@ public class Level
 
         return true;
     }
-    public bool IsValidPlacement(Vector2Int pos, bool ignoreLevelBounds = false) => IsValidPlacement(pos.x, pos.y, ignoreLevelBounds);
+
+    public void SetTile(Vector2Int pos, TileType type, TowerData? towerData = null) => SetTile(pos.x, pos.y, type, towerData);
+    public void SetTile(int x, int y, TileType type, TowerData? towerData = null)
+    {
+        tiles[x, y].type = type;
+
+        if (type == TileType.TOWER)
+        {
+            towers.Add(new Vector2Int(x, y));
+            tiles[x, y].towerData = towerData;
+        }
+    }
 
     // gets the tile at the position
-    public TileData GetTile(int x, int y) => tiles[x, y];
-    public TileData GetTile(Vector2Int pos) => tiles[pos.x, pos.y];
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] public TileData GetTile(int x, int y) => tiles[x, y];
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] public TileData GetTile(Vector2Int pos) => tiles[pos.x, pos.y];
 
-    // gets the path
     public IReadOnlyList<Vector2Int> GetPath() => path;
+    public IReadOnlyList<Vector2Int> GetTowers() => towers;
 }

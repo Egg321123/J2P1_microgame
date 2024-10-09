@@ -29,7 +29,7 @@ public class CreateAIPath : MonoBehaviour
 
         for (int i = 0; i < Path.Count; i++) 
         {
-            Vector3 offsetPos = Path[i] + new Vector3(0,0.1f,0);
+            Vector3 offsetPos = Path[i] + new Vector3(0,0.01f,0);
             lineRenderer.SetPosition(i, offsetPos);
         }
     }

@@ -9,8 +9,10 @@ public class MonoTile : MonoBehaviour
     private Vector2Int tilePos;
     private MeshFilter meshFilter = null;
 
+    // readonly public fields
     public TileData Data => level.GetTile(tilePos);
-
+    public Level Level => level;
+    public Vector2Int TilePos => tilePos;
 
     private void UpdateModel(bool updateNeighbours = false) => SetModel(tilePos, updateNeighbours);
 
@@ -27,26 +29,26 @@ public class MonoTile : MonoBehaviour
         // In binary, from left to right, the first two bits/booleans represent whether there is a neighbour at positive X, then Y
         // the last two represent negative X, then Y.
         byte neighbors = 0;
-        if (!level.IsValidPlacement(north, true)) neighbors |= 0b1000;   // +X
-        if (!level.IsValidPlacement(east, true)) neighbors |= 0b0100;   // +Y
-        if (!level.IsValidPlacement(south, true)) neighbors |= 0b0010;   // -X
-        if (!level.IsValidPlacement(west, true)) neighbors |= 0b0001;   // -Y
+        if (!level.IsEmpty(north, true)) neighbors |= 0b1000;   // +X
+        if (!level.IsEmpty(east, true)) neighbors |= 0b0100;   // +Y
+        if (!level.IsEmpty(south, true)) neighbors |= 0b0010;   // -X
+        if (!level.IsEmpty(west, true)) neighbors |= 0b0001;   // -Y
 
         // get the data for which prefab to use and what rotation
         (Mesh mesh, float rotation) data = neighbors switch
         {
-            0b0000 => (tileMeshes.full, 0.0F),         // tile has no neighbours
-            0b1111 => (tileMeshes.empty, 0.0F),        // tile has all neighbours
-            0b0101 => (tileMeshes.straight, 0.0F),     // tile has neighbours in the Y direction, (+Y, -Y)
-            0b1010 => (tileMeshes.straight, 90.0F),    // tile has neighbours in the X direction, (+X, -X)
-            0b1100 => (tileMeshes.corner, -90.0F),     // +X, +Y
-            0b1001 => (tileMeshes.corner, 180.0F),     // +X, -Y
-            0b0011 => (tileMeshes.corner, 90.0F),      // -X, -Y
-            0b0110 => (tileMeshes.corner, 0.0F),       // -X, +Y
-            0b0111 => (tileMeshes.single, 0.0F),       // only +X is free
-            0b1011 => (tileMeshes.single, 90.0F),      // only +Y is free
-            0b1101 => (tileMeshes.single, 180.0F),     // only -X is free
-            0b1110 => (tileMeshes.single, -90.0F),     // only -Y is free
+            0b0000 => (tileMeshes.full, 0.0F),          // tile has no neighbours
+            0b1111 => (tileMeshes.empty, 0.0F),         // tile has all neighbours
+            0b0101 => (tileMeshes.straight, 90.0F),     // tile has neighbours in the Y direction, (+Y, -Y)
+            0b1010 => (tileMeshes.straight, 0.0F),      // tile has neighbours in the X direction, (+X, -X)
+            0b1100 => (tileMeshes.corner, 90.0F),       // +X, +Y
+            0b1001 => (tileMeshes.corner, 180.0F),      // +X, -Y
+            0b0011 => (tileMeshes.corner, -90.0F),      // -X, -Y
+            0b0110 => (tileMeshes.corner, 0.0F),        // -X, +Y
+            0b0111 => (tileMeshes.single, -90.0F),      // only +X is free
+            0b1011 => (tileMeshes.single, 180.0F),      // only +Y is free
+            0b1101 => (tileMeshes.single, 90.0F),       // only -X is free
+            0b1110 => (tileMeshes.single, 0.0F),        // only -Y is free
 
             // if there is just a singular neighbor, just return the empty path type
             0b1000 => (tileMeshes.empty, 0.0F),
@@ -58,7 +60,7 @@ public class MonoTile : MonoBehaviour
             _ => throw new Exception($"invalid state: 0b{Convert.ToString(neighbors, 2).PadLeft(4, '0')}"),
         };
 
-        SetModel(data.mesh, pos, data.rotation);
+        SetModel(data.mesh, data.rotation);
 
         if (updateNeighbours == false)
             return;
@@ -70,12 +72,12 @@ public class MonoTile : MonoBehaviour
         if ((neighbors & 0b0001) != 0) level.GetTile(west).monoTile.UpdateModel();
     }
 
-    private void SetModel(Mesh mesh, Vector2Int pos, float rotation)
+    private void SetModel(Mesh mesh, float rotation)
     {
         meshFilter ??= GetComponent<MeshFilter>();  // get mesh filter component if we haven't already
         meshFilter.mesh = mesh;
 
-        transform.rotation = Quaternion.Euler(-90.0F, rotation, 0.0F);
+        transform.rotation = Quaternion.Euler(0, rotation, 0.0F);
     }
 
     /// <summary>
@@ -92,8 +94,7 @@ public class MonoTile : MonoBehaviour
         transform.position = new Vector3(tilePos.x + 0.5F, 0.0F, tilePos.y + 0.5F);
 
         // assign self to the mono tile
-        TileData tile = Data;
-        tile.monoTile = this;
+        level.tiles[tilePos.x, tilePos.y].monoTile = this;
 
         SetModel(tilePos, updateNeighbours);
     }
