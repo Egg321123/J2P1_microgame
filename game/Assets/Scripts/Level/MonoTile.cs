@@ -77,7 +77,7 @@ public class MonoTile : MonoBehaviour
         meshFilter ??= GetComponent<MeshFilter>();  // get mesh filter component if we haven't already
         meshFilter.mesh = mesh;
 
-        transform.rotation = Quaternion.Euler(-90.0F, rotation, 0.0F);
+        transform.rotation = Quaternion.Euler(0, rotation, 0.0F);
     }
 
     /// <summary>

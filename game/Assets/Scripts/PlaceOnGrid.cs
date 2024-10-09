@@ -6,11 +6,12 @@ public class PlaceOnGrid : MonoBehaviour
 {
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private GameObject grid;
+    [SerializeField] private MonoTile objectToPlace = null;
 
     private MonoLevel monoLevel = null;
     private bool isInPlaceMode = false;
     private GameObject gridObj = null;
-    private MonoTile objectToPlace = null;
+    private TowerData towerData = null;
 
     private void Start()
     {
@@ -18,27 +19,24 @@ public class PlaceOnGrid : MonoBehaviour
         CreateGrid();
     }
 
-    public void PlaceModeToggle(MonoTile pObjectToPlace = null)
+    public void PlaceModeToggle(TowerData pTowerData)
     {
-        //update the object the user wants to place
-        objectToPlace = pObjectToPlace;
+        towerData = pTowerData;
 
         isInPlaceMode = !isInPlaceMode;
         gridObj.SetActive(!gridObj.activeInHierarchy);
 
         //go into the place mode cycle
-        StartCoroutine(PlacingMode(objectToPlace));
+        StartCoroutine(PlacingMode());
     }
 
-    public void ChangeTower(MonoTile pObjectToPlace)
+    public void ChangeTower(TowerData pTowerData)
     {
         //update the object the user wants to place
-        objectToPlace = pObjectToPlace;
+        towerData = pTowerData;
     }
 
-
-    private IEnumerator PlacingMode(MonoTile placeObject, TowerData towerData) => PlacingMode(placeObject, TileType.TOWER, towerData);
-    private IEnumerator PlacingMode(MonoTile placeObject, TileType tileType = TileType.TOWER, TowerData? towerData = null)
+    private IEnumerator PlacingMode()
     {
         while (isInPlaceMode)
         {
@@ -65,7 +63,7 @@ public class PlaceOnGrid : MonoBehaviour
                         Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
 
                         // Places object in the scene if you are allowed to place there
-                        if (monoLevel.Level.IsEmpty(pos)) monoLevel.SetTile(placeObject, pos, TileType.TOWER, null, true);
+                        if (monoLevel.Level.IsEmpty(pos)) monoLevel.SetTile(objectToPlace, pos, TileType.TOWER, towerData, true);
                     }
 
                 }
