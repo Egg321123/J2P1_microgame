@@ -36,7 +36,7 @@ public class Shop : MonoBehaviour
             tItemData.RemoveAt(randomItem);
         }
     }
-    GameObject FindTower(string tower2Search)
+    MonoTile FindTower(string tower2Search)
     {
         for ( int tower = 0; tower < itemData.Count; tower++) if (itemData[tower].name == tower2Search) return itemData[tower].prefab;
         return null;

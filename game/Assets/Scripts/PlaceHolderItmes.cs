@@ -6,6 +6,6 @@ public class PlaceHolderItmes : MonoBehaviour
 {
     public string name;
     public int price;
-    public GameObject prefab;
+    public MonoTile prefab;
 
 }
