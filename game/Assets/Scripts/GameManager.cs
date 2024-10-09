@@ -23,4 +23,22 @@ public class GameManager : MonoBehaviour
         // make this object persistent
         DontDestroyOnLoad(gameObject);
     }
+
+#if UNITY_EDITOR
+    [ContextMenu("Reset Save")]
+    private void ResetSave()
+    {
+        string path = Application.persistentDataPath + Path.DirectorySeparatorChar + "save.json";
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("Removed the save file");
+        }
+        else
+        {
+            Debug.Log("The file doesn't exist");
+        }
+    }
+#endif
 }

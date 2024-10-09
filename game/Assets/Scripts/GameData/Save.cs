@@ -15,11 +15,13 @@ public class Save
 
         if (File.Exists(savePath))
         {
-            Debug.Log($"loading the data from '{savePath}'.");
+            Debug.Log($"loading the data from '{savePath}'...");
 
             // initialize the data from JSON
             string json = File.ReadAllText(savePath);
             data = JsonUtility.FromJson<SaveData>(json);
+
+            Debug.Log($"loaded data: '{json}'");
             return;
         }
 
