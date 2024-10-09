@@ -59,6 +59,7 @@ public class MonoTile : MonoBehaviour
         };
 
         SetModel(data.mesh, pos, data.rotation);
+
         if (updateNeighbours == false)
             return;
 
@@ -80,9 +81,9 @@ public class MonoTile : MonoBehaviour
     /// <summary>
     /// initializes the object, throws <see cref="InvalidOperationException"/> when already initialized
     /// </summary>
-    public void Initialize(Level level, Vector2Int tilePos)
+    public void Initialize(Level level, Vector2Int tilePos, bool updateNeighbours = false)
     {
-        if (initialized != false) throw new InvalidOperationException("this object has already been initialized!");
+        if (initialized == true) throw new InvalidOperationException("this object has already been initialized!");
         initialized = true;
 
         // set fields
@@ -90,6 +91,10 @@ public class MonoTile : MonoBehaviour
         this.tilePos = tilePos;
         transform.position = new Vector3(tilePos.x + 0.5F, 0.0F, tilePos.y + 0.5F);
 
-        SetModel(tilePos, true);
+        // assign self to the mono tile
+        TileData tile = Data;
+        tile.monoTile = this;
+
+        SetModel(tilePos, updateNeighbours);
     }
 }

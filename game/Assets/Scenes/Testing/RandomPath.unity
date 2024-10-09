@@ -306,7 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 10
   height: 20
-  pathPrefab: {fileID: 5657285815437718962, guid: cb45a06150dfb0df085e76d08dd010c1,
+  pathPrefab: {fileID: -1941801367899136033, guid: 28bb0a923d4642e35b60e17f3e7ab9d9,
     type: 3}
 --- !u!1 &2024805740
 GameObject:
