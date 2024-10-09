@@ -6,41 +6,52 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
-    string[] items = new string[4];
-    //List<> itemData = new List<>();
+    string[] towers = new string[4];
+    [SerializeField] List<PlaceHolderItmes> itemData = new List<PlaceHolderItmes>();
     [SerializeField] List<Sprite> images = new List<Sprite>();
-    [SerializeField] List<GameObject> buttons = new List<GameObject>();
-    [SerializeField] List<TextMeshPro> itemInfo;
+    [SerializeField] List<GameObject> toggles = new List<GameObject>();
+    //[SerializeField] List<TextMeshPro> itemInfo;
     // Start is called before the first frame update
     void Start()
     {
-        for (int button = 0; button < buttons.Count; button++)
+        List<PlaceHolderItmes> tItemData = itemData;
+        List<Sprite> tImages = images;
+        for (int toggle = 0; toggle < toggles.Count; toggle++)
         {
-            itemInfo = new List<TextMeshPro>((IEnumerable<TextMeshPro>)buttons[button].GetComponentInChildren<TextMeshPro>());
+            Transform gOText = toggles[toggle].transform.GetChild(0);
+            // itemInfo = new List<TextMeshPro>(buttons[button].GetComponentInChildren<TextMeshPro>());
             //List<> itemData = new List<>();
-            int randomItem = Random.Range(0, items.Length);
-            for (int text = 0; text < itemInfo.Count; text++)
+            int randomItem = Random.Range(0, tItemData.Count);
+            for (int text = 0; text < gOText.childCount; text++)
             {
-                if (text == 0) itemInfo[text].text = "name";
-                else itemInfo[text].text = "price: ";
+                string data;
+                if (text == 0) data = tItemData[randomItem].name;
+                else data = "Price: " + tItemData[randomItem].price.ToString();
+                gOText.GetChild(text).GetComponent<TextMeshProUGUI>().text = data;
             }
-            buttons[button].GetComponent<Image>().sprite = images[randomItem];
+            towers[randomItem] = tItemData[randomItem].name;
+            toggles[toggle].transform.GetChild(1).GetComponent<Image>().sprite = tImages[randomItem];
+            tImages.RemoveAt(randomItem);
+            tItemData.RemoveAt(randomItem);
         }
     }
     public void item1()
     {
-
+        print("1");
     }
     public void item2()
     {
+        print(2);
 
     }
     public void item3()
     {
+        print(3);
 
     }
     public void item4()
     {
+        print(4);
 
     }
 }

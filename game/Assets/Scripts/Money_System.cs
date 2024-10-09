@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Money_System: MonoBehaviour
 {
     [SerializeField] TMP_Text scoreUI;
     [SerializeField] int cost = 10;
