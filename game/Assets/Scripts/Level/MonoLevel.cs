@@ -15,8 +15,8 @@ public class MonoLevel : MonoBehaviour
     /// </summary>
     public void SetTile(MonoTile prefab, Vector2Int pos, TileType tileType, TowerData? towerData = null, bool updateNeighbours = false)
     {
-        Level.SetTile(pos, TileType.PATH, towerData);
-        SetMonoTile(prefab, pos);
+        Level.SetTile(pos, tileType, towerData);
+        SetMonoTile(prefab, pos, updateNeighbours);
     }
 
     /// <summary>
