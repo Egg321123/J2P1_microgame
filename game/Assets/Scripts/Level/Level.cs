@@ -168,6 +168,6 @@ public class Level
     [MethodImpl(MethodImplOptions.AggressiveInlining)] public TileData GetTile(int x, int y) => tiles[x, y];
     [MethodImpl(MethodImplOptions.AggressiveInlining)] public TileData GetTile(Vector2Int pos) => tiles[pos.x, pos.y];
 
-    public List<Vector2Int> GetPath() => path;
-    public List<Vector2Int> GetTowers() => towers;
+    public IReadOnlyList<Vector2Int> GetPath() => path;
+    public IReadOnlyList<Vector2Int> GetTowers() => towers;
 }

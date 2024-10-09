@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -5,6 +6,20 @@ public class Save
 {
     public readonly string savePath;
     public SaveData data;
+
+    // acquires the latest safe data
+    private void UpdateSaveData()
+    {
+        Level level = GameManager.Instance.Level;
+        IReadOnlyList<Vector2Int> towers = level.GetTowers();
+
+        // assign a new array for the towers data
+        data.towers = new TileData[towers.Count];
+
+        // set the towers in the array
+        for (int i = 0; i < towers.Count; i++)
+            data.towers[i] = level.GetTile(towers[i]);
+    }
 
     /// <summary>
     /// creates a new instance of Save, either with <see cref="data"/> set to their default values or what is stored at <see cref="savePath"/>
@@ -35,6 +50,8 @@ public class Save
     /// </summary>
     public void SaveFile()
     {
+        UpdateSaveData();
+
         // get how long it took to perform this action
         string json = JsonUtility.ToJson(data); // convert the save data to JSON
         File.WriteAllText(savePath, json);      // write the serialized JSON data to the file
