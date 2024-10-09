@@ -5,15 +5,15 @@ using UnityEngine;
 public class Level
 {
     // constants
-    private const int MAX_ATTEMPTS = 100;   // the amount of times a new path is allowed to be regenerated
+    private const int MAX_ATTEMPTS = 1000;  // the amount of times a new path is allowed to be regenerated
     private const int MAX_SKIPS = 10;       // the amount of times a tile is allowed to be skipped in generation (tiles are skipped if the picked direction can't be placed)
     private const byte DOWN = 0b00;         // binary notation of the DOWN direction
     private const byte RIGHT = 0b01;        // binary notation of the RIGHT direction
     private const byte UP = 0b10;           // binary notation of the UP direction
     private const byte LEFT = 0b11;         // binary notation of the LEFT direction
 
-    public readonly int width;             // sets the width of the level
-    public readonly int height;            // sets the height of the level
+    public readonly int width;              // sets the width of the level
+    public readonly int height;             // sets the height of the level
     private readonly TileData[,] tiles;     // contains the tiles in the world
     private readonly List<Vector2Int> path; // contains the positions of the tiles
 
@@ -78,7 +78,7 @@ public class Level
             }
 
             // decide the direction to travel
-            if (data == DOWN) y++;  // DOWN is first, because DOWN is 0b00, and otherwise cause an error
+            if (data == DOWN) y++;
             else if (data == RIGHT) x++;
             else if (data == UP) y--;
             else if (data == LEFT) x--;
@@ -101,6 +101,8 @@ public class Level
         // return the success of the operation
         if (skipCount >= MAX_SKIPS)
             return false;
+
+        path.Reverse(); // reverse the path, uwu
 
         return true;
     }
@@ -132,11 +134,11 @@ public class Level
     /// <returns>
     /// <see langword="true"/> if the location is within the bounds of the level, and on an empty tile, otherwise <see langword="false"/> is returned
     /// </returns>
-    public bool IsValidPlacement(int x, int y)
+    public bool IsValidPlacement(int x, int y, bool ignoreLevelBounds = false)
     {
         // check if the position is outside the level
         if (x < 0 || x >= width || y < 0 || y >= height)
-            return false;
+            return ignoreLevelBounds;
 
         // check if the position is not an empty tile
         if (tiles[x, y].type != TileType.EMPTY)
