@@ -7,13 +7,18 @@ public class PlaceOnGrid : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private GameObject grid;
 
+    private MonoLevel level = null;
     private bool isInPlaceMode = false;
     private GameObject gridObj = null;
-    private GameObject objectToPlace = null;
+    private MonoTile objectToPlace = null;
 
-    private void Start() => CreateGrid();
+    private void Start()
+    {
+        level = FindFirstObjectByType<MonoLevel>();
+        CreateGrid();
+    }
 
-    public void PlaceModeToggle(GameObject pObjectToPlace = null)
+    public void PlaceModeToggle(MonoTile pObjectToPlace = null)
     {
         //update the object the user wants to place
         objectToPlace = pObjectToPlace; 
@@ -25,14 +30,14 @@ public class PlaceOnGrid : MonoBehaviour
         StartCoroutine(PlacingMode(objectToPlace));
     }
 
-    public void ChangeTower(GameObject pObjectToPlace)
+    public void ChangeTower(MonoTile pObjectToPlace)
     {
         //update the object the user wants to place
         objectToPlace = pObjectToPlace;
     }
 
 
-    private IEnumerator PlacingMode(GameObject placeObject)
+    private IEnumerator PlacingMode(MonoTile placeObject)
     {
         while (isInPlaceMode)
         {
@@ -67,7 +72,8 @@ public class PlaceOnGrid : MonoBehaviour
                         Quaternion rot = Quaternion.Euler(new Vector3(-90, 0, 0));
 
                         // Places object in the scene
-                        Instantiate(placeObject, worldPos, rot);
+                        MonoTile tile = Instantiate(placeObject, worldPos, rot);
+
                     }
 
                 }
