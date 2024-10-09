@@ -27,6 +27,7 @@ public class Level
         this.height = height;
         tiles = new TileData[width, height];
         path = new List<Vector2Int>();
+        towers = new List<Vector2Int>()
     }
 
     private void AddPathNode(int x, int y)
