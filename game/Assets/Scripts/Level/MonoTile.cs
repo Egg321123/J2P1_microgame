@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class MonoTile : MonoBehaviour
@@ -92,8 +93,7 @@ public class MonoTile : MonoBehaviour
         transform.position = new Vector3(tilePos.x + 0.5F, 0.0F, tilePos.y + 0.5F);
 
         // assign self to the mono tile
-        TileData tile = Data;
-        tile.monoTile = this;
+        level.tiles[tilePos.x, tilePos.y].monoTile = this;
 
         SetModel(tilePos, updateNeighbours);
     }
