@@ -21,9 +21,14 @@ public class MonoLevel : MonoBehaviour
         // generate the path
         foreach (Vector2Int pathPos in Level.GetPath())
         {
-            MonoTile tile = Instantiate(pathPrefab, transform);
-            tile.Initialize(Level, pathPos);
+            AddTile(pathPrefab, pathPos);
         }
+    }
+
+    public void AddTile(MonoTile prefab, Vector2Int pos)
+    {
+        MonoTile tile = Instantiate(prefab, transform);
+        tile.Initialize(Level, pos);
     }
 
 #if UNITY_EDITOR
