@@ -63,10 +63,10 @@ public class MonoTile : MonoBehaviour
             return;
 
         // check if a tile has been set, update the model of that tile
-        if (!level.IsValidPlacement(north, true)) level.GetTile(north).monoTile.UpdateModel();
-        if (!level.IsValidPlacement(east, true)) level.GetTile(east).monoTile.UpdateModel();
-        if (!level.IsValidPlacement(south, true)) level.GetTile(south).monoTile.UpdateModel();
-        if (!level.IsValidPlacement(west, true)) level.GetTile(west).monoTile.UpdateModel();
+        if ((neighbors & 0b1000) != 0) level.GetTile(north).monoTile.UpdateModel();
+        if ((neighbors & 0b0100) != 0) level.GetTile(east).monoTile.UpdateModel();
+        if ((neighbors & 0b0010) != 0) level.GetTile(south).monoTile.UpdateModel();
+        if ((neighbors & 0b0001) != 0) level.GetTile(west).monoTile.UpdateModel();
     }
 
     private void SetModel(Mesh mesh, Vector2Int pos, float rotation)
