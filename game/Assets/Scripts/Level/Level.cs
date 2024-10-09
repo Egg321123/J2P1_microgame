@@ -132,8 +132,8 @@ public class Level
         Debug.Log($"Generated level {level} in {attempts} attempts.");
     }
 
-    [Obsolete("IsValidPlacement is deprecated, use IsEmpty")] public bool IsValidPlacement(Vector2Int pos, bool ignoreLevelBounds = false) => throw new NotImplementedException();
-    [Obsolete("IsValidPlacement is deprecated, use IsEmpty")] public bool IsValidPlacement(int x, int y, bool ignoreLevelBounds = false) => throw new NotImplementedException();
+    [Obsolete("IsValidPlacement is deprecated, use IsEmpty")] public bool IsValidPlacement(Vector2Int pos, bool ignoreLevelBounds = false) => throw new NotImplementedException("IsValidPlacement is deprecated, use IsEmpty");
+    [Obsolete("IsValidPlacement is deprecated, use IsEmpty")] public bool IsValidPlacement(int x, int y, bool ignoreLevelBounds = false) => throw new NotImplementedException("IsValidPlacement is deprecated, use IsEmpty");
 
     public bool IsEmpty(Vector2Int pos, bool ignoreLevelBounds = false) => IsEmpty(pos.x, pos.y, ignoreLevelBounds);
     public bool IsEmpty(int x, int y, bool ignoreLevelBounds = false)
