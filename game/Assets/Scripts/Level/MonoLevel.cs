@@ -2,15 +2,27 @@ using UnityEngine;
 
 public class MonoLevel : MonoBehaviour
 {
-    [SerializeField, Min(1)] private int width = 10;        // non-negative value corresponding to the maximum amount of tiles on the horizontal axis
-    [SerializeField, Min(1)] private int height = 10;       // non-negative value corresponding to the maximum amount of tiles on the vertucal axis
+    [SerializeField, Min(1)] private int width = 10;    // non-negative value corresponding to the maximum amount of tiles on the horizontal axis
+    [SerializeField, Min(1)] private int height = 10;   // non-negative value corresponding to the maximum amount of tiles on the vertucal axis
 
     // the prefabs containing the path models
-    [SerializeField] private MonoTile pathPrefab;    // contains the path prefabs
+    [SerializeField] private MonoTile pathPrefab;       // contains the path prefabs
 
     public Level Level { get; private set; }
 
-    public void AddTile(MonoTile prefab, Vector2Int pos, bool updateNeighbours = false)
+    /// <summary>
+    /// sets a tile in <see cref="Level"/> and in the unity scene
+    /// </summary>
+    public void SetTile(MonoTile prefab, Vector2Int pos, TileType tileType, TowerData? towerData = null, bool updateNeighbours = false)
+    {
+        Level.SetTile(pos, TileType.PATH, towerData);
+        SetMonoTile(prefab, pos);
+    }
+
+    /// <summary>
+    /// initialize the monoTile prefab
+    /// </summary>
+    public void SetMonoTile(MonoTile prefab, Vector2Int pos, bool updateNeighbours = false)
     {
         MonoTile tile = Instantiate(prefab, transform);
         tile.Initialize(Level, pos, updateNeighbours);
@@ -25,7 +37,7 @@ public class MonoLevel : MonoBehaviour
         // generate the path
         foreach (Vector2Int pathPos in Level.GetPath())
         {
-            AddTile(pathPrefab, pathPos);
+            SetMonoTile(pathPrefab, pathPos);
         }
     }
 

@@ -148,6 +148,13 @@ public class Level
     }
     public bool IsValidPlacement(Vector2Int pos, bool ignoreLevelBounds = false) => IsValidPlacement(pos.x, pos.y, ignoreLevelBounds);
 
+    public void SetTile(int x, int y, TileType type, TowerData? towerData = null)
+    {
+        tiles[x, y].type = type;
+        tiles[x, y].towerData = towerData;
+    }
+    public void SetTile(Vector2Int pos, TileType type, TowerData? towerData = null) => SetTile(pos.x, pos.y, type);
+
     // gets the tile at the position
     public TileData GetTile(int x, int y) => tiles[x, y];
     public TileData GetTile(Vector2Int pos) => tiles[pos.x, pos.y];
