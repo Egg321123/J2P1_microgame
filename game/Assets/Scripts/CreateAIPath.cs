@@ -4,15 +4,34 @@ using UnityEngine;
 
 public class CreateAIPath : MonoBehaviour
 {
+    [SerializeField] private LineRenderer lineRenderer;
+
     //path for ai to use
     public List<Vector3> Path { get; private set; } = null;
 
     // Start is called before the first frame update
     void Start()
     {
+        RegeneratePath();
+    }
+
+    public void RegeneratePath()
+    {
         //get the list of coords and convert it to a path the ai can use (centered on the tiles)
         List<Vector2Int> list = new(FindFirstObjectByType<MonoLevel>().Level.GetPath());
         Path = AdjustListToWorld(list);
+        CreateLineRenderer();
+    }
+
+    private void CreateLineRenderer()
+    {
+        lineRenderer.positionCount = Path.Count;
+
+        for (int i = 0; i < Path.Count; i++) 
+        {
+            Vector3 offsetPos = Path[i] + new Vector3(0,0.1f,0);
+            lineRenderer.SetPosition(i, offsetPos);
+        }
     }
 
     // Method to convert a List<Vector2Int> to List<Vector3> with the proper offset

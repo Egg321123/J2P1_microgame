@@ -7,13 +7,18 @@ public class PlaceOnGrid : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private GameObject grid;
 
+    private MonoLevel level = null;
     private bool isInPlaceMode = false;
     private GameObject gridObj = null;
-    private GameObject objectToPlace = null;
+    private MonoTile objectToPlace = null;
 
-    private void Start() => CreateGrid();
+    private void Start()
+    {
+        level = FindFirstObjectByType<MonoLevel>();
+        CreateGrid();
+    }
 
-    public void PlaceModeToggle(GameObject pObjectToPlace = null)
+    public void PlaceModeToggle(MonoTile pObjectToPlace = null)
     {
         //update the object the user wants to place
         objectToPlace = pObjectToPlace; 
@@ -25,14 +30,14 @@ public class PlaceOnGrid : MonoBehaviour
         StartCoroutine(PlacingMode(objectToPlace));
     }
 
-    public void ChangeTower(GameObject pObjectToPlace)
+    public void ChangeTower(MonoTile pObjectToPlace)
     {
         //update the object the user wants to place
         objectToPlace = pObjectToPlace;
     }
 
 
-    private IEnumerator PlacingMode(GameObject placeObject)
+    private IEnumerator PlacingMode(MonoTile placeObject)
     {
         while (isInPlaceMode)
         {
@@ -56,18 +61,10 @@ public class PlaceOnGrid : MonoBehaviour
                     if (Physics.Raycast(ray, out RaycastHit hit, 1000f, targetLayer))
                     {
                         // Gets the world position
-                        Vector3 worldPos = hit.point;
+                        Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
 
-                        // Snaps to the nearest 0.5f tile center
-                        worldPos.x = Mathf.Floor(worldPos.x) + 0.5f;
-                        worldPos.y = 0;  // Assuming you want the y to be fixed
-                        worldPos.z = Mathf.Floor(worldPos.z) + 0.5f;
-
-                        // Creates the quaternion for rotation
-                        Quaternion rot = Quaternion.Euler(new Vector3(-90, 0, 0));
-
-                        // Places object in the scene
-                        Instantiate(placeObject, worldPos, rot);
+                        // Places object in the scene if you are allowed to place there
+                        if (level.Level.IsValidPlacement(pos)) level.AddTile(placeObject, pos);
                     }
 
                 }
