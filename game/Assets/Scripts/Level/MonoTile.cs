@@ -35,18 +35,18 @@ public class MonoTile : MonoBehaviour
         // get the data for which prefab to use and what rotation
         (Mesh mesh, float rotation) data = neighbors switch
         {
-            0b0000 => (tileMeshes.full, 0.0F),         // tile has no neighbours
-            0b1111 => (tileMeshes.empty, 0.0F),        // tile has all neighbours
-            0b0101 => (tileMeshes.straight, 0.0F),     // tile has neighbours in the Y direction, (+Y, -Y)
-            0b1010 => (tileMeshes.straight, 90.0F),    // tile has neighbours in the X direction, (+X, -X)
-            0b1100 => (tileMeshes.corner, -90.0F),     // +X, +Y
-            0b1001 => (tileMeshes.corner, 180.0F),     // +X, -Y
-            0b0011 => (tileMeshes.corner, 90.0F),      // -X, -Y
-            0b0110 => (tileMeshes.corner, 0.0F),       // -X, +Y
-            0b0111 => (tileMeshes.single, 0.0F),       // only +X is free
-            0b1011 => (tileMeshes.single, 90.0F),      // only +Y is free
-            0b1101 => (tileMeshes.single, 180.0F),     // only -X is free
-            0b1110 => (tileMeshes.single, -90.0F),     // only -Y is free
+            0b0000 => (tileMeshes.full, 0.0F),          // tile has no neighbours
+            0b1111 => (tileMeshes.empty, 0.0F),         // tile has all neighbours
+            0b0101 => (tileMeshes.straight, 90.0F),     // tile has neighbours in the Y direction, (+Y, -Y)
+            0b1010 => (tileMeshes.straight, 0.0F),      // tile has neighbours in the X direction, (+X, -X)
+            0b1100 => (tileMeshes.corner, 90.0F),       // +X, +Y
+            0b1001 => (tileMeshes.corner, 180.0F),      // +X, -Y
+            0b0011 => (tileMeshes.corner, -90.0F),      // -X, -Y
+            0b0110 => (tileMeshes.corner, 0.0F),        // -X, +Y
+            0b0111 => (tileMeshes.single, -90.0F),      // only +X is free
+            0b1011 => (tileMeshes.single, 180.0F),      // only +Y is free
+            0b1101 => (tileMeshes.single, 90.0F),       // only -X is free
+            0b1110 => (tileMeshes.single, 0.0F),        // only -Y is free
 
             // if there is just a singular neighbor, just return the empty path type
             0b1000 => (tileMeshes.empty, 0.0F),
