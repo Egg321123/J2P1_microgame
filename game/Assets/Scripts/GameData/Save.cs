@@ -3,14 +3,16 @@ using UnityEngine;
 
 public class Save
 {
-    private readonly string savePath = Application.persistentDataPath + Path.DirectorySeparatorChar + "save.json";
+    public readonly string savePath;
     public SaveData data;
 
     /// <summary>
     /// creates a new instance of Save, either with <see cref="data"/> set to their default values or what is stored at <see cref="savePath"/>
     /// </summary>
-    public Save()
+    public Save(string savePath)
     {
+        this.savePath = savePath;
+
         if (File.Exists(savePath))
         {
             Debug.Log($"loading the data from '{savePath}'.");

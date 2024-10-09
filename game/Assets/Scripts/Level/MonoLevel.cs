@@ -32,8 +32,14 @@ public class MonoLevel : MonoBehaviour
     // called when the script is being loaded
     private void Awake()
     {
-        Level = new Level(width, height);
-        Level.GenerateLevel(new System.Random().Next());
+        if (GameManager.Instance.Level == null)
+            Level = new Level(width, height);
+        else
+            Level = GameManager.Instance.Level;
+
+        // generate a level with the level
+        Level.GenerateLevel(GameManager.Instance.Save.data.level++); // use the level to generate the level and increase it
+        GameManager.Instance.Save.SaveFile();
 
         // generate the path
         foreach (Vector2Int pathPos in Level.GetPath())
