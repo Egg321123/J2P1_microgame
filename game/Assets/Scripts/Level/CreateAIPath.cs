@@ -59,7 +59,7 @@ public class CreateAIPath : MonoBehaviour
 
 #if UNITY_EDITOR
     // draw path for debuggong
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         if (Path != null)
         {
