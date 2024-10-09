@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f957a52dd4eca23acbc2ebe41cd66487, type: 3}
-  m_Name: Shockwave_Tower
+  m_Name: Cannon_Tower
   m_EditorClassIdentifier: 
-  towerName: shockwave tower
+  towerName: Cannon tower
   tower: {fileID: 919132149155446097, guid: 222b84093cafc6c4e8667098a1c5493e, type: 3}
-  cost: 20
+  cost: 10
   level: 1
   attackSpeed: 5
+  bulletSpeed: 1
   attackRange: 10
-  attackDamage: 1
+  attackDamage: 5

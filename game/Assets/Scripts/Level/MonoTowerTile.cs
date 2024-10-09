@@ -7,6 +7,8 @@ public class MonoTowerTile : MonoTile
 
     private void Start()
     {
-        Instantiate(TowerData.tower, transform.position, Quaternion.identity);
+        GameObject tower = Instantiate(TowerData.tower, transform.position, Quaternion.identity);
+        tower.GetComponent<MonoTower>().TowerData = TowerData;
+        tower.transform.parent = transform;
     }
 }
