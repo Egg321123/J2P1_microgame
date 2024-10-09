@@ -9,8 +9,11 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField] TMP_Text scoreUI;
     [SerializeField] int cost = 10;
     [SerializeField] int give = 20;
-    int money = 50;
-    int moneyMin = 0;
+    [SerializeField] int money = 50;
+    [SerializeField] int moneyMin = 0;
+    public int goblinEarn1 = 3;
+    public int goblinEarn2 = 5;
+    public int goblinEarn3 = 10;
     private void FixedUpdate()
     {
         UpdateMoney();
@@ -38,5 +41,17 @@ public class NewBehaviourScript : MonoBehaviour
     public void OnClickGive() 
     {
         money += give;
+    }
+    public void goblin1()
+    {
+        money += goblinEarn1;
+    }
+    public void goblin2()
+    {
+        money += goblinEarn2;
+    }
+    public void goblin3()
+    {
+        money += goblinEarn3;
     }
 }
