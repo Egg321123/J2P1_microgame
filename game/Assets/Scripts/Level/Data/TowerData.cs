@@ -1,4 +1,15 @@
+using UnityEngine;
+
 public struct TowerData
 {
-    // add the data for different towers here
+    public GameObject tower;
+    public int level;
+
+
+    public TowerData(GameObject tower, int level = 1)
+    {
+        this.tower = tower;
+        this.level = level;
+    }
+
 }
