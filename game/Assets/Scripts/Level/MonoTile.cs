@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class MonoTile : MonoBehaviour
@@ -10,8 +9,10 @@ public class MonoTile : MonoBehaviour
     private Vector2Int tilePos;
     private MeshFilter meshFilter = null;
 
+    // readonly public fields
     public TileData Data => level.GetTile(tilePos);
-
+    public Level Level => level;
+    public Vector2Int TilePos => tilePos;
 
     private void UpdateModel(bool updateNeighbours = false) => SetModel(tilePos, updateNeighbours);
 
@@ -59,7 +60,7 @@ public class MonoTile : MonoBehaviour
             _ => throw new Exception($"invalid state: 0b{Convert.ToString(neighbors, 2).PadLeft(4, '0')}"),
         };
 
-        SetModel(data.mesh, pos, data.rotation);
+        SetModel(data.mesh, data.rotation);
 
         if (updateNeighbours == false)
             return;
@@ -71,7 +72,7 @@ public class MonoTile : MonoBehaviour
         if ((neighbors & 0b0001) != 0) level.GetTile(west).monoTile.UpdateModel();
     }
 
-    private void SetModel(Mesh mesh, Vector2Int pos, float rotation)
+    private void SetModel(Mesh mesh, float rotation)
     {
         meshFilter ??= GetComponent<MeshFilter>();  // get mesh filter component if we haven't already
         meshFilter.mesh = mesh;
