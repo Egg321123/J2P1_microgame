@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public struct TilePrefabData
+public struct TileMeshData
 {
-    public GameObject straight;     // has 2 opposing neighbours
-    public GameObject corner;       // has 2 adjointed neighbours
-    public GameObject single;       // has 3 adjointed neighbours
-    public GameObject full;         // has no neighbours
-    public GameObject empty;        // has neighbours on each side
+    public Mesh straight;     // has 2 opposing neighbours
+    public Mesh corner;       // has 2 adjointed neighbours
+    public Mesh single;       // has 3 adjointed neighbours
+    public Mesh full;         // has no neighbours
+    public Mesh empty;        // has neighbours on each side
 }

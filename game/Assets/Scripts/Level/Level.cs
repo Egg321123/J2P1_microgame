@@ -146,6 +146,7 @@ public class Level
 
         return true;
     }
+    public bool IsValidPlacement(Vector2Int pos, bool ignoreLevelBounds = false) => IsValidPlacement(pos.x, pos.y, ignoreLevelBounds);
 
     // gets the tile at the position
     public TileData GetTile(int x, int y) => tiles[x, y];
