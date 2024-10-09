@@ -61,19 +61,10 @@ public class PlaceOnGrid : MonoBehaviour
                     if (Physics.Raycast(ray, out RaycastHit hit, 1000f, targetLayer))
                     {
                         // Gets the world position
-                        Vector3 worldPos = hit.point;
+                        Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
 
-                        // Snaps to the nearest 0.5f tile center
-                        worldPos.x = Mathf.Floor(worldPos.x) + 0.5f;
-                        worldPos.y = 0;  // Assuming you want the y to be fixed
-                        worldPos.z = Mathf.Floor(worldPos.z) + 0.5f;
-
-                        // Creates the quaternion for rotation
-                        Quaternion rot = Quaternion.Euler(new Vector3(-90, 0, 0));
-
-                        // Places object in the scene
-                        MonoTile tile = Instantiate(placeObject, worldPos, rot);
-
+                        // Places object in the scene if you are allowed to place there
+                        if (level.Level.IsValidPlacement(pos)) level.AddTile(placeObject, pos);
                     }
 
                 }

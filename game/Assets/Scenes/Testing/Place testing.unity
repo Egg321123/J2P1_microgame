@@ -361,9 +361,9 @@ MonoBehaviour:
         m_MethodName: PlaceModeToggle
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 919132149155446097, guid: 105ae3c88776ee048ad6b106b2fd213c,
+          m_ObjectArgument: {fileID: -1941801367899136033, guid: 28bb0a923d4642e35b60e17f3e7ab9d9,
             type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: MonoTile, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1430,15 +1430,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 10
   height: 20
-  pathPrefabs:
-    straight: {fileID: 4035278511525568274, guid: 69a51cd98bcf7b15fb31f4a670f3e487,
-      type: 3}
-    corner: {fileID: 7320059788877091659, guid: fabd733920d932718bf1f20b69ea3f3e,
-      type: 3}
-    single: {fileID: 1095240808568091903, guid: cd1139a1fef022a78824f3239ee08a8c,
-      type: 3}
-    full: {fileID: 975900855230153340, guid: 203eca598119a43bda132f46045ec078, type: 3}
-    empty: {fileID: 2761243647379762375, guid: 6de2bd7a237822c4ca0e0530285384a9, type: 3}
+  pathPrefab: {fileID: -1941801367899136033, guid: 28bb0a923d4642e35b60e17f3e7ab9d9,
+    type: 3}
 --- !u!4 &1945840106
 Transform:
   m_ObjectHideFlags: 0
