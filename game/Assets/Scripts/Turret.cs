@@ -97,30 +97,28 @@ public class Turret : MonoBehaviour
     private void Shoot()
     {
         Debug.Log("Shoot");
-        Vector3 dir = (target.position - firingPoint.position).normalized;
-        Debug.DrawRay(firingPoint.position, dir, Color.red, 1000f);
-        if (Physics.Raycast(firingPoint.position, dir,out hit, enemyMask))
-        {
-            // enemy take damage equal to towers damage variable
-            TrailRenderer trail = Instantiate(bulletTrail, firingPoint.position, quaternion.identity);
-            StartCoroutine(SpawnTrail(trail, hit));
-        }
-        
-    }
-    private IEnumerator SpawnTrail(TrailRenderer _trail, RaycastHit _hit)
-    {
-        float time = 0;
-        Vector3 startPosition = _trail.transform.position;
 
-        while(time < 1)
+        Vector3 dir = (target.position - firingPoint.position).normalized;
+        //Debug.DrawRay(firingPoint.position, dir, Color.red, 10f);
+
+        StartCoroutine(SpawnTrail());
+    }
+    private IEnumerator SpawnTrail()
+    {
+        TrailRenderer trail = Instantiate(bulletTrail, firingPoint.position, quaternion.identity);
+        Debug.Log("trail spawned");
+
+        float time = 0;
+        Vector3 startPosition = trail.transform.position;
+        while (time < 1)
         {
-            _trail.transform.position = Vector3.Lerp(startPosition, _hit.point, time);
-            time += Time.deltaTime / _trail.time;
+            trail.transform.position = Vector3.Lerp(startPosition, target.position, time);
+            time += Time.deltaTime / trail.time;
             yield return null;
             
         }
-        _trail.transform.position = hit.point;
-        Destroy(_trail.gameObject, _trail.time);
+        trail.transform.position = target.position;
+        Destroy(trail.gameObject, trail.time);
     }
     private void OnDrawGizmosSelected()
     {
