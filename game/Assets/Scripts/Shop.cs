@@ -16,6 +16,7 @@ public class Shop : MonoBehaviour
     {
         List<PlaceHolderItmes> tItemData = itemData;
         List<Sprite> tImages = images;
+
         for (int toggle = 0; toggle < toggles.Count; toggle++)
         {
             Transform gOText = toggles[toggle].transform.GetChild(0);
@@ -29,29 +30,34 @@ public class Shop : MonoBehaviour
                 else data = "Price: " + tItemData[randomItem].price.ToString();
                 gOText.GetChild(text).GetComponent<TextMeshProUGUI>().text = data;
             }
-            towers[randomItem] = tItemData[randomItem].name;
+            towers[toggle] = tItemData[randomItem].name;
             toggles[toggle].transform.GetChild(1).GetComponent<Image>().sprite = tImages[randomItem];
             tImages.RemoveAt(randomItem);
             tItemData.RemoveAt(randomItem);
         }
     }
+    GameObject FindTower(string tower2Search)
+    {
+        for ( int tower = 0; tower < itemData.Count; tower++) if (itemData[tower].name == tower2Search) return itemData[tower].prefab;
+        return null;
+    }
     public void item1()
     {
-        print("1");
+        FindFirstObjectByType<PlaceOnGrid>().PlaceModeToggle(FindTower(towers[0]));
     }
     public void item2()
     {
-        print(2);
+        FindFirstObjectByType<PlaceOnGrid>().PlaceModeToggle(FindTower(towers[1]));
 
     }
     public void item3()
     {
-        print(3);
+        FindFirstObjectByType<PlaceOnGrid>().PlaceModeToggle(FindTower(towers[2]));
 
     }
     public void item4()
     {
-        print(4);
+        FindFirstObjectByType<PlaceOnGrid>().PlaceModeToggle(FindTower(towers[3]));
 
     }
 }
