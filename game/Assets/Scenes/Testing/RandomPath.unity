@@ -306,15 +306,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 10
   height: 20
-  pathPrefabs:
-    straight: {fileID: 4035278511525568274, guid: 69a51cd98bcf7b15fb31f4a670f3e487,
-      type: 3}
-    corner: {fileID: 7320059788877091659, guid: fabd733920d932718bf1f20b69ea3f3e,
-      type: 3}
-    single: {fileID: 1095240808568091903, guid: cd1139a1fef022a78824f3239ee08a8c,
-      type: 3}
-    full: {fileID: 975900855230153340, guid: 203eca598119a43bda132f46045ec078, type: 3}
-    empty: {fileID: 2761243647379762375, guid: 6de2bd7a237822c4ca0e0530285384a9, type: 3}
+  pathPrefab: {fileID: 5657285815437718962, guid: cb45a06150dfb0df085e76d08dd010c1,
+    type: 3}
 --- !u!1 &2024805740
 GameObject:
   m_ObjectHideFlags: 0
