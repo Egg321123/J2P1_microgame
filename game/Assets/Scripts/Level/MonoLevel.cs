@@ -25,6 +25,7 @@ public class MonoLevel : MonoBehaviour
     public void SetMonoTile(MonoTile prefab, Vector2Int pos, bool updateNeighbours = false)
     {
         MonoTile tile = Instantiate(prefab, transform);
+        tile.name = pos.ToString();
         tile.Initialize(Level, pos, updateNeighbours);
     }
 
