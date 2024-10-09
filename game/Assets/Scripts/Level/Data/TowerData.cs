@@ -9,6 +9,8 @@ public class TowerData : ScriptableObject
     public int level;
 
     public float attackSpeed;
+    public float bulletSpeed;
     public float attackRange;
     public float attackDamage;
+
 }
