@@ -39,7 +39,7 @@ public class MonoLevel : MonoBehaviour
 
         // generate a level with the level
         Level.GenerateLevel(GameManager.Instance.Save.data.level++); // use the level to generate the level and increase it
-        GameManager.Instance.Save.SaveFile();
+        GameManager.Instance.Save.data.towers = Level.GetTowers();
 
         // generate the path
         foreach (Vector2Int pathPos in Level.GetPath())

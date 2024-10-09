@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public struct SaveData
@@ -7,6 +9,7 @@ public struct SaveData
     public Statistics stats;
     public int level;
     public int money;
+    public List<Vector2Int> towers;
 
     public void Initialize()
     {
