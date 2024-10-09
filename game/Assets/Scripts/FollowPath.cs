@@ -41,7 +41,7 @@ public class FollowPath : MonoBehaviour
         System.Random random = new();
         float randomX = (float)random.NextDouble() - 0.5f;
         float randomZ = (float)random.NextDouble() - 0.5f;
-        randomOffset = new(randomX / 1.5f, 0, randomZ / 1.5f);
+        randomOffset = new(randomX / 2f, 0, randomZ / 2f);
 
         //TEMPORARY, REMOVE LATER
         RandomSpeed();
@@ -78,8 +78,10 @@ public class FollowPath : MonoBehaviour
             //loop for the current lerp
             while (distanceAlongLerp < 1)
             {
+                if (!isAllowedToMove) yield return null;
+
                 //update time
-                if (isAllowedToMove) deltaTime += Time.deltaTime;
+                deltaTime += Time.deltaTime;
                 distanceAlongLerp = deltaTime * speed;
 
                 //update current position
