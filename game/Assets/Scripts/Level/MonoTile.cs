@@ -88,6 +88,7 @@ public class MonoTile : MonoBehaviour
         // set fields
         this.level = level;
         this.tilePos = tilePos;
+        transform.position = new Vector3(tilePos.x + 0.5F, 0.0F, tilePos.y + 0.5F);
 
         SetModel(tilePos, true);
     }
