@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class MonoLevel : MonoBehaviour
@@ -9,8 +8,13 @@ public class MonoLevel : MonoBehaviour
     // the prefabs containing the path models
     [SerializeField] private MonoTile pathPrefab;    // contains the path prefabs
 
-    [Obsolete("use Level, not level")] public Level level => Level; // for compatibility reasons
     public Level Level { get; private set; }
+
+    public void AddTile(MonoTile prefab, Vector2Int pos)
+    {
+        MonoTile tile = Instantiate(prefab, transform);
+        tile.Initialize(Level, pos);
+    }
 
     // called when the script is being loaded
     private void Awake()
@@ -23,12 +27,6 @@ public class MonoLevel : MonoBehaviour
         {
             AddTile(pathPrefab, pathPos);
         }
-    }
-
-    public void AddTile(MonoTile prefab, Vector2Int pos)
-    {
-        MonoTile tile = Instantiate(prefab, transform);
-        tile.Initialize(Level, pos);
     }
 
 #if UNITY_EDITOR
