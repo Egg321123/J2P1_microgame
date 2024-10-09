@@ -18,8 +18,9 @@ public class CreateAIPath : MonoBehaviour
     public void RegeneratePath()
     {
         //get the list of coords and convert it to a path the ai can use (centered on the tiles)
-        List<Vector2Int> list = new(FindFirstObjectByType<MonoLevel>().Level.GetPath());
-        Path = AdjustListToWorld(list);
+        Level level = FindFirstObjectByType<MonoLevel>().Level;
+        IReadOnlyList<Vector2Int> list = level.GetPath();
+        Path = AdjustListToWorld(list, level);
         CreateLineRenderer();
     }
 
@@ -27,22 +28,22 @@ public class CreateAIPath : MonoBehaviour
     {
         lineRenderer.positionCount = Path.Count;
 
-        for (int i = 0; i < Path.Count; i++) 
+        for (int i = 0; i < Path.Count; i++)
         {
-            Vector3 offsetPos = Path[i] + new Vector3(0,0.01f,0);
+            Vector3 offsetPos = Path[i] + new Vector3(0, 0.01f, 0);
             lineRenderer.SetPosition(i, offsetPos);
         }
     }
 
     // Method to convert a List<Vector2Int> to List<Vector3> with the proper offset
-    private List<Vector3> AdjustListToWorld(List<Vector2Int> vector2IntList, float yValue = 0f)
+    private List<Vector3> AdjustListToWorld(IReadOnlyList<Vector2Int> posList, Level level)
     {
-        List<Vector3> vector3List = new();
-        foreach (Vector2Int vector2Int in vector2IntList)
+        List<Vector3> worldPosList = new(posList.Count);
+        foreach (Vector2Int pos in posList)
         {
-            vector3List.Add(new(vector2Int.x + 0.5f, yValue, vector2Int.y + 0.5f));
+            worldPosList.Add(level.GetTile(pos).monoTile.transform.position);
         }
-        return vector3List;
+        return worldPosList;
     }
 
 #if UNITY_EDITOR
@@ -65,6 +66,5 @@ public class CreateAIPath : MonoBehaviour
             }
         }
     }
-
 #endif
 }
