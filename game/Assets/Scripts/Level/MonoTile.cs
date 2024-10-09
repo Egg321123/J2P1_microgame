@@ -78,11 +78,11 @@ public class MonoTile : MonoBehaviour
     }
 
     /// <summary>
-    /// initializes the object, throws <see cref="InvalidOperationException"/> when already set
+    /// initializes the object, throws <see cref="InvalidOperationException"/> when already initialized
     /// </summary>
     public void Initialize(Level level, Vector2Int tilePos)
     {
-        if (initialized != false) throw new InvalidOperationException("attempted to set level whilst level was already set!");
+        if (initialized != false) throw new InvalidOperationException("this object has already been initialized!");
         initialized = true;
 
         // set fields
