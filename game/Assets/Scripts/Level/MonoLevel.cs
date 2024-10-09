@@ -10,10 +10,10 @@ public class MonoLevel : MonoBehaviour
 
     public Level Level { get; private set; }
 
-    public void AddTile(MonoTile prefab, Vector2Int pos)
+    public void AddTile(MonoTile prefab, Vector2Int pos, bool updateNeighbours = false)
     {
         MonoTile tile = Instantiate(prefab, transform);
-        tile.Initialize(Level, pos);
+        tile.Initialize(Level, pos, updateNeighbours);
     }
 
     // called when the script is being loaded
