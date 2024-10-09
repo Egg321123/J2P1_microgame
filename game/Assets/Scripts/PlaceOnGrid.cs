@@ -65,7 +65,7 @@ public class PlaceOnGrid : MonoBehaviour
                         Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
 
                         // Places object in the scene if you are allowed to place there
-                        if (monoLevel.Level.IsValidPlacement(pos)) monoLevel.SetTile(placeObject, pos, TileType.TOWER, null, true);
+                        if (monoLevel.Level.IsEmpty(pos)) monoLevel.SetTile(placeObject, pos, TileType.TOWER, null, true);
                     }
 
                 }
