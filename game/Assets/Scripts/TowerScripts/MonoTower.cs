@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ public abstract class MonoTower : MonoBehaviour
     void Update()
     {
         //if target doesn't exist, find a new one
-        if (target == null) {
+        if (target == null || !target.gameObject.activeInHierarchy) {
 
             //find new target
             FindTarget();
@@ -69,9 +70,26 @@ public abstract class MonoTower : MonoBehaviour
     {
         //first object that overlaps, make target
         Collider[] hits = Physics.OverlapSphere(transform.position, towerData.attackRange, enemyMask);
-        if (hits.Length > 0) if (!hits[0].gameObject.activeInHierarchy) target = hits[0].transform;
 
+        Transform nearestTransform = null;
+        float nearestDistance = math.INFINITY;
+
+        if (hits.Length <= 0) return;
+        foreach (Collider hit in hits)
+        {
+            Transform hitTransform = hit.transform;
+            float distance = Vector3.Distance(transform.position, hitTransform.position);
+
+            if (distance < nearestDistance)
+            {
+                nearestTransform = hitTransform;
+                nearestDistance = distance;
+            }
+        }
+
+        target = nearestTransform;
     }
+
     /// <summary>
     /// if enemy distance is less than or equal to the towers range
     /// </summary>
@@ -82,12 +100,16 @@ public abstract class MonoTower : MonoBehaviour
         return Vector3.Distance(target.position, transform.position) < towerData.attackRange;
     }
 
+
+#if UNITY_EDITOR
+    // draw path for debuggong
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, towerData.attackRange);
 
         Gizmos.color = Color.red;
-        if (target != null) Gizmos.DrawSphere(target.position + new Vector3(0,1,0), 0.1f);
+        if (target != null) Gizmos.DrawSphere(target.position + new Vector3(0, 1, 0), 0.1f);
     }
+#endif
 }

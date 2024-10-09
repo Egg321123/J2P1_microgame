@@ -8,8 +8,6 @@ public class ArrowTower : MonoTower
     //runs when the parent script runs Shoot
     protected override void Shoot()
     {
-        print("Shooting");
-
         //get the direction of the target
         Vector3 dir = (target.position - firingPoint.position).normalized;
 
@@ -34,6 +32,9 @@ public class ArrowTower : MonoTower
         float currentTime = 0;
         while (currentTime < bulletSpeed)
         {
+            //if the target no longer exists, please stop
+            if (target == null) break;
+
             float positionAlongLerp = currentTime / bulletSpeed;
 
             //update position

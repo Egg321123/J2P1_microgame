@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class PlaceOnGrid : MonoBehaviour
@@ -15,8 +17,20 @@ public class PlaceOnGrid : MonoBehaviour
 
     private void Start()
     {
-        monoLevel = FindFirstObjectByType<MonoLevel>();
+        StartCoroutine(WaitForLevel());
+    }
+    IEnumerator WaitForLevel()
+    {
+        while (monoLevel == null)
+        {
+            monoLevel = FindFirstObjectByType<MonoLevel>();
+            yield return null;
+        }
+
+        //create grid only when monolevel has become available
         CreateGrid();
+
+        yield return null;
     }
 
     public void PlaceModeToggle(TowerData pTowerData)
