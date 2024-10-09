@@ -21,7 +21,7 @@ public class PlaceOnGrid : MonoBehaviour
     public void PlaceModeToggle(MonoTile pObjectToPlace = null)
     {
         //update the object the user wants to place
-        objectToPlace = pObjectToPlace; 
+        objectToPlace = pObjectToPlace;
 
         isInPlaceMode = !isInPlaceMode;
         gridObj.SetActive(!gridObj.activeInHierarchy);
@@ -64,7 +64,7 @@ public class PlaceOnGrid : MonoBehaviour
                         Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
 
                         // Places object in the scene if you are allowed to place there
-                        if (level.Level.IsValidPlacement(pos)) level.AddTile(placeObject, pos);
+                        if (level.Level.IsEmpty(pos)) level.AddTile(placeObject, pos);
                     }
 
                 }
