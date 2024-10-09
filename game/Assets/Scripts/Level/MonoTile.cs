@@ -54,7 +54,7 @@ public class MonoTile : MonoBehaviour
             0b0010 => (tileMeshes.empty, 0.0F),
             0b0001 => (tileMeshes.empty, 0.0F),
 
-            // if it's none of these options, throw an error, with the binary string
+            // if it's none of these options; throw an error, with the binary string
             _ => throw new Exception($"invalid state: 0b{Convert.ToString(neighbors, 2).PadLeft(4, '0')}"),
         };
 
@@ -63,10 +63,10 @@ public class MonoTile : MonoBehaviour
             return;
 
         // check if a tile has been set, update the model of that tile
-        if (!level.IsValidPlacement(north)) level.GetTile(north).monoTile.UpdateModel();
-        if (!level.IsValidPlacement(east)) level.GetTile(east).monoTile.UpdateModel();
-        if (!level.IsValidPlacement(south)) level.GetTile(south).monoTile.UpdateModel();
-        if (!level.IsValidPlacement(west)) level.GetTile(west).monoTile.UpdateModel();
+        if (!level.IsValidPlacement(north, true)) level.GetTile(north).monoTile.UpdateModel();
+        if (!level.IsValidPlacement(east, true)) level.GetTile(east).monoTile.UpdateModel();
+        if (!level.IsValidPlacement(south, true)) level.GetTile(south).monoTile.UpdateModel();
+        if (!level.IsValidPlacement(west, true)) level.GetTile(west).monoTile.UpdateModel();
     }
 
     private void SetModel(Mesh mesh, Vector2Int pos, float rotation)
