@@ -361,7 +361,7 @@ MonoBehaviour:
         m_MethodName: PlaceModeToggle
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: -1941801367899136033, guid: 28bb0a923d4642e35b60e17f3e7ab9d9,
+          m_ObjectArgument: {fileID: 2117355564909799346, guid: c1bc1d06e58051d4db925b76a60365f9,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: MonoTile, Assembly-CSharp
           m_IntArgument: 0
@@ -1132,6 +1132,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   grid: {fileID: 647028530479780160, guid: ef5522195a7bbd14795210a444cdb44b, type: 3}
+  objectToPlace: {fileID: 0}
 --- !u!4 &1462202867
 Transform:
   m_ObjectHideFlags: 0
