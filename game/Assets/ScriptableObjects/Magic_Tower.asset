@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f957a52dd4eca23acbc2ebe41cd66487, type: 3}
   m_Name: Magic_Tower
   m_EditorClassIdentifier: 
-  towerName: magic tower
+  towerName: Magic
   menuSprite: {fileID: 21300000, guid: 17f5245db76160946bb0b06ea0cecbcf, type: 3}
   cost: 15
   towerData:

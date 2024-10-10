@@ -5,12 +5,7 @@ public class ArrowTower : ProjectileTowerBase
 {
     [SerializeField] private GameObject projectile;
 
-    protected override List<GameObject> SelectTargets()
-    {
-        List<GameObject> targets = GameObjectUtils.GetNearestOnLayer(gameObject, enemyMask, towerData.attackRange, 1);
-        print(targets.Count);
-        return targets;
-    }
+    protected override List<GameObject> SelectTargets() => GameObjectUtils.GetNearestOnLayer(gameObject, enemyMask, towerData.attackRange, 1);
 
     protected override void ProjectileHit(GameObject target) => target.GetComponent<AIDeath>().Die();
 
