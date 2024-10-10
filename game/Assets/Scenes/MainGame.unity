@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.12107873, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2107,6 +2107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1066355568}
   - component: {fileID: 1066355569}
+  - component: {fileID: 1066355570}
   m_Layer: 0
   m_Name: Enemies
   m_TagString: Untagged
@@ -2144,6 +2145,23 @@ MonoBehaviour:
   Enemy: {fileID: 8502515503591973096, guid: 85b93b603a896d9498836ee58abfa945, type: 3}
   spawnEnemies: 1
   pooledEnemies: []
+--- !u!114 &1066355570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066355567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 629de7770d6587e6ba007672777fd9d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waves: 10
+  spawnEnemies: 1000
+  enemySpawnRate: 0.5
+  enemies:
+  - {fileID: 8502515503591973096, guid: 85b93b603a896d9498836ee58abfa945, type: 3}
 --- !u!1 &1275659353
 GameObject:
   m_ObjectHideFlags: 0
