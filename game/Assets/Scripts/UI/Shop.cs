@@ -12,10 +12,26 @@ public class Shop : MonoBehaviour
 
     void Start()
     {
-        LoadShop();
+        LoadNewShop();
         place = FindFirstObjectByType<PlaceOnGrid>();
     }
     public void LoadShop()
+    {
+        for (int toggle = 0; toggle < toggles.Count; toggle++)
+        {
+            Transform gOText = toggles[toggle].transform.GetChild(0);
+            for (int text = 0; text < gOText.childCount; text++)
+            {
+                string data;
+                if (text == 0) data = FindTower(towers[toggle]).towerName;
+                else data = "Price: " + FindTower(towers[toggle]).cost.ToString();
+                gOText.GetChild(text).GetComponent<TextMeshProUGUI>().text = data;
+            }
+            //toggles[toggle].transform.GetChild(1).GetComponent<Image>().sprite = tItemData[randomItem].menuImg;
+            //tImages.RemoveAt(randomItem);
+        }
+    }
+    public void LoadNewShop()
     {
         List<TowerStoreData> tItemData = new List<TowerStoreData>();
         foreach (var data in itemData) tItemData.Add(data);
