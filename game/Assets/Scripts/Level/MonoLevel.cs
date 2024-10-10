@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MonoLevel : MonoBehaviour
 {
@@ -29,8 +30,8 @@ public class MonoLevel : MonoBehaviour
         tile.Initialize(Level, pos, updateNeighbours);
     }
 
-    // called when the script is being loaded
-    private void Awake()
+    // called when the script on first frame
+    private void Start()
     {
         if (GameManager.Instance.Level == null)
             Level = new Level(width, height);
@@ -45,6 +46,9 @@ public class MonoLevel : MonoBehaviour
         {
             SetMonoTile(pathPrefab, pathPos);
         }
+
+        //load scene when the level has been loaded
+        SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
     }
 
 #if UNITY_EDITOR
