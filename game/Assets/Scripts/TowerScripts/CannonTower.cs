@@ -1,18 +1,19 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
-public class ArrowTower : MonoTower
+public class cannonTower : MonoTower
 {
     [SerializeField] private GameObject projectile;
 
-    private GameObject target = null;
+    private GameObject[] targets = null;
     private bool isAllowedToShoot = true;
 
     private void Start() => StartCoroutine(ShootLoop());
 
 
     //only try finding target every fixed updated (for fewer updates)
-    private void FixedUpdate() => target = FindNearestTarget();
+    private void FixedUpdate() => targets = FindNearestNthTargets(3);
 
     protected IEnumerator ShootLoop()
     {
@@ -21,16 +22,21 @@ public class ArrowTower : MonoTower
             //wait for shooting delay
             yield return new WaitForSeconds(1 / towerData.attackSpeed);
 
-            //trigger the shooting behavior if the object is valid, otherwise wait for next frame
-            if (target == null || !target.activeInHierarchy) yield return null;
-            else Shoot();
+            foreach (GameObject target in targets)
+            {
+                //trigger the shooting behavior if the object is valid, otherwise wait for next frame
+                if (target == null || !target.activeInHierarchy) yield return null;
+                else Shoot(target);
+            }
 
             //wait until the projectile is "done"
             yield return new WaitForSeconds(1 / towerData.projectileSpeed);
 
-            //check again if it's a valid object, due to delay
-            if (target == null || !target.activeInHierarchy) yield return null;
-            else target.GetComponent<AIDeath>().Die();
+            foreach (GameObject target in targets)
+            {
+                if (target == null || !target.activeInHierarchy) yield return null;
+                else target.GetComponent<AIDeath>().Die();
+            }
 
             yield return null;
         }
@@ -38,7 +44,7 @@ public class ArrowTower : MonoTower
     }
 
     //runs when the parent script runs Shoot
-    private void Shoot()
+    private void Shoot(GameObject target)
     {
         //create new trail
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
@@ -54,7 +60,13 @@ public class ArrowTower : MonoTower
         Gizmos.DrawWireSphere(transform.position, towerData.attackRange);
 
         Gizmos.color = Color.red;
-        if (target != null) Gizmos.DrawSphere(target.transform.position + new Vector3(0, 1, 0), 0.1f);
+        if (targets != null)
+        {
+            foreach (GameObject target in targets)
+            {
+                Gizmos.DrawSphere(target.transform.position + new Vector3(0, 1, 0), 0.1f);
+            }
+        }
     }
 #endif
 }

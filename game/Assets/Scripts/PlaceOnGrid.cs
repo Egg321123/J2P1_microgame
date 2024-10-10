@@ -13,7 +13,8 @@ public class PlaceOnGrid : MonoBehaviour
     private MonoLevel monoLevel = null;
     private bool isInPlaceMode = false;
     private GameObject gridObj = null;
-    private TowerData towerData = null;
+
+    private TowerData towerData;
 
     private void Start()
     {
@@ -33,9 +34,15 @@ public class PlaceOnGrid : MonoBehaviour
         yield return null;
     }
 
-    public void PlaceModeToggle(TowerData pTowerData)
+    public void PlaceModeToggle(TowerStoreData data)
     {
-        towerData = pTowerData;
+        towerData = new TowerData (
+            data.tower,
+            data.attackSpeed,
+            data.attackRange,
+            data.attackDamage,
+            data.projectileSpeed
+            );
 
         isInPlaceMode = !isInPlaceMode;
         gridObj.SetActive(!gridObj.activeInHierarchy);
@@ -44,10 +51,16 @@ public class PlaceOnGrid : MonoBehaviour
         StartCoroutine(PlacingMode());
     }
 
-    public void ChangeTower(TowerData pTowerData)
+    public void ChangeTower(TowerStoreData data)
     {
         //update the object the user wants to place
-        towerData = pTowerData;
+        towerData = new TowerData(
+            data.tower,
+            data.attackSpeed,
+            data.attackRange,
+            data.attackDamage,
+            data.projectileSpeed
+            );
     }
 
     private IEnumerator PlacingMode()

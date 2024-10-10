@@ -15,8 +15,7 @@ MonoBehaviour:
   towerName: Arrow tower
   tower: {fileID: 3938336332173716440, guid: 4a9bf0def9bf5de46b54335095f1c803, type: 3}
   cost: 5
-  level: 1
   attackSpeed: 1
-  bulletSpeed: 1
-  attackRange: 5
-  attackDamage: 10
+  projectileSpeed: 2
+  attackRange: 3
+  attackDamage: 4
