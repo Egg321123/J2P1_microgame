@@ -5,17 +5,16 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
-    string[] towers = new string[4];
+    TowerStoreData[] towers = new TowerStoreData[4];
     [SerializeField] List<TowerStoreData> itemData = new List<TowerStoreData>();
     [SerializeField] List<GameObject> toggles = new List<GameObject>();
     private PlaceOnGrid place;
-
     void Start()
     {
         LoadNewShop();
         place = FindFirstObjectByType<PlaceOnGrid>();
     }
-    public void LoadShop()
+    void LoadShop()
     {
         for (int toggle = 0; toggle < toggles.Count; toggle++)
         {
@@ -23,8 +22,8 @@ public class Shop : MonoBehaviour
             for (int text = 0; text < gOText.childCount; text++)
             {
                 string data;
-                if (text == 0) data = FindTower(towers[toggle]).towerName;
-                else data = "Price: " + FindTower(towers[toggle]).cost.ToString();
+                if (text == 0) data = towers[toggle].towerName;
+                else data = "Price: " + towers[toggle].cost.ToString();
                 gOText.GetChild(text).GetComponent<TextMeshProUGUI>().text = data;
             }
             //toggles[toggle].transform.GetChild(1).GetComponent<Image>().sprite = tItemData[randomItem].menuImg;
@@ -47,19 +46,14 @@ public class Shop : MonoBehaviour
                 else data = "Price: " + tItemData[randomItem].cost.ToString();
                 gOText.GetChild(text).GetComponent<TextMeshProUGUI>().text = data;
             }
-            towers[toggle] = tItemData[randomItem].towerName;
+            towers[toggle] = tItemData[randomItem];
             //toggles[toggle].transform.GetChild(1).GetComponent<Image>().sprite = tItemData[randomItem].menuImg;
             //tImages.RemoveAt(randomItem);
             tItemData.RemoveAt(randomItem);
         }
     }
-    TowerStoreData FindTower(string tower2Search)
-    {
-        for (int tower = 0; tower < itemData.Count; tower++) if (itemData[tower].towerName == tower2Search) return itemData[tower];
-        return null;
-    }
-    public void item1() => place.PlaceModeToggle(FindTower(towers[0]));
-    public void item2() => place.PlaceModeToggle(FindTower(towers[1]));
-    public void item3() => place.PlaceModeToggle(FindTower(towers[2]));
-    public void item4() => place.PlaceModeToggle(FindTower(towers[3]));
+    public void item1() => place.PlaceModeToggle(towers[0]);
+    public void item2() => place.PlaceModeToggle(towers[1]);
+    public void item3() => place.PlaceModeToggle(towers[2]);
+    public void item4() => place.PlaceModeToggle(towers[3]);
 }
