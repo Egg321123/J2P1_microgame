@@ -33,23 +33,27 @@ public static class GameObjectUtils
     /// a sorted <see cref="GameObject"/> list from nearest to furthest relative to <paramref name="parent"/> on <paramref name="checkMask"/>. (X/Z plane)
     /// Ignores inactive objects
     /// </returns>
-    public static IEnumerable<GameObject> GetSortedByDistance(GameObject parent, LayerMask layer)
+    public static IEnumerable<GameObject> GetObjects(GameObject parent, float radius, LayerMask layer)
     {
         // get the tower position
         Vector2 parentPos = new(parent.transform.position.x, parent.transform.position.z);
 
         // get the sorted IEnumberable using a linq query
         return
-            from obj in GameObject.FindObjectsOfType<GameObject>() // get all the gameobjects in the scene
-            where ((1 << obj.layer) & layer.value) != 0 // check whether the gameobject is within the given mask
-            where obj.activeInHierarchy                 // require object to be active
-            let pos = new Vector2(obj.transform.position.x, obj.transform.position.y)  // get the 2D found position data
-            let x = Math.Abs(parentPos.x - pos.x)   // get the absolute relative x position
-            let y = Math.Abs(parentPos.y - pos.y)   // get the absolute relative y position
-            orderby x * y   // order the list by the surface area of the rectangle made by the relative distance between the two; larger surface area = further away
-            select obj;     // select the object
+            from obj in GameObject.FindObjectsOfType<GameObject>()                      // get all the gameobjects in the scene
+            where ((1 << obj.layer) & layer.value) != 0                                 // check whether the gameobject is within the given mask
+            where obj.activeInHierarchy                                                 // require object to be active
+
+            // check distance
+            let pos = new Vector2(obj.transform.position.x, obj.transform.position.y)   // get the 2D found position data
+            let dist = Vector2.Distance(parentPos, pos)                                 // calculate the distance
+            where dist <= radius                                                        // check whether the distance is within the specified radius
+
+            // order the list by distance
+            orderby dist
+            select obj;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetAllOnLayer(GameObject parent, LayerMask layer, float radius) => GetWithinRange(parent, radius, GetSortedByDistance(parent, layer)).ToList();
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetNearestOnLayer(GameObject parent, LayerMask layer, float radius, int amount = 1) => GetWithinRange(parent, radius, GetSortedByDistance(parent, layer).Take(amount)).ToList();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetAllOnLayer(GameObject parent, float radius, LayerMask layer) => GetObjects(parent, radius, layer).ToList();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetNearestOnLayer(GameObject parent, float radius, LayerMask layer, int amount = 1) => GetObjects(parent, radius, layer).Take(amount).ToList();
 }
