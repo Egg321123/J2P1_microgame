@@ -1,6 +1,7 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
@@ -14,77 +15,76 @@ public abstract class MonoTower : MonoBehaviour
     public TowerData TowerData { set { towerData = value; } }
 
 
+    /// <returns>
+    /// a sorted collection of the enemies by distance
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private IEnumerable<GameObject> GetSortedList()
+    {
+        // get the tower position
+        Vector2 towerPos = new(transform.position.x, transform.position.z);
+
+        // get the sorted IEnumberable using a linq query
+        IEnumerable<GameObject> objects =
+            from obj in FindObjectsOfType<GameObject>() // get all the gameobjects in the scene
+            where (obj.layer & enemyMask.value) != 0    // check whether the gameobject is within the enemy mask
+            let enemyPos = new Vector2(obj.transform.position.x, obj.transform.position.y)  // get the 2D enemy position data
+            let x = Math.Abs(towerPos.x - enemyPos.x)   // get the absolute relative x position
+            let y = Math.Abs(towerPos.y - enemyPos.y)   // get the absolute relative y position
+            orderby x * y   // order the list by the surface area of the rectangle made by the relative distance between the two; larger surface area = further away
+            select obj;     // select the object
+
+        return objects;
+    }
+
     /// <summary>
-    /// finds the nearest valid transform
+    /// checks whether the enemy is within the specified range.
     /// </summary>
-    /// <returns>Transform of nearest enemy</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private bool IsInRange(GameObject obj)
+    {
+        Vector2 v1 = new(obj.transform.position.x, obj.transform.position.y);   // get the enemy's 2D position data
+        Vector2 v2 = new(transform.position.x, transform.position.y);           // get the tower's 2D position data
+        return Vector2.Distance(v1, v2) <= towerData.attackRange;               // calculate the distance and check whether the distance is within the range
+    }
+
+    /// <summary>
+    /// find the nearest enemy and within the specified range
+    /// </summary>
+    /// <returns>Transform of nearest enemy, or null if none are in the range</returns>
     protected GameObject FindNearestTarget()
     {
-        //get all objects within range
-        Collider[] hits = Physics.OverlapSphere(transform.position, towerData.attackRange, enemyMask);
+        // get the first of the sorted list; aka, the closest
+        GameObject enemy = GetSortedList().First();
 
-        //prepare for check
-        GameObject nearestObject = null;
-        float nearestDistance = math.INFINITY;
-
-        if (hits.Length <= 0) return null;
-        foreach (Collider hit in hits)
-        {
-            GameObject hitObject = hit.gameObject;
-
-            float distance = Vector3.Distance(transform.position, hitObject.transform.position);
-
-            if (distance < nearestDistance)
-            {
-                nearestObject = hitObject;
-                nearestDistance = distance;
-            }
-        }
-
-        return nearestObject;
+        // return the enemy if it's within the range, otherwise return null
+        if (IsInRange(enemy))
+            return enemy;
+        return null;
     }
 
+    /// <summary>
+    /// Find an amount of enemies which are nearest and within the specified range
+    /// </summary>
+    /// <returns>an array of the enemies that were closest</returns>
     protected GameObject[] FindNearestNthTargets(int amount = 1)
     {
-        //create array to return
-        GameObject[] nearestObjects = new GameObject[amount];
+        // get the amount of gameobjects in the sorted list
+        IEnumerable<GameObject> enemyPool = GetSortedList().Take(amount);
+        List<GameObject> enemySelected = new();
 
-        //get all objects within range
-        List<Collider> hits = new(Physics.OverlapSphere(transform.position, towerData.attackRange, enemyMask));
-
-        //returns null if no hits were made
-        if (hits.Count <= 0) return null;
-
-        //loop until the array is filled
-        for (int i = 0; i < nearestObjects.Length; i++)
+        foreach (GameObject enemy in enemyPool)
         {
-            //prepare for check
-            Collider nearestCollider = null;
-            float nearestDistance = math.INFINITY;
+            // if the enemy is not within the range, break; no more enemies will be useful
+            if (IsInRange(enemy) == false)
+                break;
 
-            //go through all the colliders until you find the neares
-            foreach (Collider hit in hits)
-            {
-                Collider hitCollider = hit;
-
-                float distance = Vector3.Distance(transform.position, hitCollider.transform.position);
-
-                if (distance < nearestDistance)
-                {
-                    nearestCollider = hitCollider;
-                    nearestDistance = distance;
-                }
-            }
-
-            //save the nearest for return, and remove from hits list
-            nearestObjects[i] = nearestCollider.gameObject;
-            hits.Remove(nearestCollider);
+            enemySelected.Add(enemy);
         }
 
-
-        return nearestObjects;
+        return enemySelected.ToArray();
     }
-    
+
 
     /// <summary>
     /// finds all the targets nearby
