@@ -8,7 +8,7 @@ public class CannonTower : ProjectileTowerBase
     [SerializeField] private GameObject explosion;
     [SerializeField] private float explosionSize = 1;
 
-    protected override List<GameObject> SelectTargets() => FindNearestNthTargets(1);
+    protected override List<GameObject> SelectTargets() => GameObjectUtils.GetNearestOnLayer(gameObject, enemyMask, towerData.attackRange, 1);
 
     protected override void ShotTarget(GameObject target)
     {
