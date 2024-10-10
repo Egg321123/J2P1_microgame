@@ -2,40 +2,49 @@ using System.Collections;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class cannonTower : MonoTower
+public class CannonTower : MonoTower
 {
     [SerializeField] private GameObject projectile;
+    [SerializeField] private GameObject explosion;
 
-    private GameObject[] targets = null;
+    private GameObject target = null;
+
+    [SerializeField] private float explosionSize = 1;
     private bool isAllowedToShoot = true;
 
     private void Start() => StartCoroutine(ShootLoop());
 
 
     //only try finding target every fixed updated (for fewer updates)
-    private void FixedUpdate() => targets = FindNearestNthTargets(3);
+    private void FixedUpdate() => target = FindNearestTarget();
 
     protected IEnumerator ShootLoop()
     {
+        print("start shoot loop");
         while (isAllowedToShoot)
         {
+            print("allowed to shoot");
             //wait for shooting delay
             yield return new WaitForSeconds(1 / towerData.attackSpeed);
+            print("shooting delay over");
 
-            foreach (GameObject target in targets)
+            if (target == null || !target.activeInHierarchy) yield return null;
+            else
             {
-                //trigger the shooting behavior if the object is valid, otherwise wait for next frame
-                if (target == null || !target.activeInHierarchy) yield return null;
-                else Shoot(target);
+                print("shooting");
+                Shoot(target);
             }
+                
 
             //wait until the projectile is "done"
             yield return new WaitForSeconds(1 / towerData.projectileSpeed);
 
-            foreach (GameObject target in targets)
+            if (target == null || !target.activeInHierarchy) yield return null;
+            else
             {
-                if (target == null || !target.activeInHierarchy) yield return null;
-                else target.GetComponent<AIDeath>().Die();
+                print("explosion");
+                Collider[] exploded = Physics.OverlapSphere(target.transform.position, explosionSize, enemyMask);
+                Instantiate(explosion, target.transform);
             }
 
             yield return null;
@@ -50,22 +59,19 @@ public class cannonTower : MonoTower
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
         trail.transform.parent = transform;
         trail.GetComponent<Projectile>().Initialize(firingPoint.position, target.transform, towerData.projectileSpeed);
+        Collider[] exploded = Physics.OverlapSphere(target.transform.position, explosionSize, enemyMask);
     }
 
 #if UNITY_EDITOR
-    // draw path for debuggong
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, towerData.attackRange);
 
         Gizmos.color = Color.red;
-        if (targets != null)
+        if (target != null)
         {
-            foreach (GameObject target in targets)
-            {
-                Gizmos.DrawSphere(target.transform.position + new Vector3(0, 1, 0), 0.1f);
-            }
+            Gizmos.DrawSphere(target.transform.position + new Vector3(0, 1, 0), 0.1f);
         }
     }
 #endif

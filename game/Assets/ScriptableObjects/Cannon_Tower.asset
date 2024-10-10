@@ -15,7 +15,7 @@ MonoBehaviour:
   towerName: Cannon tower
   tower: {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d, type: 3}
   cost: 10
-  attackSpeed: 1
+  attackSpeed: 10
   projectileSpeed: 2
-  attackRange: 7
+  attackRange: 15
   attackDamage: 3
