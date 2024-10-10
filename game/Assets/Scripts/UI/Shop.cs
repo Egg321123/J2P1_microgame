@@ -32,7 +32,7 @@ public class Shop : MonoBehaviour
                 gOText.GetChild(text).GetComponent<TextMeshProUGUI>().text = data;
             }
             towers[toggle] = tItemData[randomItem].towerName;
-            toggles[toggle].transform.GetChild(1).GetComponent<Image>().sprite = tItemData[randomItem].menuImg;
+            //toggles[toggle].transform.GetChild(1).GetComponent<Image>().sprite = tItemData[randomItem].menuImg;
             //tImages.RemoveAt(randomItem);
             tItemData.RemoveAt(randomItem);
         }
