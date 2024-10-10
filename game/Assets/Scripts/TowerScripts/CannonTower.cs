@@ -1,72 +1,30 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
-public class cannonTower : MonoTower
+public class CannonTower : ProjectileTowerBase
 {
     [SerializeField] private GameObject projectile;
+    [SerializeField] private GameObject explosion;
+    [SerializeField] private float explosionSize = 1;
 
-    private GameObject[] targets = null;
-    private bool isAllowedToShoot = true;
+    protected override List<GameObject> SelectTargets() => FindNearestNthTargets(1);
 
-    private void Start() => StartCoroutine(ShootLoop());
-
-
-    //only try finding target every fixed updated (for fewer updates)
-    private void FixedUpdate() => targets = FindNearestNthTargets(3);
-
-    protected IEnumerator ShootLoop()
-    {
-        while (isAllowedToShoot)
-        {
-            //wait for shooting delay
-            yield return new WaitForSeconds(1 / towerData.attackSpeed);
-
-            foreach (GameObject target in targets)
-            {
-                //trigger the shooting behavior if the object is valid, otherwise wait for next frame
-                if (target == null || !target.activeInHierarchy) yield return null;
-                else Shoot(target);
-            }
-
-            //wait until the projectile is "done"
-            yield return new WaitForSeconds(1 / towerData.projectileSpeed);
-
-            foreach (GameObject target in targets)
-            {
-                if (target == null || !target.activeInHierarchy) yield return null;
-                else target.GetComponent<AIDeath>().Die();
-            }
-
-            yield return null;
-        }
-        yield return null;
-    }
-
-    //runs when the parent script runs Shoot
-    private void Shoot(GameObject target)
+    protected override void ShotTarget(GameObject target)
     {
         //create new trail
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
         trail.transform.parent = transform;
         trail.GetComponent<Projectile>().Initialize(firingPoint.position, target.transform, towerData.projectileSpeed);
+        Collider[] exploded = Physics.OverlapSphere(target.transform.position, explosionSize, enemyMask);
+
+        base.ShotTarget(target);
     }
 
-#if UNITY_EDITOR
-    // draw path for debuggong
-    private void OnDrawGizmosSelected()
+    protected override void ProjectileHit(GameObject target)
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, towerData.attackRange);
-
-        Gizmos.color = Color.red;
-        if (targets != null)
-        {
-            foreach (GameObject target in targets)
-            {
-                Gizmos.DrawSphere(target.transform.position + new Vector3(0, 1, 0), 0.1f);
-            }
-        }
+        print("explosion");
+        Collider[] exploded = Physics.OverlapSphere(target.transform.position, explosionSize, enemyMask);
+        Instantiate(explosion, target.transform);
     }
-#endif
 }
