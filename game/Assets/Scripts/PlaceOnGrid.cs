@@ -36,13 +36,7 @@ public class PlaceOnGrid : MonoBehaviour
 
     public void PlaceModeToggle(TowerStoreData data)
     {
-        towerData = new TowerData (
-            data.tower,
-            data.attackSpeed,
-            data.attackRange,
-            data.attackDamage,
-            data.projectileSpeed
-            );
+        towerData = data.towerData;
 
         isInPlaceMode = !isInPlaceMode;
         gridObj.SetActive(!gridObj.activeInHierarchy);
@@ -53,14 +47,7 @@ public class PlaceOnGrid : MonoBehaviour
 
     public void ChangeTower(TowerStoreData data)
     {
-        //update the object the user wants to place
-        towerData = new TowerData(
-            data.tower,
-            data.attackSpeed,
-            data.attackRange,
-            data.attackDamage,
-            data.projectileSpeed
-            );
+        towerData = data.towerData;
     }
 
     private IEnumerator PlacingMode()
