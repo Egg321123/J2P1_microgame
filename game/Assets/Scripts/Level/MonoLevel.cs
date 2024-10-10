@@ -37,7 +37,7 @@ public class MonoLevel : MonoBehaviour
         foreach (TileData tower in towers)
         {
             Level.SetTile(tower.pos, TileType.TOWER, tower.towerData);
-            SetMonoTile(tower.towerData.Value.tower, tower.pos, true);
+            SetMonoTile(tower.monoTile, tower.pos, true);
         }
     }
 
