@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-
 public class Shop : MonoBehaviour
 {
     TowerStoreData[] towers = new TowerStoreData[4];
