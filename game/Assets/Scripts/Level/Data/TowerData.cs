@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 public struct TowerData
 {
     public GameObject tower;

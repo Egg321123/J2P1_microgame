@@ -3,17 +3,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Default", menuName = "Shop item (Tower)")]
 public class TowerStoreData : ScriptableObject
 {
-    //this scriptable object is for use in the store,
-    //this has to be converted to a struct when passing it to the tower,
-    //as scriptable objects aren't meant to be written to, thus can't be used in the saving system.
+    //this scriptable object is for use in the store, not to store the values for saving system
 
+    [Header("Store specific values")]
     public string towerName;
-    public GameObject tower;
+    public Texture menuImg;
     public int cost;
 
-    public float attackSpeed;
-    public float projectileSpeed;
-    public float attackRange;
-    public float attackDamage;
+    [Header("Base tower information")]
+    public TowerData towerData;
 
 }

@@ -30,7 +30,7 @@ public class MonoLevel : MonoBehaviour
     }
 
     // called when the script is being loaded
-    private void Start()
+    private void Awake()
     {
         if (GameManager.Instance.Level == null)
             Level = new Level(width, height);
