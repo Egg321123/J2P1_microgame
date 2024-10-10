@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CannonTower : MonoTower
+public class CannonTower : ProjectileTowerBase
 {
     [SerializeField] private GameObject projectile;
     [SerializeField] private GameObject explosion;
@@ -18,23 +18,13 @@ public class CannonTower : MonoTower
         trail.GetComponent<Projectile>().Initialize(firingPoint.position, target.transform, towerData.projectileSpeed);
         Collider[] exploded = Physics.OverlapSphere(target.transform.position, explosionSize, enemyMask);
 
-        StartCoroutine(AwaitProjectileHit(target));
+        base.ShotTarget(target);
     }
 
-    private IEnumerator AwaitProjectileHit(GameObject target)
+    protected override void ProjectileHit(GameObject target)
     {
-        //wait until the projectile is "done"
-        yield return new WaitForSeconds(1 / towerData.projectileSpeed);
-
-        //check again if it's a valid object, due to delay
-        if (!target.activeInHierarchy) yield return null;
-        else
-        {
-            print("explosion");
-            Collider[] exploded = Physics.OverlapSphere(target.transform.position, explosionSize, enemyMask);
-            Instantiate(explosion, target.transform);
-        }
-
-        yield return null;
+        print("explosion");
+        Collider[] exploded = Physics.OverlapSphere(target.transform.position, explosionSize, enemyMask);
+        Instantiate(explosion, target.transform);
     }
 }

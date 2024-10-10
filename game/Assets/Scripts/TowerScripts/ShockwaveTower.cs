@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ShockwaveTower : MonoTower
+public class ShockwaveTower : TowerBase
 {
     protected override List<GameObject> SelectTargets() => FindAllTargets().ToList();
 

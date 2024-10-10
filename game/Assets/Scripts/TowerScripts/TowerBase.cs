@@ -6,9 +6,8 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
-public abstract class MonoTower : MonoBehaviour
+public abstract class TowerBase : MonoBehaviour
 {
-
     [SerializeField] protected Transform firingPoint;
     [SerializeField] protected LayerMask enemyMask;
     protected TowerData towerData;
