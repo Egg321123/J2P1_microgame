@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Shop : MonoBehaviour
 {
     string[] towers = new string[4];
-    [SerializeField] List<TowerData> itemData = new List<TowerData>();
+    [SerializeField] List<TowerStoreData> itemData = new List<TowerStoreData>();
     [SerializeField] List<Sprite> images = new List<Sprite>();
     [SerializeField] List<GameObject> toggles = new List<GameObject>();
     [SerializeField] Money_System money;
@@ -19,7 +19,7 @@ public class Shop : MonoBehaviour
     }
     void LoadShop()
     {
-        List<TowerData> tItemData = new List<TowerData>();
+        List<TowerStoreData> tItemData = new List<TowerStoreData>();
         List<Sprite> tImages = new List<Sprite>();
         foreach (var data in itemData) tItemData.Add(data);
         foreach (var sprite in images) tImages.Add(sprite);
@@ -43,14 +43,14 @@ public class Shop : MonoBehaviour
             tItemData.RemoveAt(randomItem);
         }
     }
-    TowerData FindTower(string tower2Search)
+    TowerStoreData FindTower(string tower2Search)
     {
         for ( int tower = 0; tower < itemData.Count; tower++) if (itemData[tower].name == tower2Search) return itemData[tower];
         return null;
     }
     public void item1()
     {
-        TowerData tower = FindTower(towers[0]);
+        TowerStoreData tower = FindTower(towers[0]);
         if (money.Pay(tower.cost)) FindFirstObjectByType<PlaceOnGrid>().PlaceModeToggle(tower);
     }
     public void item2()
