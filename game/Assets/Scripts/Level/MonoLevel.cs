@@ -15,8 +15,8 @@ public class MonoLevel : MonoBehaviour
     /// </summary>
     public void SetTile(MonoTile prefab, Vector2Int pos, TileType tileType, TowerData? towerData = null, bool updateNeighbours = false)
     {
-        Level.SetTile(pos, TileType.PATH, towerData);
-        SetMonoTile(prefab, pos);
+        Level.SetTile(pos, tileType, towerData);
+        SetMonoTile(prefab, pos, updateNeighbours);
     }
 
     /// <summary>
@@ -25,14 +25,20 @@ public class MonoLevel : MonoBehaviour
     public void SetMonoTile(MonoTile prefab, Vector2Int pos, bool updateNeighbours = false)
     {
         MonoTile tile = Instantiate(prefab, transform);
+        tile.name = pos.ToString();
         tile.Initialize(Level, pos, updateNeighbours);
     }
 
     // called when the script is being loaded
-    private void Awake()
+    private void Start()
     {
-        Level = new Level(width, height);
-        Level.GenerateLevel(new System.Random().Next());
+        if (GameManager.Instance.Level == null)
+            Level = new Level(width, height);
+        else
+            Level = GameManager.Instance.Level;
+
+        // generate a level with the level
+        Level.GenerateLevel(GameManager.Instance.Save.data.level++); // use the level to generate the level and increase it
 
         // generate the path
         foreach (Vector2Int pathPos in Level.GetPath())

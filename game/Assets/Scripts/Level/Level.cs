@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Level
@@ -14,7 +15,7 @@ public class Level
 
     public readonly int width;                  // sets the width of the level
     public readonly int height;                 // sets the height of the level
-    private readonly TileData[,] tiles;         // contains the tiles in the world
+    public readonly TileData[,] tiles;          // contains the tiles in the world
     private readonly List<Vector2Int> path;     // contains the positions of the tiles
     private readonly List<Vector2Int> towers;   // contains the positions of the tower tiles
 
@@ -27,6 +28,7 @@ public class Level
         this.height = height;
         tiles = new TileData[width, height];
         path = new List<Vector2Int>();
+        towers = new List<Vector2Int>();
     }
 
     private void AddPathNode(int x, int y)
@@ -43,8 +45,9 @@ public class Level
             for (int y = 0; y < height; y++)
                 tiles[x, y] = new TileData(TileType.EMPTY, new Vector2Int(x, y));
 
-        // clear the path list
+        // clear the lists
         path.Clear();
+        towers.Clear();
 
         int directions = rand.Next(int.MaxValue);   // store the directions as a binary-encoded random string
         int posX = 0;                               // the current tile X position
@@ -162,8 +165,8 @@ public class Level
     }
 
     // gets the tile at the position
-    public TileData GetTile(int x, int y) => tiles[x, y];
-    public TileData GetTile(Vector2Int pos) => tiles[pos.x, pos.y];
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] public TileData GetTile(int x, int y) => tiles[x, y];
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] public TileData GetTile(Vector2Int pos) => tiles[pos.x, pos.y];
 
     public IReadOnlyList<Vector2Int> GetPath() => path;
     public IReadOnlyList<Vector2Int> GetTowers() => towers;

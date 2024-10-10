@@ -22,7 +22,7 @@ public class TempSpawnEnemies : MonoBehaviour
     {
         while (spawnEnemies)
         {
-            float randomWaitTime = Random.Range(0.5f, 2);
+            float randomWaitTime = Random.Range(0.05f, .2f);
             yield return new WaitForSeconds(randomWaitTime);
 
             GameObject enemy = GetPooledObject();

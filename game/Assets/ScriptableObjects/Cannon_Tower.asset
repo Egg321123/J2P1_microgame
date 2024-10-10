@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f957a52dd4eca23acbc2ebe41cd66487, type: 3}
+  m_Name: Cannon_Tower
+  m_EditorClassIdentifier: 
+  towerName: Cannon tower
+  tower: {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d, type: 3}
+  cost: 10
+  attackSpeed: 1
+  projectileSpeed: 2
+  attackRange: 7
+  attackDamage: 3
