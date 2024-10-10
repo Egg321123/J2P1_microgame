@@ -7,7 +7,7 @@ public class TowerStoreData : ScriptableObject
 
     [Header("Store specific values")]
     public string towerName;
-    public Texture menuImg;
+    public Sprite menuSprite;
     public int cost;
 
     [Header("Base tower information")]

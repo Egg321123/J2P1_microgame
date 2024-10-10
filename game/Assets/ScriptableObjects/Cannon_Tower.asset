@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Cannon_Tower
   m_EditorClassIdentifier: 
   towerName: Cannon tower
-  menuImg: {fileID: 2800000, guid: 167194d9189eb28e38180e725c975ec4, type: 3}
+  menuSprite: {fileID: 21300000, guid: 17f5245db76160946bb0b06ea0cecbcf, type: 3}
   cost: 10
   towerData:
     tower: {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d, type: 3}
