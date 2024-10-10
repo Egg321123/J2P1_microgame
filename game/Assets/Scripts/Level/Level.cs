@@ -45,8 +45,9 @@ public class Level
             for (int y = 0; y < height; y++)
                 tiles[x, y] = new TileData(TileType.EMPTY, new Vector2Int(x, y));
 
-        // clear the path list
+        // clear the lists
         path.Clear();
+        towers.Clear();
 
         int directions = rand.Next(int.MaxValue);   // store the directions as a binary-encoded random string
         int posX = 0;                               // the current tile X position

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f957a52dd4eca23acbc2ebe41cd66487, type: 3}
-  m_Name: Magic_Tower
+  m_Name: Cannon_Tower
   m_EditorClassIdentifier: 
-  towerName: magic tower
-  tower: {fileID: 919132149155446097, guid: 222b84093cafc6c4e8667098a1c5493e, type: 3}
-  cost: 15
-  level: 1
-  attackSpeed: 5
-  attackRange: 15
-  attackDamage: 10
+  towerName: Cannon tower
+  tower: {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d, type: 3}
+  cost: 10
+  attackSpeed: 1
+  projectileSpeed: 2
+  attackRange: 7
+  attackDamage: 3

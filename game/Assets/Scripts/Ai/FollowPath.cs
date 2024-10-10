@@ -56,7 +56,7 @@ public class FollowPath : MonoBehaviour
     /// </summary>
     private void RandomSpeed()
     {
-        speed = Random.Range(1,5);
+        speed = Random.Range(0.5f,2f);
     }
 
     IEnumerator MoveAlongPath()

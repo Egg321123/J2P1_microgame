@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class PlaceOnGrid : MonoBehaviour
@@ -11,17 +13,36 @@ public class PlaceOnGrid : MonoBehaviour
     private MonoLevel monoLevel = null;
     private bool isInPlaceMode = false;
     private GameObject gridObj = null;
-    private TowerData towerData = null;
+
+    private TowerData towerData;
 
     private void Start()
     {
-        monoLevel = FindFirstObjectByType<MonoLevel>();
+        StartCoroutine(WaitForLevel());
+    }
+    IEnumerator WaitForLevel()
+    {
+        while (monoLevel == null)
+        {
+            monoLevel = FindFirstObjectByType<MonoLevel>();
+            yield return null;
+        }
+
+        //create grid only when monolevel has become available
         CreateGrid();
+
+        yield return null;
     }
 
-    public void PlaceModeToggle(TowerData pTowerData)
+    public void PlaceModeToggle(TowerStoreData data)
     {
-        towerData = pTowerData;
+        towerData = new TowerData (
+            data.tower,
+            data.attackSpeed,
+            data.attackRange,
+            data.attackDamage,
+            data.projectileSpeed
+            );
 
         isInPlaceMode = !isInPlaceMode;
         gridObj.SetActive(!gridObj.activeInHierarchy);
@@ -30,10 +51,16 @@ public class PlaceOnGrid : MonoBehaviour
         StartCoroutine(PlacingMode());
     }
 
-    public void ChangeTower(TowerData pTowerData)
+    public void ChangeTower(TowerStoreData data)
     {
         //update the object the user wants to place
-        towerData = pTowerData;
+        towerData = new TowerData(
+            data.tower,
+            data.attackSpeed,
+            data.attackRange,
+            data.attackDamage,
+            data.projectileSpeed
+            );
     }
 
     private IEnumerator PlacingMode()
