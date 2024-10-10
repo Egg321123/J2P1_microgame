@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,15 +6,23 @@ using UnityEngine.UI;
 public class Shop : MonoBehaviour
 {
     string[] towers = new string[4];
-    [SerializeField] List<PlaceHolderItmes> itemData = new List<PlaceHolderItmes>();
+    [SerializeField] List<TowerData> itemData = new List<TowerData>();
     [SerializeField] List<Sprite> images = new List<Sprite>();
     [SerializeField] List<GameObject> toggles = new List<GameObject>();
+    [SerializeField] Money_System money;
     //[SerializeField] List<TextMeshPro> itemInfo;
     // Start is called before the first frame update
     void Start()
     {
-        List<PlaceHolderItmes> tItemData = itemData;
-        List<Sprite> tImages = images;
+       LoadShop();
+        money = GetComponentInParent<Money_System>();
+    }
+    void LoadShop()
+    {
+        List<TowerData> tItemData = new List<TowerData>();
+        List<Sprite> tImages = new List<Sprite>();
+        foreach (var data in itemData) tItemData.Add(data);
+        foreach (var sprite in images) tImages.Add(sprite);
 
         for (int toggle = 0; toggle < toggles.Count; toggle++)
         {
@@ -27,7 +34,7 @@ public class Shop : MonoBehaviour
             {
                 string data;
                 if (text == 0) data = tItemData[randomItem].name;
-                else data = "Price: " + tItemData[randomItem].price.ToString();
+                else data = "Price: " + tItemData[randomItem].cost.ToString();
                 gOText.GetChild(text).GetComponent<TextMeshProUGUI>().text = data;
             }
             towers[toggle] = tItemData[randomItem].name;
@@ -36,14 +43,15 @@ public class Shop : MonoBehaviour
             tItemData.RemoveAt(randomItem);
         }
     }
-    MonoTile FindTower(string tower2Search)
+    TowerData FindTower(string tower2Search)
     {
-        for ( int tower = 0; tower < itemData.Count; tower++) if (itemData[tower].name == tower2Search) return itemData[tower].prefab;
+        for ( int tower = 0; tower < itemData.Count; tower++) if (itemData[tower].name == tower2Search) return itemData[tower];
         return null;
     }
     public void item1()
     {
-        FindFirstObjectByType<PlaceOnGrid>().PlaceModeToggle(FindTower(towers[0]));
+        TowerData tower = FindTower(towers[0]);
+        if (money.Pay(tower.cost)) FindFirstObjectByType<PlaceOnGrid>().PlaceModeToggle(tower);
     }
     public void item2()
     {

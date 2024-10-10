@@ -1,42 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
-public class Money_System: MonoBehaviour
+public class Money_System : MonoBehaviour
 {
     [SerializeField] TMP_Text scoreUI;
-    [SerializeField] int cost = 10;
-    [SerializeField] int give = 20;
-    int money = 50;
-    int moneyMin = 0;
-    private void FixedUpdate()
+    [SerializeField] int money = 50;
+    /*[SerializeField] int cost = 10;
+    [SerializeField] int give = 20;*/
+    //int moneyMin = 0;
+    /*private void FixedUpdate()
     {
         UpdateMoney();
         if (money <= 0)
         {
             money = moneyMin;
         }
-    }
-    void UpdateMoney()
+    }*/
+    void UpdateUI() => scoreUI.text = money.ToString();
+    public bool Pay(int price)
     {
-        scoreUI.text = money.ToString();
-    }
-
-    public void OnClickDelete()
-    {
-        if(money >= cost)
+        if (money >= price)
         {
-            money -= cost;
+            money -= price;
+            UpdateUI();
+            return true;
         }
-        if (money <= cost) 
-        {
-            Debug.Log("Not enough money");
-        }
+        else return false;
+        /* if (money <= cost) 
+         {
+             Debug.Log("Not enough money");
+         }*/
     }
-    public void OnClickGive() 
+    public void Earn(int amaunt)
     {
-        money += give;
+        money += amaunt;
+        UpdateUI();
     }
 }
