@@ -1,6 +1,5 @@
 public enum Scene
 {
-    // put the scenes here depending on the build index, eg.;
-    // START_SCREEN = 0,
-    // GAME = 1,
+    PRE_LOAD = 0,
+    MAIN_GAME = 1,
 }

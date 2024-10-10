@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     // properties
     public Save Save { get; private set; }
-    public Level Level { get; set; }
+    public Level Level { get; set; }        // is set by MonoLevel in Awake
 
     // constructor
     public GameManager()
@@ -21,14 +21,14 @@ public class GameManager : MonoBehaviour
     // is called when the script is being loaded
     private void Awake()
     {
-        Save = new Save(Application.persistentDataPath + Path.DirectorySeparatorChar + "save.json");
-
         // insure that there is always just one GameManager
         if (instance != this && instance != null)
         {
             Destroy(gameObject);
             return;
         }
+
+        Save = new Save(Application.persistentDataPath + Path.DirectorySeparatorChar + "save.json");
 
         // make this object persistent
         DontDestroyOnLoad(gameObject);

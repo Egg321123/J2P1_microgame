@@ -1,15 +1,45 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MonoLevel : MonoBehaviour
 {
-    [SerializeField, Min(1)] private int width = 10;    // non-negative value corresponding to the maximum amount of tiles on the horizontal axis
-    [SerializeField, Min(1)] private int height = 10;   // non-negative value corresponding to the maximum amount of tiles on the vertucal axis
-
-    // the prefabs containing the path models
-    [SerializeField] private MonoTile pathPrefab;       // contains the path prefabs
+    [SerializeField, Min(1)] private int width = 10;        // non-negative value corresponding to the maximum amount of tiles on the horizontal axis
+    [SerializeField, Min(1)] private int height = 10;       // non-negative value corresponding to the maximum amount of tiles on the vertucal axis
+    [SerializeField] private MonoTile pathPrefab;           // contains the path prefabs
+    private readonly List<MonoTile> placedTiles = new();    // contains the tiles that have been placed
 
     public Level Level { get; private set; }
+
+    private void DestroyLevel()
+    {
+        // destroy all the placed tiles
+        foreach (MonoTile tile in placedTiles)
+        {
+            Destroy(tile.gameObject);
+        }
+
+        // clear the placed tiles list
+        placedTiles.Clear();
+    }
+
+    public void RegenerateLevel(int level, TileData[] towers)
+    {
+        DestroyLevel();
+        Level.GenerateLevel(level); // generate the level
+
+        // generate the path monotiles
+        foreach (Vector2Int pathPos in Level.GetPath())
+        {
+            SetMonoTile(pathPrefab, pathPos);
+        }
+
+        foreach (TileData tower in towers)
+        {
+            Level.SetTile(tower.pos, TileType.TOWER, tower.towerData);
+            SetMonoTile(tower.towerData.Value.tower, tower.pos, true);
+        }
+    }
 
     /// <summary>
     /// sets a tile in <see cref="Level"/> and in the unity scene
@@ -28,27 +58,26 @@ public class MonoLevel : MonoBehaviour
         MonoTile tile = Instantiate(prefab, transform);
         tile.name = pos.ToString();
         tile.Initialize(Level, pos, updateNeighbours);
+        placedTiles.Add(tile);
     }
 
-    // called when the script on first frame
-    private void Start()
+    // called when the script is being loaded
+    private void Awake()
     {
         if (GameManager.Instance.Level == null)
             Level = new Level(width, height);
         else
             Level = GameManager.Instance.Level;
+    }
 
-        // generate a level with the level
-        Level.GenerateLevel(GameManager.Instance.Save.data.level++); // use the level to generate the level and increase it
-
-        // generate the path
-        foreach (Vector2Int pathPos in Level.GetPath())
-        {
-            SetMonoTile(pathPrefab, pathPos);
-        }
+    // called when the script on first frame
+    private void Start()
+    {
+        // TEMP: regenerate the level with the safe data
+        RegenerateLevel(GameManager.Instance.Save.data.level, GameManager.Instance.Save.data.towers);
 
         //load scene when the level has been loaded
-        SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+        SceneManager.LoadSceneAsync((int)Scene.MAIN_GAME, LoadSceneMode.Additive);
     }
 
 #if UNITY_EDITOR
