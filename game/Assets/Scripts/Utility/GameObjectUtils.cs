@@ -41,8 +41,8 @@ public static class GameObjectUtils
         // get the sorted IEnumberable using a linq query
         return
             from obj in GameObject.FindObjectsOfType<GameObject>() // get all the gameobjects in the scene
-            where (obj.layer & layer.value) != 0    // check whether the gameobject is within the given mask
-            where obj.activeInHierarchy             // require object to be active
+            where ((1 << obj.layer) & layer.value) != 0 // check whether the gameobject is within the given mask
+            where obj.activeInHierarchy                 // require object to be active
             let pos = new Vector2(obj.transform.position.x, obj.transform.position.y)  // get the 2D found position data
             let x = Math.Abs(parentPos.x - pos.x)   // get the absolute relative x position
             let y = Math.Abs(parentPos.y - pos.y)   // get the absolute relative y position
