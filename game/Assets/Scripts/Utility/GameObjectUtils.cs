@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -6,27 +5,14 @@ using UnityEngine;
 
 public static class GameObjectUtils
 {
-    private static IEnumerable<GameObject> GetWithinRange(GameObject parent, float radius, IEnumerable<GameObject> pool)
-    {
-        foreach (GameObject obj in pool)
-        {
-            // if the object is not within the range, break; no more enemies will be useful
-            if (IsWithinRadius(parent, obj, radius) == false)
-                break;
-
-            // return the object
-            yield return obj;
-        }
-    }
-
     /// <summary>
     /// checks whether the game object's X/Z is within the radius.
     /// </summary>
     public static bool IsWithinRadius(GameObject parent, GameObject obj, float radius)
     {
-        Vector2 v1 = new(obj.transform.position.x, obj.transform.position.y);   // get the enemy's 2D position data
-        Vector2 v2 = new(parent.transform.position.x, parent.transform.position.y);           // get the tower's 2D position data
-        return Vector2.Distance(v1, v2) <= radius;               // calculate the distance and check whether the distance is within the range
+        Vector2 v1 = new(obj.transform.position.x, obj.transform.position.y);       // get the enemy's 2D position data
+        Vector2 v2 = new(parent.transform.position.x, parent.transform.position.y); // get the tower's 2D position data
+        return Vector2.Distance(v1, v2) <= radius;                                  // calculate the distance and check whether the distance is within the range
     }
 
     /// <returns>
