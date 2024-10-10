@@ -7,7 +7,7 @@ public class ArrowTower : ProjectileTowerBase
 
     protected override List<GameObject> SelectTargets()
     {
-        List<GameObject> targets = GameObjectUtils.GetNearestOnLayer(gameObject, enemyMask, towerData.attackRange, 1);
+        List<GameObject> targets = GameObjectUtils.GetNearestOnLayer(gameObject, towerData.attackRange, enemyMask, 1);
         print(targets.Count);
         return targets;
     }
