@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: Cannon_Tower
   m_EditorClassIdentifier: 
   towerName: Cannon tower
-  tower: {fileID: 919132149155446097, guid: 222b84093cafc6c4e8667098a1c5493e, type: 3}
+  tower: {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d, type: 3}
   cost: 10
-  level: 1
-  attackSpeed: 5
-  bulletSpeed: 1
-  attackRange: 10
-  attackDamage: 5
+  attackSpeed: 1
+  projectileSpeed: 2
+  attackRange: 7
+  attackDamage: 3

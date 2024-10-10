@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: Shockwave_Tower
   m_EditorClassIdentifier: 
   towerName: shockwave tower
-  tower: {fileID: 919132149155446097, guid: 222b84093cafc6c4e8667098a1c5493e, type: 3}
+  tower: {fileID: 3938336332173716440, guid: 08806b9936609cf418de91da343be9ab, type: 3}
   cost: 20
-  level: 1
-  attackSpeed: 5
-  bulletSpeed: 1
-  attackRange: 10
+  attackSpeed: 0.1
+  projectileSpeed: 10
+  attackRange: 5
   attackDamage: 1

@@ -1,16 +1,22 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Default Tower", menuName = "Tower Object")]
-public class TowerData : ScriptableObject
+public struct TowerData
 {
-    public string towerName;
     public GameObject tower;
-    public int cost;
-    public int level;
 
     public float attackSpeed;
-    public float bulletSpeed;
     public float attackRange;
     public float attackDamage;
+    public float projectileSpeed;
+    public int level;
 
+    public TowerData(GameObject tower, float attackSpeed, float attackRange, float attackDamage, float projectileSpeed, int level = 1)
+    {
+        this.tower = tower;
+        this.attackSpeed = attackSpeed;
+        this.attackRange = attackRange;
+        this.attackDamage = attackDamage;
+        this.projectileSpeed = projectileSpeed;
+        this.level = level;
+    }
 }

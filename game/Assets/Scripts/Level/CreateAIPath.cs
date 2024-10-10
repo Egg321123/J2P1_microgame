@@ -17,11 +17,22 @@ public class CreateAIPath : MonoBehaviour
 
     public void RegeneratePath()
     {
-        //get the list of coords and convert it to a path the ai can use (centered on the tiles)
-        Level level = FindFirstObjectByType<MonoLevel>().Level;
+        StartCoroutine(WaitForLevel());
+    }
+
+    IEnumerator WaitForLevel()
+    {
+        Level level = null;
+        while (level == null) {
+            level = FindFirstObjectByType<MonoLevel>().Level;
+            yield return null;
+        }
+
         IReadOnlyList<Vector2Int> list = level.GetPath();
         Path = AdjustListToWorld(list, level);
         CreateLineRenderer();
+
+        yield return null;
     }
 
     private void CreateLineRenderer()
@@ -48,7 +59,7 @@ public class CreateAIPath : MonoBehaviour
 
 #if UNITY_EDITOR
     // draw path for debuggong
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         if (Path != null)
         {

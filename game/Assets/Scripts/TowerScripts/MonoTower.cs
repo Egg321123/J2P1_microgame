@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -8,86 +9,100 @@ public abstract class MonoTower : MonoBehaviour
 
     [SerializeField] protected Transform firingPoint;
     [SerializeField] protected LayerMask enemyMask;
-    protected Transform target;
     protected TowerData towerData;
 
     public TowerData TowerData { set { towerData = value; } }
 
-    Coroutine shootLoop = null;
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// finds the nearest valid transform
+    /// </summary>
+    /// <returns>Transform of nearest enemy</returns>
+    protected GameObject FindNearestTarget()
     {
-        //if target doesn't exist, find a new one
-        if (target == null) {
+        //get all objects within range
+        Collider[] hits = Physics.OverlapSphere(transform.position, towerData.attackRange, enemyMask);
 
-            //find new target
-            FindTarget();
+        //prepare for check
+        GameObject nearestObject = null;
+        float nearestDistance = math.INFINITY;
 
-            return;
+        if (hits.Length <= 0) return null;
+        foreach (Collider hit in hits)
+        {
+            GameObject hitObject = hit.gameObject;
+
+            float distance = Vector3.Distance(transform.position, hitObject.transform.position);
+
+            if (distance < nearestDistance)
+            {
+                nearestObject = hitObject;
+                nearestDistance = distance;
+            }
         }
 
-        //if target is not in range, clear target
-        if (!CheckIfTargetInRange()) {
+        return nearestObject;
+    }
 
-            //if there is no target, stop shooting
-            if (shootLoop != null)
+    protected GameObject[] FindNearestNthTargets(int amount = 1)
+    {
+        //create array to return
+        GameObject[] nearestObjects = new GameObject[amount];
+
+        //get all objects within range
+        List<Collider> hits = new(Physics.OverlapSphere(transform.position, towerData.attackRange, enemyMask));
+
+        //returns null if no hits were made
+        if (hits.Count <= 0) return null;
+
+        //loop until the array is filled
+        for (int i = 0; i < nearestObjects.Length; i++)
+        {
+            //prepare for check
+            Collider nearestCollider = null;
+            float nearestDistance = math.INFINITY;
+
+            //go through all the colliders until you find the neares
+            foreach (Collider hit in hits)
             {
-                StopCoroutine(shootLoop);
-                shootLoop = null;
+                Collider hitCollider = hit;
+
+                float distance = Vector3.Distance(transform.position, hitCollider.transform.position);
+
+                if (distance < nearestDistance)
+                {
+                    nearestCollider = hitCollider;
+                    nearestDistance = distance;
+                }
             }
 
-            //clear target
-            target = null;
-
-            return;
+            //save the nearest for return, and remove from hits list
+            nearestObjects[i] = nearestCollider.gameObject;
+            hits.Remove(nearestCollider);
         }
 
-        //rest of logic is if there is a target, so start loop
-        if (shootLoop == null) shootLoop = StartCoroutine(ShootLoop());    
+
+        return nearestObjects;
     }
+    
 
-    IEnumerator ShootLoop()
-    {
-        while (target != null) {
-            yield return new WaitForSeconds(towerData.attackSpeed);
-
-            Shoot();
-
-            yield return new WaitForSeconds(towerData.bulletSpeed);
-            target.GetComponent<AIDeath>().Die();
-
-            yield return null;
-        }
-
-        yield return null;
-    }
-
-    protected abstract void Shoot();
-
-    private void FindTarget()
-    {
-        //first object that overlaps, make target
-        Collider[] hits = Physics.OverlapSphere(transform.position, towerData.attackRange, enemyMask);
-        if (hits.Length > 0) if (!hits[0].gameObject.activeInHierarchy) target = hits[0].transform;
-
-    }
     /// <summary>
-    /// if enemy distance is less than or equal to the towers range
+    /// finds all the targets nearby
     /// </summary>
-    /// <returns>returns a bool that will return true there are no enemies in range</returns>
-    private bool CheckIfTargetInRange()
+    /// <returns>an array of gameobjects that are within range</returns>
+    protected GameObject[] FindAllTargets()
     {
-        //check if target is still in range
-        return Vector3.Distance(target.position, transform.position) < towerData.attackRange;
-    }
+        //get all objects within range
+        Collider[] hits = Physics.OverlapSphere(transform.position, towerData.attackRange, enemyMask);
+        GameObject[] targets = new GameObject[hits.Length];
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, towerData.attackRange);
+        //converts all hits to their gameobjects
+        for (int i = 0; i < hits.Length; i++)
+        {
+            targets[i] = hits[i].gameObject;
+        }
 
-        Gizmos.color = Color.red;
-        if (target != null) Gizmos.DrawSphere(target.position + new Vector3(0,1,0), 0.1f);
+        //return the new array
+        return targets;
     }
 }
