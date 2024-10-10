@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Magic_Tower
   m_EditorClassIdentifier: 
   towerName: magic tower
-  tower: {fileID: 3938336332173716440, guid: 733e81976d6e2ec468407e4362382061, type: 3}
+  menuImg: {fileID: 2800000, guid: 167194d9189eb28e38180e725c975ec4, type: 3}
   cost: 15
-  attackSpeed: 2
-  projectileSpeed: 5
-  attackRange: 7
-  attackDamage: 2
+  towerData:
+    tower: {fileID: 3938336332173716440, guid: 733e81976d6e2ec468407e4362382061, type: 3}
+    attackSpeed: 2
+    attackRange: 10
+    attackDamage: 1
+    projectileSpeed: 2
+    level: 1
