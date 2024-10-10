@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,8 +12,31 @@ public abstract class MonoTower : MonoBehaviour
     [SerializeField] protected Transform firingPoint;
     [SerializeField] protected LayerMask enemyMask;
     protected TowerData towerData;
+    private List<GameObject> targets = null;
+    private bool isAllowedToShoot = true;
 
     public TowerData TowerData { set { towerData = value; } }
+
+    protected virtual void Start() => StartCoroutine(ShootLoop());
+    protected virtual void FixedUpdate() => targets = SelectTargets(); //only try finding target every fixed updated (for fewer updates)
+
+    protected abstract List<GameObject> SelectTargets();
+    protected abstract void ShotTarget(GameObject target);
+
+    private IEnumerator ShootLoop()
+    {
+        while (isAllowedToShoot)
+        {
+            //wait for shooting delay
+            yield return new WaitForSeconds(1 / towerData.attackSpeed);
+
+            foreach (GameObject target in targets)
+                ShotTarget(target);
+
+            yield return null;
+        }
+        yield return null;
+    }
 
 
     /// <returns>
@@ -28,6 +52,7 @@ public abstract class MonoTower : MonoBehaviour
         IEnumerable<GameObject> objects =
             from obj in FindObjectsOfType<GameObject>() // get all the gameobjects in the scene
             where (obj.layer & enemyMask.value) != 0    // check whether the gameobject is within the enemy mask
+            where obj.activeInHierarchy                 // require object to be active
             let enemyPos = new Vector2(obj.transform.position.x, obj.transform.position.y)  // get the 2D enemy position data
             let x = Math.Abs(towerPos.x - enemyPos.x)   // get the absolute relative x position
             let y = Math.Abs(towerPos.y - enemyPos.y)   // get the absolute relative y position
@@ -49,25 +74,10 @@ public abstract class MonoTower : MonoBehaviour
     }
 
     /// <summary>
-    /// find the nearest enemy and within the specified range
-    /// </summary>
-    /// <returns>Transform of nearest enemy, or null if none are in the range</returns>
-    protected GameObject FindNearestTarget()
-    {
-        // get the first of the sorted list; aka, the closest
-        GameObject enemy = GetSortedList().First();
-
-        // return the enemy if it's within the range, otherwise return null
-        if (IsInRange(enemy))
-            return enemy;
-        return null;
-    }
-
-    /// <summary>
     /// Find an amount of enemies which are nearest and within the specified range
     /// </summary>
     /// <returns>an array of the enemies that were closest</returns>
-    protected GameObject[] FindNearestNthTargets(int amount = 1)
+    protected List<GameObject> FindNearestNthTargets(int amount = 1)
     {
         // get the amount of gameobjects in the sorted list
         IEnumerable<GameObject> enemyPool = GetSortedList().Take(amount);
@@ -82,7 +92,7 @@ public abstract class MonoTower : MonoBehaviour
             enemySelected.Add(enemy);
         }
 
-        return enemySelected.ToArray();
+        return enemySelected;
     }
 
 
@@ -105,4 +115,22 @@ public abstract class MonoTower : MonoBehaviour
         //return the new array
         return targets;
     }
+
+#if UNITY_EDITOR
+    // draw path for debuggong
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, towerData.attackRange);
+
+        Gizmos.color = Color.red;
+        if (targets != null)
+        {
+            foreach (GameObject target in targets)
+            {
+                Gizmos.DrawSphere(target.transform.position + new Vector3(0, 1, 0), 0.1f);
+            }
+        }
+    }
+#endif
 }
