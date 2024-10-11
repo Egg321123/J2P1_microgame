@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // if the wave is over, the data is saved.
@@ -11,9 +12,9 @@ public class Waves : MonoBehaviour
     [SerializeField, Min(1)] private int spawnEnemies = 50;
     [SerializeField, Min(0)] private float enemySpawnRate = 1F;
 
-    public readonly List<GameObject> allEnemies = new();
     [SerializeField] private GameObject[] enemies;
     private List<GameObject>[] enemyPools;
+    private List<GameObject> allEnemies = new();
 
 
     // called when the script is being loaded
@@ -39,6 +40,29 @@ public class Waves : MonoBehaviour
     public void NextWave()
     {
         StartCoroutine(SpawnLoop());
+    }
+
+    public IEnumerable<GameObject> GetEnemiesInRadius(Vector3 pos, float radius, int count = -1)
+    {
+        if (count <= 0)
+            count = allEnemies.Count;
+
+        return (
+            from enemy in allEnemies.AsEnumerable()
+            where enemy.activeInHierarchy
+
+            let dist = Vector3.Distance(pos, enemy.transform.position)
+            where dist <= radius
+
+            orderby dist
+            select enemy
+        ).Take(count);
+    }
+    // draw path for debuggong
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(GetEnemiesInRadius(Vector3.zero, float.PositiveInfinity, 1).First().transform.position + new Vector3(0, 1, 0), 0.1f);
     }
 
     // spawns the enemies
