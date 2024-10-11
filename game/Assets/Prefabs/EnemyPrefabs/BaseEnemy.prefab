@@ -10,11 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1970821420819094300}
   - component: {fileID: 7964006590971087018}
-  - component: {fileID: 4365612391936048556}
-  - component: {fileID: 5130790700979522714}
   - component: {fileID: 619773690922722690}
   m_Layer: 3
-  m_Name: TempEnemy
+  m_Name: BaseEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,34 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad633960b4580c47a2489bd9c44a23d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4365612391936048556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8502515503591973096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d96c2168e6cb0094ab88822614991c38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  followPath: {fileID: 5130790700979522714}
---- !u!114 &5130790700979522714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8502515503591973096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e281a2c2ccacf147997fdf840b94751, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
-  isAllowedToMove: 1
-  hasReachedEnd: 0
+  spawnData: {fileID: 11400000, guid: 5361c721fc4602945ba5631d38a4149e, type: 2}
 --- !u!65 &619773690922722690
 BoxCollider:
   m_ObjectHideFlags: 0

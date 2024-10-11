@@ -4,7 +4,6 @@ using UnityEngine;
 public class EnemySpawnData : ScriptableObject
 {
     [Header("default values")]
-    public Mesh enemyMesh;
     public int baseHealth = 10;
     public float baseSpeed = 1;
 

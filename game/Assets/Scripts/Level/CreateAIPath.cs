@@ -10,7 +10,7 @@ public class CreateAIPath : MonoBehaviour
     public List<Vector3> Path { get; private set; } = null;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         RegeneratePath();
     }

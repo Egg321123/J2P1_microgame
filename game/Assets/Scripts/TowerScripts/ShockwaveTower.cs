@@ -8,6 +8,6 @@ public class ShockwaveTower : TowerBase
 
     protected override void ShotTarget(GameObject target)
     {
-        target.GetComponent<AIDeath>().Die();
+        target.GetComponent<EnemyBase>().TakeDamage(1000);
     }
 }

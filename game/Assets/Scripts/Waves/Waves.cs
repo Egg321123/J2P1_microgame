@@ -76,8 +76,7 @@ public class Waves : MonoBehaviour
             // get a random enemy
             int index = UnityEngine.Random.Range(0, enemies.Length);
             GameObject enemy = GetPooledEnemy(index);
-            enemy.SetActive(true);
-            enemy.GetComponent<FollowPath>().StartWalking();
+            enemy.GetComponent<EnemyBase>().Initialize(1);
 
             yield return null;
         }
