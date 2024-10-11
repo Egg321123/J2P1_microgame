@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     // properties
     public Save Save { get; private set; }
     public Level Level { get; set; }        // is set by MonoLevel in Awake
+    public Waves Waves { get; set; }        // is set by Waves in Awake
 
     // constructor
     public GameManager()

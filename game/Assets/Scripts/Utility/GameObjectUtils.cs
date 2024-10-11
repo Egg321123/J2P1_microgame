@@ -19,14 +19,14 @@ public static class GameObjectUtils
     /// a sorted <see cref="GameObject"/> list from nearest to furthest relative to <paramref name="parent"/> on <paramref name="checkMask"/>. (X/Z plane)
     /// Ignores inactive objects
     /// </returns>
-    public static IEnumerable<GameObject> GetObjects(GameObject parent, float radius, LayerMask layer)
+    public static IEnumerable<GameObject> GetObjects(GameObject parent, List<GameObject> pool, float radius, LayerMask layer)
     {
         // get the tower position
         Vector2 parentPos = new(parent.transform.position.x, parent.transform.position.z);
 
         // get the sorted IEnumberable using a linq query
         return
-            from obj in GameObject.FindObjectsOfType<GameObject>()                      // get all the gameobjects in the scene
+            from obj in pool                                                            // every object in the pool
             where ((1 << obj.layer) & layer.value) != 0                                 // check whether the gameobject is within the given mask
             where obj.activeInHierarchy                                                 // require object to be active
 
@@ -40,28 +40,6 @@ public static class GameObjectUtils
             select obj;
     }
 
-    public static IEnumerable<GameObject> GetObjectsCollider(GameObject parent, float radius, LayerMask layer)
-    {
-        // get the tower position
-        Vector3 parentPos = parent.transform.position;
-
-        Collider[] overlapTest = Physics.OverlapSphere(parentPos, radius, layer);
-        List<GameObject> objects = overlapTest.Select(col => col.gameObject).ToList();
-
-        return objects
-        .Where(c => c.activeInHierarchy)                                           // Check if the object is active
-        .OrderBy(c => Vector3.Distance(parentPos, c.transform.position));          // Sort by distance
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetAllOnLayer(GameObject parent, float radius, LayerMask layer) => GetObjects(parent, radius, layer).ToList();
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static List<GameObject> GetNearestOnLayer(GameObject parent, float radius, LayerMask layer, int amount = 1)
-    {
-        return GetObjects(parent, radius, layer).Take(amount).ToList();;
-    }
-
-    public static List<GameObject> GetNearestOnLayerCollider(GameObject parent, float radius, LayerMask layer, int amount = 1)
-    {
-        return GetObjectsCollider(parent, radius, layer).Take(amount).ToList();
-    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetAllOnLayer(GameObject parent, List<GameObject> pool, float radius, LayerMask layer) => GetObjects(parent, pool, radius, layer).ToList();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetNearestOnLayer(GameObject parent, List<GameObject> pool, float radius, LayerMask layer, int amount = 1) => GetObjects(parent, pool, radius, layer).Take(amount).ToList();
 }
