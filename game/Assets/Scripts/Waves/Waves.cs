@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class Waves : MonoBehaviour
     [SerializeField, Min(1)] private int spawnEnemies = 50;
     [SerializeField, Min(0)] private float enemySpawnRate = 1F;
 
+    public readonly List<GameObject> allEnemies = new();
     [SerializeField] private GameObject[] enemies;
     private List<GameObject>[] enemyPools;
 
@@ -17,6 +19,10 @@ public class Waves : MonoBehaviour
     // called when the script is being loaded
     private void Awake()
     {
+        if (GameManager.Instance.Waves != null) throw new InvalidOperationException("an instance of waves already exists");
+        GameManager.Instance.Waves = this;
+
+        // create the enemy pools
         enemyPools = new List<GameObject>[enemies.Length];
 
         // populate the array with lists
@@ -44,7 +50,7 @@ public class Waves : MonoBehaviour
             yield return new WaitForSeconds(enemySpawnRate);
 
             // get a random enemy
-            int index = Random.Range(0, enemies.Length);
+            int index = UnityEngine.Random.Range(0, enemies.Length);
             GameObject enemy = GetPooledEnemy(index);
             enemy.SetActive(true);
             enemy.GetComponent<FollowPath>().StartWalking();
@@ -76,6 +82,7 @@ public class Waves : MonoBehaviour
 
         // add it to the pool and return the object
         enemyPools[index].Add(obj);
+        allEnemies.Add(obj);
         return obj;
     }
 }
