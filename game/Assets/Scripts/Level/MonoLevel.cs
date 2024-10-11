@@ -65,7 +65,10 @@ public class MonoLevel : MonoBehaviour
     private void Awake()
     {
         if (GameManager.Instance.Level == null)
+        {
             Level = new Level(width, height);
+            GameManager.Instance.Level = Level;
+        }
         else
             Level = GameManager.Instance.Level;
     }

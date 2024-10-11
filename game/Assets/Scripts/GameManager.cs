@@ -35,6 +35,12 @@ public class GameManager : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    [ContextMenu("Set Save")]
+    private void SetSave()
+    {
+        Save.SaveFile();
+    }
+
     [ContextMenu("Reset Save")]
     private void ResetSave()
     {
