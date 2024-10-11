@@ -5,7 +5,7 @@ public class ArrowTower : ProjectileTowerBase
 {
     [SerializeField] private GameObject projectile;
 
-    protected override List<GameObject> SelectTargets() => GameObjectUtils.GetNearestOnLayer(gameObject, GameManager.Instance.Waves.allEnemies, towerData.attackRange, enemyMask, 1);
+    protected override IEnumerable<GameObject> SelectTargets() => GameManager.Instance.Waves.GetEnemiesInRadius(transform.position,towerData.attackRange, 1);
 
     protected override void ProjectileHit(GameObject target) => target.GetComponent<AIDeath>().Die();
 

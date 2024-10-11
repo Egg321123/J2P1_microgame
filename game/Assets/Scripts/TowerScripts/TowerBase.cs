@@ -8,7 +8,7 @@ public abstract class TowerBase : MonoBehaviour
     [SerializeField] protected Transform firingPoint;
     [SerializeField] protected LayerMask enemyMask;
     protected TowerData towerData;
-    private List<GameObject> targets = null;
+    private IEnumerable<GameObject> targets = null;
     private bool isAllowedToShoot = true;
 
     public TowerData TowerData { set { towerData = value; } }
@@ -16,7 +16,7 @@ public abstract class TowerBase : MonoBehaviour
     protected virtual void Start() => StartCoroutine(ShootLoop());
     protected virtual void FixedUpdate() => targets = SelectTargets(); //only try finding target every fixed updated (for fewer updates)
 
-    protected abstract List<GameObject> SelectTargets();
+    protected abstract IEnumerable<GameObject> SelectTargets();
     protected abstract void ShotTarget(GameObject target);
 
     private IEnumerator ShootLoop()
