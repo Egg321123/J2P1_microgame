@@ -4,18 +4,12 @@ using UnityEngine;
 
 public class SetTowerType : MonoBehaviour
 {
-    [SerializeField] MonoTower tower;
+    [SerializeField] TowerBase tower;
     [SerializeField] TowerStoreData data;
-    
+
     // Start is called before the first frame update
     void Start()
     {
-            tower.TowerData = new TowerData (
-            data.tower,
-            data.attackSpeed,
-            data.attackRange,
-            data.attackDamage,
-            data.projectileSpeed
-            );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        tower.TowerData = data.towerData;
     }
 }

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 [Serializable]
 public struct SaveData
@@ -18,7 +16,7 @@ public struct SaveData
         level = 0;
         wave = 0;
         money = 0;
-        towers = null;
+        towers = new TileData[0];
 
         // initialize statistics with their default values
         stats = new Statistics();

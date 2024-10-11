@@ -1,50 +1,13 @@
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class shockwaveTower : MonoTower
+public class ShockwaveTower : TowerBase
 {
-    private GameObject[] targets = null;
-    private bool isAllowedToShoot = true;
+    protected override List<GameObject> SelectTargets() => GameObjectUtils.GetAllOnLayer(gameObject, GameManager.Instance.Waves.allEnemies, towerData.attackRange, enemyMask);
 
-    private void Start() => StartCoroutine(ShootLoop());
-
-
-    //only try finding target every fixed updated (for fewer updates)
-    private void FixedUpdate() => targets = FindAllTargets();
-
-    protected IEnumerator ShootLoop()
+    protected override void ShotTarget(GameObject target)
     {
-        while (isAllowedToShoot)
-        {
-            //wait for shooting delay
-            yield return new WaitForSeconds(1 / towerData.attackSpeed);
-
-            foreach (GameObject target in targets)
-            {
-                if (target == null || !target.activeInHierarchy) yield return null;
-                else target.GetComponent<AIDeath>().Die();
-            }
-
-            yield return null;
-        }
-        yield return null;
+        target.GetComponent<AIDeath>().Die();
     }
-
-#if UNITY_EDITOR
-    // draw path for debuggong
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, towerData.attackRange);
-
-        Gizmos.color = Color.red;
-        if (targets != null)
-        {
-            foreach (GameObject target in targets)
-            {
-                Gizmos.DrawSphere(target.transform.position + new Vector3(0, 1, 0), 0.1f);
-            }
-        }
-    }
-#endif
 }

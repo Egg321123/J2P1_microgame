@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f957a52dd4eca23acbc2ebe41cd66487, type: 3}
   m_Name: Shockwave_Tower
   m_EditorClassIdentifier: 
-  towerName: shockwave tower
-  tower: {fileID: 3938336332173716440, guid: 08806b9936609cf418de91da343be9ab, type: 3}
+  towerName: Shockwave
+  menuSprite: {fileID: 21300000, guid: 17f5245db76160946bb0b06ea0cecbcf, type: 3}
   cost: 20
-  attackSpeed: 0.1
-  projectileSpeed: 10
-  attackRange: 5
-  attackDamage: 1
+  towerData:
+    tower: {fileID: 3938336332173716440, guid: 08806b9936609cf418de91da343be9ab, type: 3}
+    attackSpeed: 2
+    attackRange: 10
+    attackDamage: 1
+    projectileSpeed: 2
+    level: 1
