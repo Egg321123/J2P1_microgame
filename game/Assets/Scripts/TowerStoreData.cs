@@ -6,11 +6,17 @@ public class TowerStoreData : ScriptableObject
     //this scriptable object is for use in the store, not to store the values for saving system
 
     [Header("Store specific values")]
-    public string towerName;
+    public string towerName = "Default";
     public Sprite menuSprite;
-    public int cost;
+    public int cost = 1;
 
     [Header("Base tower information")]
-    public TowerData towerData;
-
+    public TowerData towerData = new()
+    {
+        attackSpeed = 0.5f,
+        attackRange = 5,
+        attackDamage = 1,
+        projectileSpeed = 2,
+        level = 1
+    };
 }
