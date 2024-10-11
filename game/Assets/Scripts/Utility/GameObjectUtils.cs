@@ -40,6 +40,23 @@ public static class GameObjectUtils
             select obj;
     }
 
+    public static IEnumerable<GameObject> GetObjectsCollider(GameObject parent, List<GameObject> pool, float radius, LayerMask layer)
+    {
+        // get the tower position
+        Vector3 parentPos = parent.transform.position;
+
+        List<GameObject> objects = pool;
+
+        return objects
+        .Where(c => c.activeInHierarchy)                                           // Check if the object is active
+        .OrderBy(c => Vector3.Distance(parentPos, c.transform.position));          // Sort by distance
+    }
+
+    public static List<GameObject> GetNearestOnLayerCollider(GameObject parent, List<GameObject> pool, float radius, LayerMask layer, int amount = 1)
+    {
+        return GetObjectsCollider(parent, pool, radius, layer).Take(amount).ToList();
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetAllOnLayer(GameObject parent, List<GameObject> pool, float radius, LayerMask layer) => GetObjects(parent, pool, radius, layer).ToList();
     [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetNearestOnLayer(GameObject parent, List<GameObject> pool, float radius, LayerMask layer, int amount = 1) => GetObjects(parent, pool, radius, layer).Take(amount).ToList();
 }
