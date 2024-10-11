@@ -40,37 +40,28 @@ public static class GameObjectUtils
             select obj;
     }
 
-    public static IEnumerable<GameObject> GetObjectsTest(GameObject parent, float radius, LayerMask layer)
+    public static IEnumerable<GameObject> GetObjectsCollider(GameObject parent, float radius, LayerMask layer)
     {
         // get the tower position
         Vector3 parentPos = parent.transform.position;
 
         Collider[] overlapTest = Physics.OverlapSphere(parentPos, radius, layer);
-
-        List<GameObject> objects = new();
-        foreach (Collider col in overlapTest) { 
-            objects.Add(col.gameObject);
-        }
+        List<GameObject> objects = overlapTest.Select(col => col.gameObject).ToList();
 
         return objects
-        .Where(c => c.gameObject.activeInHierarchy)                                 // Check if the object is active
-        .OrderBy(c => Vector3.Distance(parentPos, c.transform.position))            // Sort by distance
-        .Select(c => c.gameObject);
+        .Where(c => c.activeInHierarchy)                                           // Check if the object is active
+        .OrderBy(c => Vector3.Distance(parentPos, c.transform.position));          // Sort by distance
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetAllOnLayer(GameObject parent, float radius, LayerMask layer) => GetObjects(parent, radius, layer).ToList();
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static List<GameObject> GetNearestOnLayer(GameObject parent, float radius, LayerMask layer, int amount = 1)
     {
-        IEnumerable<GameObject> objects = GetObjects(parent, radius, layer);
-        Debug.Log(objects);
+        return GetObjects(parent, radius, layer).Take(amount).ToList();;
+    }
 
-        IEnumerable<GameObject> objectsSetAmount = objects.Take(amount);
-        Debug.Log(objectsSetAmount);
-
-        List<GameObject> result = objectsSetAmount.ToList();
-        Debug.Log(result);
-
-        return result;
+    public static List<GameObject> GetNearestOnLayerCollider(GameObject parent, float radius, LayerMask layer, int amount = 1)
+    {
+        return GetObjectsCollider(parent, radius, layer).Take(amount).ToList();
     }
 }

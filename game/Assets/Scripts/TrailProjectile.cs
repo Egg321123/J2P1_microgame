@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-public class Projectile : MonoBehaviour
+public class TrailProjectile : MonoBehaviour
 {
     Vector3 origin;
     Transform target;
@@ -17,12 +17,16 @@ public class Projectile : MonoBehaviour
 
     private IEnumerator Move()
     {
+        Vector3 targetPos = target.position;
         float actualProjectileSpeed = 1 / projectileSpeed;
 
         //lerp to target position
         float currentTime = 0;
         while (currentTime < actualProjectileSpeed)
         {
+            //check if it's still a valid target, if not stop doing projectile things
+            if (!target.gameObject.activeInHierarchy) yield break;
+
             float positionAlongLerp = currentTime / actualProjectileSpeed;
 
             //update position

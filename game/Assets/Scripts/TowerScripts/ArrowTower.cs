@@ -7,9 +7,7 @@ public class ArrowTower : ProjectileTowerBase
 
     protected override List<GameObject> SelectTargets()
     {
-        List<GameObject> a = GameObjectUtils.GetNearestOnLayer(gameObject, towerData.attackRange, enemyMask, 1);
-        print(a.Count);
-        return a;
+        return GameObjectUtils.GetNearestOnLayerCollider(gameObject, towerData.attackRange, enemyMask, 1);
     }
 
     protected override void ProjectileHit(GameObject target) => target.GetComponent<AIDeath>().Die();
@@ -19,7 +17,7 @@ public class ArrowTower : ProjectileTowerBase
         //create new trail
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
         trail.transform.parent = transform;
-        trail.GetComponent<Projectile>().Initialize(firingPoint.position, target.transform, towerData.projectileSpeed);
+        trail.GetComponent<TrailProjectile>().Initialize(firingPoint.position, target.transform, towerData.projectileSpeed);
 
         base.ShotTarget(target);
     }
