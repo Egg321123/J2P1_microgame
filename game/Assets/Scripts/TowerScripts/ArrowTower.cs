@@ -14,7 +14,7 @@ public class ArrowTower : ProjectileTowerBase
         //create new trail
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
         trail.transform.parent = transform;
-        trail.GetComponent<Projectile>().Initialize(firingPoint.position, target.transform, towerData.projectileSpeed);
+        trail.GetComponent<TrailProjectile>().Initialize(firingPoint.position, target.transform, towerData.projectileSpeed);
 
         base.ShotTarget(target);
     }

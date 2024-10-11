@@ -9,11 +9,11 @@ public class PauzeUI : MonoBehaviour
     bool gameIsFreezing = false;
     public void FreezeSwitch()
     {
-        if (!gameIsFreezing) name(0);
-        else name(1);
+        if (!gameIsFreezing) Pause(0);
+        else Pause(1);
             gameIsFreezing = !gameIsFreezing;
     }
-    void name(int time)
+    void Pause(int time)
     {
         Time.timeScale = time;
         Shop.SetActive(gameIsFreezing);
