@@ -136,7 +136,8 @@ MonoBehaviour:
     m_Bits: 8
   projectile: {fileID: 404085437239518119, guid: 28cfc086930b3bc458ce791cdce33607,
     type: 3}
-  explosion: {fileID: 3938336332173716440}
+  explosion: {fileID: 2012334141519626885, guid: a0fd4edff1cbc334b90a4ab46b2c82b9,
+    type: 3}
   explosionSize: 1
 --- !u!4 &4461968456749347170 stripped
 Transform:

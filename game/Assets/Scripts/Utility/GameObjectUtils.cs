@@ -40,6 +40,37 @@ public static class GameObjectUtils
             select obj;
     }
 
+    public static IEnumerable<GameObject> GetObjectsTest(GameObject parent, float radius, LayerMask layer)
+    {
+        // get the tower position
+        Vector3 parentPos = parent.transform.position;
+
+        Collider[] overlapTest = Physics.OverlapSphere(parentPos, radius, layer);
+
+        List<GameObject> objects = new();
+        foreach (Collider col in overlapTest) { 
+            objects.Add(col.gameObject);
+        }
+
+        return objects
+        .Where(c => c.gameObject.activeInHierarchy)                                 // Check if the object is active
+        .OrderBy(c => Vector3.Distance(parentPos, c.transform.position))            // Sort by distance
+        .Select(c => c.gameObject);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetAllOnLayer(GameObject parent, float radius, LayerMask layer) => GetObjects(parent, radius, layer).ToList();
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] public static List<GameObject> GetNearestOnLayer(GameObject parent, float radius, LayerMask layer, int amount = 1) => GetObjects(parent, radius, layer).Take(amount).ToList();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static List<GameObject> GetNearestOnLayer(GameObject parent, float radius, LayerMask layer, int amount = 1)
+    {
+        IEnumerable<GameObject> objects = GetObjects(parent, radius, layer);
+        Debug.Log(objects);
+
+        IEnumerable<GameObject> objectsSetAmount = objects.Take(amount);
+        Debug.Log(objectsSetAmount);
+
+        List<GameObject> result = objectsSetAmount.ToList();
+        Debug.Log(result);
+
+        return result;
+    }
 }
