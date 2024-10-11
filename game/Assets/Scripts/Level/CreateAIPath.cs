@@ -17,22 +17,10 @@ public class CreateAIPath : MonoBehaviour
 
     public void RegeneratePath()
     {
-        StartCoroutine(WaitForLevel());
-    }
-
-    IEnumerator WaitForLevel()
-    {
-        Level level = null;
-        while (level == null) {
-            level = FindFirstObjectByType<MonoLevel>().Level;
-            yield return null;
-        }
-
+        Level level = FindFirstObjectByType<MonoLevel>().Level;
         IReadOnlyList<Vector2Int> list = level.GetPath();
         Path = AdjustListToWorld(list, level);
         CreateLineRenderer();
-
-        yield return null;
     }
 
     private void CreateLineRenderer()

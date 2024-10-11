@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f82b0143bdfa71f478761f7abad65888, type: 3}
   m_Name: Dragon
   m_EditorClassIdentifier: 
-  enemyMesh: {fileID: 0}
-  baseHealth: 0
-  baseSpeed: 0
-  extraHealthPerLevel: 0
-  extraSpeedPerLevel: 0
+  baseHealth: 10
+  baseSpeed: 1
+  extraHealthPerLevel: 1
+  extraSpeedPerLevel: 0.1

@@ -1,37 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
     [SerializeField] EnemySpawnData spawnData;
+    EnemyMovementSystem movement;
 
-    //nodes to move along
-    private List<Vector3> nodes;
-    private Vector3 randomOffset = Vector3.zero;
 
     //enemy stats
-    private int level;
-    private int health;
-    private float speed;
+    public int Level { get; private set; }
+    public int Health { get; private set; }
+    public float Speed { get; private set; }
+    public Vector3 randomOffset { get; private set; }
 
-    //other
-    public bool IsAlive { get; private set; }
+    private int targetNodeIndex = 0;
+    public int TargetNodeIndex { get { return targetNodeIndex; } set { targetNodeIndex = value; } }
 
-    private bool isAlive = false;
-    private bool isAllowedToMove = false;
-
-    Coroutine walkRoutine = null;
-
-    private void Start()
+    private void Awake()
     {
-        //get the path
-        nodes = FindFirstObjectByType<CreateAIPath>().Path;
-
         //create a random offset to make it neater
         float randomX = Random.Range(-0.25f, 0.25f);
         float randomZ = Random.Range(-0.25f, 0.25f);
         randomOffset = new(randomX, 0, randomZ);
+
+        movement = FindFirstObjectByType<EnemyMovementSystem>();
     }
 
     /// <summary>
@@ -42,96 +33,43 @@ public class EnemyBase : MonoBehaviour
     public void Initialize(int level)
     {
         //sets the values back to needed values
-        this.level = level;
-        health = spawnData.GetHealth(level);
-        speed = spawnData.GetSpeed(level);
+        this.Level = level;
+        Health = spawnData.GetHealth(level);
+        Speed = spawnData.GetSpeed(level);
 
         Revive();
     }
 
     public void TakeDamage(int amount)
     {
-        health -= amount;
-        if (health <= 0) Kill();
+        Health -= amount;
+        if (Health <= 0) Kill();
     }
 
     public void Kill()
     {
         gameObject.SetActive(false);
-        isAlive = false;
-        isAllowedToMove = false;
+        transform.rotation = Quaternion.identity;
+        targetNodeIndex = 0;
 
-        StopCoroutine(walkRoutine);
+        //remove from movement job system
+        movement.RemoveEnemy(this);
     }
 
     public void Revive()
     {
         gameObject.SetActive(true);
-        isAlive = true;
-        isAllowedToMove = true;
+        transform.rotation = Quaternion.identity;
+        targetNodeIndex = 0;
 
-        //start walking
-        walkRoutine = StartCoroutine(MoveAlongPath());
+        //add to movement job system
+        movement.AddEnemy(this);
     }
 
-    IEnumerator MoveAlongPath()
+    public void HasReachedEnd()
     {
-        //current target node index
-        int targetNodeIndex = 1;
-
-        //default targets at start
-        Vector3 currentPosition = nodes[0] + randomOffset;
-        Vector3 targetPosition = nodes[targetNodeIndex] + randomOffset;
-
-        //iterates through all the pairs of indexes.
-        while (targetNodeIndex < nodes.Count)
-        {
-
-
-            //saves data outside of loop
-            float deltaTime = 0;
-            float distanceAlongLerp = 0f;
-
-            //loop for the current lerp
-            while (distanceAlongLerp < 1)
-            {
-                if (!isAllowedToMove) yield return null;
-
-                //update time
-                deltaTime += Time.deltaTime;
-                distanceAlongLerp = deltaTime * speed;
-
-                //update current position
-                transform.position = Vector3.Lerp(currentPosition, targetPosition, distanceAlongLerp);
-
-                //rotate following the path
-                Vector3 dir = (targetPosition - transform.position).normalized;
-                if (dir.magnitude != 0) transform.rotation = Quaternion.LookRotation(dir);
-
-                //if reached end, make sure that position is correct, and reset time
-                if (distanceAlongLerp >= 1)
-                {
-                    transform.position = targetPosition;
-                    deltaTime = 0;
-                }
-
-                yield return null;
-            }
-
-            //update the index of the target
-            targetNodeIndex++;
-
-            //update target only if it's within the array
-            if (targetNodeIndex < nodes.Count)
-            {
-                //update current position to target current target position, update the new target position
-                currentPosition = targetPosition;
-                targetPosition = nodes[targetNodeIndex] + randomOffset;
-            }
-
-            yield return null;
-        }
-
-        yield return null;
+        //damage player or smthn
+        print("has reached end");
+        Kill();
     }
 }
