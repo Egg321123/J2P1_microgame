@@ -2900,8 +2900,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves: 10
-  spawnEnemies: 2147483647
-  enemySpawnRate: 0.00001
+  spawnEnemies: 20
+  enemySpawnRate: 0.5
   enemies:
   - {fileID: 8502515503591973096, guid: 85b93b603a896d9498836ee58abfa945, type: 3}
 --- !u!114 &1066355571
