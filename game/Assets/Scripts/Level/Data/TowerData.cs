@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public struct TowerData
 {
-    public GameObject tower;
+    public string towerPrefabName;
 
     public float attackSpeed;
     public float attackRange;
@@ -12,9 +12,9 @@ public struct TowerData
     public float projectileSpeed;
     public int level;
 
-    public TowerData(GameObject tower, float attackSpeed, float attackRange, float attackDamage, float projectileSpeed, int level = 1)
+    public TowerData(string towerPrefabName, float attackSpeed, float attackRange, float attackDamage, float projectileSpeed, int level = 1)
     {
-        this.tower = tower;
+        this.towerPrefabName = towerPrefabName;
         this.attackSpeed = attackSpeed;
         this.attackRange = attackRange;
         this.attackDamage = attackDamage;

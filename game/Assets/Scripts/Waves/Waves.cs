@@ -90,7 +90,7 @@ public class Waves : MonoBehaviour
         //search for available objects
         for (int i = 0; i < enemyPools[index].Count; i++)
         {
-            if (!enemyPools[index][i].activeInHierarchy) return enemyPools[index][i];
+            if (enemyPools[index][i].GetComponent<EnemyBase>().OpenForPooling) return enemyPools[index][i];
         }
 
         return CreateNewEnemy(index);
@@ -101,7 +101,6 @@ public class Waves : MonoBehaviour
     {
         // create a new instance of the enemy set to false
         GameObject obj = Instantiate(enemies[index], transform);
-        obj.SetActive(false);
 
         // add it to the pool and return the object
         enemyPools[index].Add(obj);

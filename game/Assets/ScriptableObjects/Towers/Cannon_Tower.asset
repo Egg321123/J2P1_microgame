@@ -16,7 +16,7 @@ MonoBehaviour:
   menuSprite: {fileID: 21300000, guid: 17f5245db76160946bb0b06ea0cecbcf, type: 3}
   cost: 10
   towerData:
-    tower: {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d, type: 3}
+    towerPrefabName: CannonTower_Prefab
     attackSpeed: 2
     attackRange: 10
     attackDamage: 1

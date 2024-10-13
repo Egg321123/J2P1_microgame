@@ -4,14 +4,19 @@ using Unity.Burst;
 using Unity.Collections;
 using UnityEngine.Jobs;
 using System.Collections.Generic;
-using System.Linq;
 
 public class EnemyMovementSystem : MonoBehaviour
 {
     // this script manages the movement of every enemy, add an enemy to the list if you want it to be controlled by this script,
     // remove it when you want it to stop being controlled by this script.
 
+    //enemies hold all enemies, enemiesToUpdate is a list of all enemies used in the current job, to avoid shifting list issues
     private List<EnemyBase> enemies = new();
+    private List<EnemyBase> enemiesToUpdate = new();
+
+    //store some values to avoid having to call pathcreator more then needed
+    public Vector3 PathStart { get; private set; }
+    private int pathReachedEndIndex;
 
     // data to pass on to job, native arrays are required when using jobs (multithreading)
     private TransformAccessArray enemyTransforms;
@@ -19,9 +24,8 @@ public class EnemyMovementSystem : MonoBehaviour
     private NativeArray<float> speeds;
     private NativeArray<Vector3> offsets;
     private NativeArray<int> targetNodeIndices;
-    private NativeArray<bool> hasReachedEnd;
 
-    // stores a reference to the job itself, to allow completion in late update
+    // stores a reference to the job itself
     private JobHandle jobHandle;
 
     // allow enemy to add and remove itself to the movement job
@@ -32,55 +36,57 @@ public class EnemyMovementSystem : MonoBehaviour
     {
         // Initialize the path nodes array, this doesn't change (hopefully)
         CreateAIPath pathCreator = FindFirstObjectByType<CreateAIPath>();
+        PathStart = pathCreator.Path[0];
+        pathReachedEndIndex = pathCreator.Path.Count;
         pathNodes = new NativeArray<Vector3>(pathCreator.Path.ToArray(), Allocator.Persistent);
     }
 
-    private void FixedUpdate() { if (enemies.Count != 0) CreateAndRunJob(); }
-
     private void LateUpdate()
     {
-        // Complete the job at the end of the frame
-        jobHandle.Complete();
+        //if the job is completed, complete the job, write some data to the ai and create a new job
+        if (jobHandle.IsCompleted)
+        {
+            // Complete the job at the end of the frame
+            jobHandle.Complete();
 
-        // update the target indices of the enemies using information from the job
-        if (enemies.Count != 0 && targetNodeIndices.IsCreated) 
-            for (int i = 0; i < targetNodeIndices.Length; i++) 
-                enemies[i].TargetNodeIndex = targetNodeIndices[i];
+            //check if the enemy count is higher then 0, and if all the arrays are made (by checking the main one)
+            if (enemiesToUpdate.Count > 0 && enemyTransforms.isCreated)
+            {
+                // Update target indices of the enemies using information from the job
+                for (int i = 0; i < enemiesToUpdate.Count; i++)
+                {
+                    enemiesToUpdate[i].TargetNodeIndex = targetNodeIndices[i];
+                    if (enemiesToUpdate[i].TargetNodeIndex == pathReachedEndIndex) enemiesToUpdate[i].HasReachedEnd();
+                } 
+            }
 
+            // Dispose of the data that changes between jobs to free up space
+            DisposeMost();
 
-        // Dispose of data to free up space.
-        // (garbage collection doesn't happen automatically on native arrays,
-        // you have to dispose of them yourself, otherwise you will get a memory leak.)
-        if (enemyTransforms.isCreated) enemyTransforms.Dispose();
-        if (speeds.IsCreated) speeds.Dispose();
-        if (offsets.IsCreated) offsets.Dispose();
-        if (targetNodeIndices.IsCreated) targetNodeIndices.Dispose();
-
-        //for if an enemy has reached the end
-        ReachedEnd();
-    }
-
-    private void ReachedEnd()
-    {
-        // check if an enemy has reached the end, if so trigger the proper behavior on those enemies
-        if (enemies.Count != 0 && hasReachedEnd.IsCreated)
-            for (int i = 0; i < hasReachedEnd.Length; i++)
-                if (hasReachedEnd[i]) enemies[i].HasReachedEnd();
-
-        // dispose the native array after checking
-        if (hasReachedEnd.IsCreated) hasReachedEnd.Dispose();
+            // Create and run a new job only if there are enemies present
+            if (enemies.Count > 0) jobHandle = CreateJobData().Schedule(enemyTransforms);
+        }
     }
 
     public EnemyMoveJob CreateJobData()
     {
-        //update the transform array, this allows a job to modify the tansforms on another thread (job) using some magic
-        enemyTransforms = new TransformAccessArray(enemies.Select(e => e.transform).ToArray());
+        enemiesToUpdate = new(enemies);
 
-        //create native arrays for all the data we want to pass on to the job, we update this every time due to the list of enemies being able to change
-        speeds = new NativeArray<float>(enemies.Select(e => e.Speed).ToArray(), Allocator.Persistent);
-        offsets = new NativeArray<Vector3>(enemies.Select(e => e.RandomOffset).ToArray(), Allocator.Persistent);
-        targetNodeIndices = new NativeArray<int>(enemies.Select(e => e.TargetNodeIndex).ToArray(), Allocator.Persistent);
-        hasReachedEnd = new NativeArray<bool>(enemies.Count, Allocator.Persistent);
+        //create new native arrays with the length of enemies
+        enemyTransforms = new TransformAccessArray(enemiesToUpdate.Count);
+        speeds = new NativeArray<float>(enemiesToUpdate.Count, Allocator.Persistent);
+        offsets = new NativeArray<Vector3>(enemiesToUpdate.Count, Allocator.Persistent);
+        targetNodeIndices = new NativeArray<int>(enemiesToUpdate.Count, Allocator.Persistent);
+
+        //fill all the native arrays in a single for loop, skip hasReachedEnd because we fill it with false for every enemy
+        for (int i = 0; i < enemiesToUpdate.Count; i++)
+        {
+            EnemyBase enemy = enemiesToUpdate[i];
+            enemyTransforms.Add(enemy.transform);
+            speeds[i] = enemy.Speed;
+            offsets[i] = enemy.RandomOffset;
+            targetNodeIndices[i] = enemy.TargetNodeIndex;
+        }
 
         //return the data as an EnemyMoveJob struct, this needs to be filled in fully, otherwise the job gets angry
         return new()
@@ -90,28 +96,29 @@ public class EnemyMovementSystem : MonoBehaviour
             Speeds = speeds,
             Offsets = offsets,
             TargetNodeIndices = targetNodeIndices,
-            HasReachedEnd = hasReachedEnd
         };
     }
 
-    public void CreateAndRunJob()
-    {
-        // creates the job using data created by another method, and schedules (starts/executes) it for our target transforms
-        EnemyMoveJob moveJob = CreateJobData();
-        jobHandle = moveJob.Schedule(enemyTransforms);
-    }
 
     // dispose of everything when this object is destroyed, otherwise uneccesary memory is used.
     private void OnDestroy()
     {
-        // Dispose of data to free up space.
-        // (garbage collection doesn't happen automatically on native arrays,
-        // you have to dispose of them yourself, otherwise you will get a memory leak.)
+        jobHandle.Complete();
+        DisposeMost();
+        if (pathNodes.IsCreated) pathNodes.Dispose();
+    }
+
+    /// <summary>
+    /// Dispose of data that changes between jobs to free up space.
+    /// (garbage collection doesn't happen automatically on native arrays,
+    /// you have to dispose of them yourself, otherwise you will get a memory leak.)
+    /// </summary>
+    private void DisposeMost()
+    {
         if (enemyTransforms.isCreated) enemyTransforms.Dispose();
         if (speeds.IsCreated) speeds.Dispose();
-        if (pathNodes.IsCreated) pathNodes.Dispose();
+        if (offsets.IsCreated) offsets.Dispose();
         if (targetNodeIndices.IsCreated) targetNodeIndices.Dispose();
-        if (hasReachedEnd.IsCreated) hasReachedEnd.Dispose();
     }
 }
 
@@ -125,7 +132,6 @@ public struct EnemyMoveJob : IJobParallelForTransform
     [ReadOnly] public NativeArray<float> Speeds;
     [ReadOnly] public NativeArray<Vector3> Offsets;
     public NativeArray<int> TargetNodeIndices;
-    public NativeArray<bool> HasReachedEnd;
 
     // Move every object with its own data
     public void Execute(int index, TransformAccess transform)
@@ -156,11 +162,6 @@ public struct EnemyMoveJob : IJobParallelForTransform
         if (direction.magnitude > 0) transform.rotation = Quaternion.LookRotation(direction);
 
         // Check if enemy has reached the target node with a tolerance
-        if (Vector3.Distance(transform.position, targetPosition) <= 0.01f)
-        {
-            //if below the limit of nodes, increment, else reached end
-            if (targetNodeIndex + 1 < PathNodes.Length) TargetNodeIndices[index]++;
-            else HasReachedEnd[index] = true;
-        }
+        if (Vector3.Distance(transform.position, targetPosition) <= 0.01f) TargetNodeIndices[index]++;
     }
 }

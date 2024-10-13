@@ -1,30 +1,47 @@
+using System.Collections;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+public abstract class EnemyBase : MonoBehaviour
 {
-    // there is no isAlive bool as it's more performance friendly to just check if gameObject.isActiveInHierarchy,
-    // as it doesn't require memory to be allocated
+    [SerializeField] private string enemyName;
 
-    [SerializeField] EnemySpawnData spawnData;
+    [Header("default values")]
+    [SerializeField] private int baseHealth = 10;
+    [SerializeField] private float baseSpeed = 1;
+
+    [Header("Level scaling stats")]
+    [SerializeField] private int extraHealthPerLevel = 1;
+    [SerializeField] private float extraSpeedPerLevel = 0.1f;
+
+    //saves the movement script that controls all ai
     EnemyMovementSystem movement;
 
     // enemy stats
-    public int Level { get; private set; }
     public int Health { get; private set; }
     public float Speed { get; private set; }
     public Vector3 RandomOffset { get; private set; }
 
-    // other utility
-    private int targetNodeIndex = 0;
+    // utility
+    public bool OpenForPooling { get; private set; } // OpenForPooling = false is the same as this enemy being alive
+    [HideInInspector] public int TargetNodeIndex = 0;
+
+
 
     private void Awake()
     {
-        // create a random offset to make it neater
+        // create a random offset to make it look like the enemies are not strictly following the path
         float randomX = Random.Range(-0.25f, 0.25f);
         float randomZ = Random.Range(-0.25f, 0.25f);
         RandomOffset = new(randomX, 0, randomZ);
 
+        //get a reference to the movement script
         movement = FindFirstObjectByType<EnemyMovementSystem>();
+
+        //once everything is done, ready for pooling
+        OpenForPooling = true;
+
+        //hide the object
+        gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -32,51 +49,74 @@ public class EnemyBase : MonoBehaviour
     /// </summary>
     /// <param name="level"></param>
     /// <param name="data"></param>
-    public void Initialize(int level)
+    public virtual void Initialize(int level)
     {
-        // sets the values back to needed values
-        Level = level;
-        Health = spawnData.GetHealth(level);
-        Speed = spawnData.GetSpeed(level);
+        //mark this as an unavailable object to spawn, because it's already being spawned
+        OpenForPooling = false;
 
-        // prepare object and add to movement job system
-        targetNodeIndex = 0;
+        // sets the values back to needed values
+        Health = baseHealth + (extraHealthPerLevel * level);
+        Speed = baseSpeed + (extraSpeedPerLevel * level);
+
+        //prepare for moving again, make sure to reset these values, otherwise the movement script might get angry
+        TargetNodeIndex = 0;
+        transform.position = movement.PathStart;
         gameObject.SetActive(true);
         StartMoving();
     }
 
-    // health stuff
+
 
     /// <summary>
     /// allows the enemy to take damage, also handles the enemy dying automatically
     /// </summary>
     /// <param name="amount"></param>
-    public void TakeDamage(int amount)
+    public virtual void TakeDamage(int amount)
     {
         Health -= amount;
         if (Health <= 0) Kill();
     }
+    /// <summary>
+    /// "kills" the enemy, base method prepares it for pooling (respawning)
+    /// </summary>
+    protected virtual void Kill() => StartCoroutine(PrepareForPooling());
+
+
 
     /// <summary>
-    /// "kills" the enemy, allows for the enemy to be used in pooling again NEVER destroy the enemy
+    /// used by the movement script only, triggers when the enemy reaches the end of the path, so where the player is.
     /// </summary>
-    private void Kill()
-    {
-        // hides the enemy and remove it from movement job system
-        gameObject.SetActive(false);
-        movement.RemoveEnemy(this);
-    }
-
-    //allows the movement script interact back to the enemy to tell it that it reached the end, for now just kills
     public void HasReachedEnd()
     {
         Kill();
         //damage player or smthn
     }
-    public int TargetNodeIndex { get { return targetNodeIndex; } set { targetNodeIndex = value; } }
 
-    //stuff that allows you to interact with the movement script
+
+
+    /// <summary>
+    /// allows this enemy to move.
+    /// </summary>
     protected void StartMoving() => movement.AddEnemy(this);
+    /// <summary>
+    /// stops this enemy from moving
+    /// </summary>
     protected void StopMoving() => movement.RemoveEnemy(this);
-    
+
+
+    /// <summary>
+    /// handles the pooling behavior of this enemy, removes it from the movement behavior, and mark is as OpenForPooling
+    /// </summary>
+    /// <returns></returns>
+    protected IEnumerator PrepareForPooling()
+    {
+        StopMoving();
+        yield return new WaitForEndOfFrame();
+
+        // tell other scripts that it's ready for pooling again, and hide this object
+        OpenForPooling = true;
+        gameObject.SetActive(false);
+
+        yield return null;
+    }
 }
