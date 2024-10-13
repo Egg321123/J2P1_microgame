@@ -58,12 +58,6 @@ public class Waves : MonoBehaviour
             select enemy
         ).Take(count);
     }
-    // draw path for debuggong
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(GetEnemiesInRadius(Vector3.zero, float.PositiveInfinity, 1).First().transform.position + new Vector3(0, 1, 0), 0.1f);
-    }
 
     // spawns the enemies
     private IEnumerator SpawnLoop()

@@ -56,11 +56,14 @@ MonoBehaviour:
     full: {fileID: 9154874406465099594, guid: 18cf3160a7674624e9429129a5ec34dd, type: 3}
     empty: {fileID: -2368555150270231412, guid: 9c05e35fe1b880e4bb87ca45ab2814f4,
       type: 3}
-  towerPrefabs:
-  - {fileID: 3938336332173716440, guid: 4a9bf0def9bf5de46b54335095f1c803, type: 3}
-  - {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d, type: 3}
-  - {fileID: 3938336332173716440, guid: 733e81976d6e2ec468407e4362382061, type: 3}
-  - {fileID: 3938336332173716440, guid: 08806b9936609cf418de91da343be9ab, type: 3}
+  ArrowTower: {fileID: 3938336332173716440, guid: 4a9bf0def9bf5de46b54335095f1c803,
+    type: 3}
+  CannonTower: {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d,
+    type: 3}
+  MagicTower: {fileID: 3938336332173716440, guid: 733e81976d6e2ec468407e4362382061,
+    type: 3}
+  ShockwaveTower: {fileID: 3938336332173716440, guid: 08806b9936609cf418de91da343be9ab,
+    type: 3}
 --- !u!33 &-2851164240647530008
 MeshFilter:
   m_ObjectHideFlags: 0

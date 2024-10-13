@@ -7,7 +7,7 @@ public class ArrowTower : ProjectileTowerBase
 
     protected override IEnumerable<GameObject> SelectTargets() => GameManager.Instance.Waves.GetEnemiesInRadius(transform.position,towerData.attackRange, 1);
 
-    protected override void ProjectileHit(GameObject target) => target.GetComponent<EnemyBase>().TakeDamage(1000);
+    protected override void ProjectileHit(GameObject target) => target.GetComponent<EnemyBase>().TakeDamage(towerData.attackDamage);
 
     protected override void ShotTarget(GameObject target)
     {

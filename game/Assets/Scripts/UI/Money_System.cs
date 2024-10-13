@@ -1,39 +1,49 @@
 using TMPro;
 using UnityEngine;
 
-public class Money_System : MonoBehaviour
+public class MoneyHandler : MonoBehaviour
 {
     [SerializeField] TMP_Text scoreUI;
-    [SerializeField] int money = 50;
-    /*[SerializeField] int cost = 10;
-    [SerializeField] int give = 20;*/
-    //int moneyMin = 0;
-    /*private void FixedUpdate()
+    [SerializeField] int money;
+
+    private void Start()
     {
-        UpdateMoney();
-        if (money <= 0)
-        {
-            money = moneyMin;
-        }
-    }*/
-    void UpdateUI() => scoreUI.text = money.ToString();
+        money = GameManager.Instance.Save.data.money;
+        UpdateUI();
+    }
+
+    /// <summary>
+    /// subtracts the amount of money you have from the total amount
+    /// </summary>
+    /// <param name="price"></param>
+    /// <returns>returns true if you can pay for it, false if you cannot</returns>
     public bool Pay(int price)
     {
         if (money >= price)
         {
             money -= price;
+            
+            GameManager.Instance.Save.data.money = money;
+            GameManager.Instance.Save.data.stats.IncreaseMoneySpent(price);
+
             UpdateUI();
             return true;
         }
         else return false;
-        /* if (money <= cost) 
-         {
-             Debug.Log("Not enough money");
-         }*/
     }
-    public void Earn(int amaunt)
+
+    /// <summary>
+    /// increases the amount of money you have based on the amount an enemy awards
+    /// </summary>
+    /// <param name="amount"></param>
+    public void Earn(int amount)
     {
-        money += amaunt;
+        money += amount;
+
+        GameManager.Instance.Save.data.money = money;
+
         UpdateUI();
     }
+
+    void UpdateUI() => scoreUI.text = money.ToString();
 }

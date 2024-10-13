@@ -15,7 +15,7 @@ public struct SaveData
         // assign the default values
         level = 0;
         wave = 0;
-        money = 0;
+        money = 250;
         towers = new TileData[0];
 
         // initialize statistics with their default values

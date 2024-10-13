@@ -8,16 +8,20 @@ public abstract class EnemyBase : MonoBehaviour
     [Header("default values")]
     [SerializeField] private int baseHealth = 10;
     [SerializeField] private float baseSpeed = 1;
+    [SerializeField] private int baseDroppedMoney = 10;
 
     [Header("Level scaling stats")]
     [SerializeField] private int extraHealthPerLevel = 1;
     [SerializeField] private float extraSpeedPerLevel = 0.1f;
+    [SerializeField] private int extraDroppedMoneyPerLevel = 1;
 
     //saves the movement script that controls all ai
     EnemyMovementSystem movement;
+    MoneyHandler moneyHandler;
 
     // enemy stats
-    public int Health { get; private set; }
+    private int health;
+    private int droppedMoney;
     public float Speed { get; private set; }
     public Vector3 RandomOffset { get; private set; }
 
@@ -36,6 +40,7 @@ public abstract class EnemyBase : MonoBehaviour
 
         //get a reference to the movement script
         movement = FindFirstObjectByType<EnemyMovementSystem>();
+        moneyHandler = FindFirstObjectByType<MoneyHandler>();
 
         //once everything is done, ready for pooling
         OpenForPooling = true;
@@ -43,6 +48,8 @@ public abstract class EnemyBase : MonoBehaviour
         //hide the object
         gameObject.SetActive(false);
     }
+
+
 
     /// <summary>
     /// run either when instancing this object, or when grabbing it from the pool
@@ -55,8 +62,9 @@ public abstract class EnemyBase : MonoBehaviour
         OpenForPooling = false;
 
         // sets the values back to needed values
-        Health = baseHealth + (extraHealthPerLevel * level);
+        health = baseHealth + (extraHealthPerLevel * level);
         Speed = baseSpeed + (extraSpeedPerLevel * level);
+        droppedMoney = baseDroppedMoney + (extraDroppedMoneyPerLevel * level);
 
         //prepare for moving again, make sure to reset these values, otherwise the movement script might get angry
         TargetNodeIndex = 0;
@@ -73,13 +81,18 @@ public abstract class EnemyBase : MonoBehaviour
     /// <param name="amount"></param>
     public virtual void TakeDamage(int amount)
     {
-        Health -= amount;
-        if (Health <= 0) Kill();
+        health -= amount;
+        if (health <= 0) Kill();
     }
     /// <summary>
     /// "kills" the enemy, base method prepares it for pooling (respawning)
     /// </summary>
-    protected virtual void Kill() => StartCoroutine(PrepareForPooling());
+    protected virtual void Kill()
+    {
+        GameManager.Instance.Save.data.stats.IncreaseKills();
+        moneyHandler.Earn(droppedMoney);
+        StartCoroutine(PrepareForPooling());
+    }
 
 
 

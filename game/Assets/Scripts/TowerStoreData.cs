@@ -13,7 +13,7 @@ public class TowerStoreData : ScriptableObject
     [Header("Base tower information")]
     public TowerData towerData = new()
     {
-        //does not include prefab, as you have to assign it yourself
+        towerType = TowerType.ArrowTower,
         attackSpeed = 0.5f,
         attackRange = 5,
         attackDamage = 1,

@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: Archer
   menuSprite: {fileID: 21300000, guid: 17f5245db76160946bb0b06ea0cecbcf, type: 3}
-  cost: 5
+  cost: 50
   towerData:
-    towerPrefabName: ArrowTower_Prefab
-    attackSpeed: 2
-    attackRange: 10
-    attackDamage: 1
+    towerType: 0
+    attackSpeed: 1
+    attackRange: 5
+    attackDamage: 5
     projectileSpeed: 2
     level: 1
