@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
 
 public class FrameCounter : MonoBehaviour
 {
+#if DEBUG
     private TMP_Text fpsCounter;
 
     private int lastFrameIndex;
@@ -36,4 +35,9 @@ public class FrameCounter : MonoBehaviour
 
         return frameDeltaTimeArray.Length / total;
     }
+#else
+    private void Awake() {
+        Destroy(GetComponent<TMP_Text>().GameObject);
+    };
+#endif
 }
