@@ -56,13 +56,13 @@ MonoBehaviour:
     full: {fileID: 9154874406465099594, guid: 18cf3160a7674624e9429129a5ec34dd, type: 3}
     empty: {fileID: -2368555150270231412, guid: 9c05e35fe1b880e4bb87ca45ab2814f4,
       type: 3}
-  ArrowTower: {fileID: 3938336332173716440, guid: 4a9bf0def9bf5de46b54335095f1c803,
+  ArrowTower: {fileID: 8963619658345935335, guid: 0d5961edf69aa3548b041a40de364350,
     type: 3}
-  CannonTower: {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d,
+  CannonTower: {fileID: 4423082325038212542, guid: 9eab24403613b2840ba5e16d8c69e88b,
     type: 3}
-  MagicTower: {fileID: 3938336332173716440, guid: 733e81976d6e2ec468407e4362382061,
+  MagicTower: {fileID: 4799747152397914917, guid: b814d778f7394014e9a56e0aec2f753f,
     type: 3}
-  ShockwaveTower: {fileID: 3938336332173716440, guid: 08806b9936609cf418de91da343be9ab,
+  ShockwaveTower: {fileID: 2320800557303085803, guid: 60e723498f75b1b458051bac71734b17,
     type: 3}
 --- !u!33 &-2851164240647530008
 MeshFilter:
