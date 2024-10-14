@@ -5,11 +5,16 @@ public class CameraMovement : MonoBehaviour
 {
     public const float TAU = MathF.PI * 2; // τ > π
 
-    [SerializeField] private float minAmount = 2.2F;
-    [SerializeField] private float maxAmount = TAU / 2.0F;
-    [SerializeField] private float radius = 25.0F;
+    [Header("camera tilt (radians)")]
+    [SerializeField, Range(0.0F, TAU)] private float tiltAmount = 3.0F;             // the amount that the camera is tilted
+    [SerializeField, Range(0.0F, TAU)] private float minTiltAmount = 2.2F;          // the minimum amount that the camera is allowed to be tilted
+    [SerializeField, Range(0.0F, TAU)] private float maxTiltAmount = TAU / 2.0F;    // the maximum amount that the camera is allowed to be tilted
 
-    private float amount = 3.0F;
+    [Header("camera zoom (radius)")]
+    [SerializeField, Min(0)] private float radius = 25.0F;                          // the radius of the circle on which the camera moves
+    [SerializeField, Min(0)] private float minRadius = 10.0F;                       // the mimimum radius that the circle is allowed to have
+    [SerializeField, Min(0)] private float maxRadius = 35.0F;                       // the maximum radius that the circle is allowed to have
+
     private int lvlWidth = 0;
     private int lvlHeight = 0;
 
@@ -19,8 +24,8 @@ public class CameraMovement : MonoBehaviour
         {
             case 1:
                 Touch touch = Input.GetTouch(0);
-                float moveAmount = touch.deltaPosition.y / Screen.height * TAU; // get the amount that should be moved
-                amount -= moveAmount;
+                float moveAmount = touch.deltaPosition.y / Screen.height * TAU;                     // get the amount that should be tilted
+                tiltAmount = Mathf.Clamp(tiltAmount - moveAmount, minTiltAmount, maxTiltAmount);    // apply the tilt amount, clamping the value between the min and max
                 break;
             case 2:
                 Touch t1 = Input.GetTouch(0);
@@ -30,9 +35,9 @@ public class CameraMovement : MonoBehaviour
                 Vector2 t1d = t1.position - t1.deltaPosition;
                 Vector2 t2d = t2.position - t2.deltaPosition;
 
-                // get the lengths of the current and previous, and get the difference between these two
-                float direction = (t1.position - t2.position).magnitude - (t1d - t2d).magnitude;
-                radius -= direction / Screen.width * radius;    // apply the difference to the radius
+                float direction = (t1.position - t2.position).magnitude - (t1d - t2d).magnitude;    // get the lengths of the current and previous, and get the difference between these two
+                float amount = direction / Screen.width * radius;                                   // calculate the amount that the radius should change
+                radius = Mathf.Clamp(radius - amount, minRadius, maxRadius);                        // apply the amount to the radius, clamping the value between minimum radius and maximum radius
                 break;
         }
 
@@ -41,8 +46,8 @@ public class CameraMovement : MonoBehaviour
 
     private Vector3 GetCameraPosition()
     {
-        float z = MathF.Sin(amount + (TAU / 2.0F)) * radius;
-        float y = MathF.Cos(amount + (TAU / 2.0F)) * radius;
+        float z = MathF.Sin(tiltAmount + (TAU / 2.0F)) * radius;
+        float y = MathF.Cos(tiltAmount + (TAU / 2.0F)) * radius;
 
         return new Vector3(lvlWidth / 2.0F, y, (lvlHeight / 2.0F) + z);
     }
