@@ -9,13 +9,13 @@ public struct Statistics
     public int kills;
     public int towersPlaced;
     public int towersUpgraded;
-    public int moneySpent;
+    public long moneySpent;
 
     //total
     public int totalKills;
     public int totalTowersPlaced;
     public int totalTowersUpgraded;
-    public int totalMoneySpent;
+    public long totalMoneySpent;
 
     public void Initialize()
     {
