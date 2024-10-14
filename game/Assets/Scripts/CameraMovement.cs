@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
@@ -20,15 +19,24 @@ public class CameraMovement : MonoBehaviour
         {
             case 1:
                 Touch touch = Input.GetTouch(0);
-                float moveAmount = touch.deltaPosition.y / Screen.height * TAU;
+                float moveAmount = touch.deltaPosition.y / Screen.height * TAU; // get the amount that should be moved
                 amount -= moveAmount;
                 break;
             case 2:
                 Touch t1 = Input.GetTouch(0);
                 Touch t2 = Input.GetTouch(1);
-                radius += Vector2.Distance(t1.deltaPosition, t2.deltaPosition) * 0.01F;
+
+                // get where the finger was last frame
+                Vector2 t1d = t1.position - t1.deltaPosition;
+                Vector2 t2d = t2.position - t2.deltaPosition;
+
+                // get the lengths of the current and previous, and get the difference between these two
+                float direction = (t1.position - t2.position).magnitude - (t1d - t2d).magnitude;
+                radius -= direction / Screen.width * radius;    // apply the difference to the radius
                 break;
         }
+
+
     }
 
     private Vector3 GetCameraPosition()
