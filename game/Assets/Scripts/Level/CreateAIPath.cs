@@ -10,29 +10,17 @@ public class CreateAIPath : MonoBehaviour
     public List<Vector3> Path { get; private set; } = null;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         RegeneratePath();
     }
 
     public void RegeneratePath()
     {
-        StartCoroutine(WaitForLevel());
-    }
-
-    IEnumerator WaitForLevel()
-    {
-        Level level = null;
-        while (level == null) {
-            level = FindFirstObjectByType<MonoLevel>().Level;
-            yield return null;
-        }
-
+        Level level = FindFirstObjectByType<MonoLevel>().Level;
         IReadOnlyList<Vector2Int> list = level.GetPath();
         Path = AdjustListToWorld(list, level);
         CreateLineRenderer();
-
-        yield return null;
     }
 
     private void CreateLineRenderer()

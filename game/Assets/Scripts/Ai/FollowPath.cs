@@ -29,34 +29,11 @@ public class FollowPath : MonoBehaviour
     // Coroutine that waits for the path to be initialized
     private IEnumerator WaitForPath()
     {
-        CreateAIPath pathCreator = FindFirstObjectByType<CreateAIPath>();
 
-        // Keep checking until the path from CreateAIPath is initialized
-        while (pathCreator.Path == null) yield return null;
-
-        // Now the path is no longer null, we can proceed
-        nodes = pathCreator.Path;
-
-        // Create a random offset
-        System.Random random = new();
-        float randomX = (float)random.NextDouble() - 0.5f;
-        float randomZ = (float)random.NextDouble() - 0.5f;
-        randomOffset = new(randomX / 2f, 0, randomZ / 2f);
-
-        //TEMPORARY, REMOVE LATER
-        RandomSpeed();
 
         // Now start moving along the path
         StartCoroutine(MoveAlongPath());
         yield return null;
-    }
-
-    /// <summary>
-    /// REMOVE LATER, JUST FOR TESTING
-    /// </summary>
-    private void RandomSpeed()
-    {
-        speed = Random.Range(0.5f,2f);
     }
 
     IEnumerator MoveAlongPath()

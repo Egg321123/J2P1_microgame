@@ -1,13 +1,72 @@
 using System;
-using UnityEngine;
 
 [Serializable]
 public struct Statistics
 {
     // add here the statistics that you want to collect
 
+    //current level
+    public int kills;
+    public int towersPlaced;
+    public int towersUpgraded;
+    public long moneySpent;
+
+    //total
+    public int totalKills;
+    public int totalTowersPlaced;
+    public int totalTowersUpgraded;
+    public long totalMoneySpent;
+
     public void Initialize()
     {
         // assign the default values
+        kills = 0;
+        towersPlaced = 0;
+        towersUpgraded = 0;
+        moneySpent = 0;
+
+        totalKills = 0;
+        totalTowersPlaced = 0;
+        totalTowersUpgraded = 0;
+        totalMoneySpent = 0;
+    }
+
+    public void IncreaseKills(int amount = 1)
+    {
+        kills += amount;
+        totalKills += amount;
+    }
+
+    public void IncreaseTowersPlaced(int amount = 1)
+    {
+        towersPlaced += amount;
+        totalTowersPlaced += amount;
+    }
+
+    public void IncreaseTowersUpgraded(int amount = 1)
+    {
+        towersUpgraded += amount;
+        totalTowersPlaced += amount;
+    }
+
+    public void IncreaseMoneySpent(int amount = 1)
+    {
+        moneySpent += amount;
+        totalMoneySpent += amount;
+    }
+
+
+
+    /// <summary>
+    /// clears the statistics connected to this specific level, does not clear between waves,
+    /// only when going to the next level, or restarting the level.
+    /// </summary>
+    public void ClearLevelStats()
+    {
+        // assign the default values
+        kills = 0;
+        towersPlaced = 0;
+        towersUpgraded = 0;
+        moneySpent = 0;
     }
 }

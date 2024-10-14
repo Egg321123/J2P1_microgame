@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class ShockwaveTower : TowerBase
@@ -8,6 +7,8 @@ public class ShockwaveTower : TowerBase
 
     protected override void ShotTarget(GameObject target)
     {
-        target.GetComponent<AIDeath>().Die();
+        EnemyBase targetScript = target.GetComponent<EnemyBase>();
+        targetScript.ApplyStun(2);
+        targetScript.TakeDamage(towerData.attackDamage);
     }
 }

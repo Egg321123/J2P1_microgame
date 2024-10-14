@@ -58,12 +58,6 @@ public class Waves : MonoBehaviour
             select enemy
         ).Take(count);
     }
-    // draw path for debuggong
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(GetEnemiesInRadius(Vector3.zero, float.PositiveInfinity, 1).First().transform.position + new Vector3(0, 1, 0), 0.1f);
-    }
 
     // spawns the enemies
     private IEnumerator SpawnLoop()
@@ -76,8 +70,7 @@ public class Waves : MonoBehaviour
             // get a random enemy
             int index = UnityEngine.Random.Range(0, enemies.Length);
             GameObject enemy = GetPooledEnemy(index);
-            enemy.SetActive(true);
-            enemy.GetComponent<FollowPath>().StartWalking();
+            enemy.GetComponent<EnemyBase>().Initialize(1);
 
             yield return null;
         }
@@ -91,7 +84,7 @@ public class Waves : MonoBehaviour
         //search for available objects
         for (int i = 0; i < enemyPools[index].Count; i++)
         {
-            if (!enemyPools[index][i].activeInHierarchy) return enemyPools[index][i];
+            if (enemyPools[index][i].GetComponent<EnemyBase>().OpenForPooling) return enemyPools[index][i];
         }
 
         return CreateNewEnemy(index);
@@ -102,7 +95,6 @@ public class Waves : MonoBehaviour
     {
         // create a new instance of the enemy set to false
         GameObject obj = Instantiate(enemies[index], transform);
-        obj.SetActive(false);
 
         // add it to the pool and return the object
         enemyPools[index].Add(obj);
