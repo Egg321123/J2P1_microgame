@@ -55,6 +55,12 @@ public struct Statistics
         totalMoneySpent += amount;
     }
 
+
+
+    /// <summary>
+    /// clears the statistics connected to this specific level, does not clear between waves,
+    /// only when going to the next level, or restarting the level.
+    /// </summary>
     public void ClearLevelStats()
     {
         // assign the default values
