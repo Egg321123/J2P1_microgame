@@ -79,6 +79,8 @@ public class CameraMovement : MonoBehaviour
     {
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(new Vector3(lvlWidth / 2.0F, 0.0F, lvlHeight / 2.0F), radius);
+
+        transform.position = GetCameraPosition();
     }
 #endif
 }
