@@ -36,8 +36,9 @@ public class FrameCounter : MonoBehaviour
         return frameDeltaTimeArray.Length / total;
     }
 #else
-    private void Awake() {
-        Destroy(GetComponent<TMP_Text>().GameObject);
-    };
+    private void Awake()
+    {
+        Destroy(GetComponent<TMP_Text>().gameObject);
+    }
 #endif
 }
