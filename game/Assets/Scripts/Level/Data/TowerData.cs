@@ -8,11 +8,11 @@ public struct TowerData
 
     public float attackSpeed;
     public float attackRange;
-    public float attackDamage;
+    public int attackDamage;
     public float projectileSpeed;
     public int level;
 
-    public TowerData(GameObject tower, float attackSpeed, float attackRange, float attackDamage, float projectileSpeed, int level = 1)
+    public TowerData(GameObject tower, float attackSpeed, float attackRange, int attackDamage, float projectileSpeed, int level = 1)
     {
         this.tower = tower;
         this.attackSpeed = attackSpeed;
