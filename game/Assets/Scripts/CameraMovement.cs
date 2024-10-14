@@ -15,10 +15,12 @@ public class CameraMovement : MonoBehaviour
     [SerializeField, Min(0)] private float minRadius = 10.0F;                       // the mimimum radius that the circle is allowed to have
     [SerializeField, Min(0)] private float maxRadius = 35.0F;                       // the maximum radius that the circle is allowed to have
 
+    // level dimensions
     private int lvlWidth = 0;
     private int lvlHeight = 0;
 
-    private void GetInput(int fingers)
+    // updates the input variables
+    private void UpdateInput(int fingers)
     {
         switch (fingers)
         {
@@ -40,8 +42,6 @@ public class CameraMovement : MonoBehaviour
                 radius = Mathf.Clamp(radius - amount, minRadius, maxRadius);                        // apply the amount to the radius, clamping the value between minimum radius and maximum radius
                 break;
         }
-
-
     }
 
     private Vector3 GetCameraPosition()
@@ -66,7 +66,8 @@ public class CameraMovement : MonoBehaviour
         if (Input.touchCount < 0)
             return;
 
-        GetInput(Input.touchCount);
+        // update the input
+        UpdateInput(Input.touchCount);
 
         // set the camera position
         transform.position = GetCameraPosition();
