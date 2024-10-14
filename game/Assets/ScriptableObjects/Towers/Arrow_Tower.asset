@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: Archer
   menuSprite: {fileID: 21300000, guid: 17f5245db76160946bb0b06ea0cecbcf, type: 3}
-  cost: 5
+  cost: 50
   towerData:
-    tower: {fileID: 3938336332173716440, guid: 4a9bf0def9bf5de46b54335095f1c803, type: 3}
-    attackSpeed: 2
-    attackRange: 10
-    attackDamage: 1
+    towerType: 0
+    attackSpeed: 1
+    attackRange: 2.5
+    attackDamage: 5
     projectileSpeed: 2
     level: 1

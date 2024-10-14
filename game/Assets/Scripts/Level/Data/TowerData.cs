@@ -1,20 +1,19 @@
 using System;
-using UnityEngine;
 
 [Serializable]
 public struct TowerData
 {
-    public GameObject tower;
+    public TowerType towerType;
 
     public float attackSpeed;
     public float attackRange;
-    public float attackDamage;
+    public int attackDamage;
     public float projectileSpeed;
     public int level;
 
-    public TowerData(GameObject tower, float attackSpeed, float attackRange, float attackDamage, float projectileSpeed, int level = 1)
+    public TowerData(TowerType towerType, float attackSpeed, float attackRange, int attackDamage, float projectileSpeed, int level = 1)
     {
-        this.tower = tower;
+        this.towerType = towerType;
         this.attackSpeed = attackSpeed;
         this.attackRange = attackRange;
         this.attackDamage = attackDamage;

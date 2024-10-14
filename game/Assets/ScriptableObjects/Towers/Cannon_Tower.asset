@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: Cannon
   menuSprite: {fileID: 21300000, guid: 17f5245db76160946bb0b06ea0cecbcf, type: 3}
-  cost: 10
+  cost: 100
   towerData:
-    tower: {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d, type: 3}
-    attackSpeed: 2
-    attackRange: 10
-    attackDamage: 1
+    towerType: 1
+    attackSpeed: 0.1
+    attackRange: 2.5
+    attackDamage: 10
     projectileSpeed: 2
     level: 1

@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 public class PlaceOnGrid : MonoBehaviour
@@ -10,44 +7,43 @@ public class PlaceOnGrid : MonoBehaviour
     [SerializeField] private GameObject grid;
     [SerializeField] private MonoTile objectToPlace = null;
 
+    private MoneyHandler moneyHandler;
     private MonoLevel monoLevel = null;
     private bool isInPlaceMode = false;
     private GameObject gridObj = null;
 
+    private TowerStoreData storeData;
     private TowerData towerData;
 
     private void Start()
     {
-        StartCoroutine(WaitForLevel());
-    }
-    IEnumerator WaitForLevel()
-    {
-        while (monoLevel == null)
-        {
-            monoLevel = FindFirstObjectByType<MonoLevel>();
-            yield return null;
-        }
-
-        //create grid only when monolevel has become available
+        monoLevel = FindFirstObjectByType<MonoLevel>();
+        moneyHandler = FindFirstObjectByType<MoneyHandler>();
         CreateGrid();
-
-        yield return null;
     }
 
-    public void PlaceModeToggle(TowerStoreData data)
+    public void EnablePlaceMode(TowerStoreData data)
     {
-        towerData = data.towerData;
+        storeData = data;
+        towerData = storeData.towerData;
 
-        isInPlaceMode = !isInPlaceMode;
-        gridObj.SetActive(!gridObj.activeInHierarchy);
+        isInPlaceMode = true;
+        gridObj.SetActive(true);
 
         //go into the place mode cycle
         StartCoroutine(PlacingMode());
     }
 
+    public void DisablePlaceMode()
+    {
+        isInPlaceMode = false;
+        gridObj.SetActive(false);
+    }
+
     public void ChangeTower(TowerStoreData data)
     {
-        towerData = data.towerData;
+        storeData = data;
+        towerData = storeData.towerData;
     }
 
     private IEnumerator PlacingMode()
@@ -77,7 +73,11 @@ public class PlaceOnGrid : MonoBehaviour
                         Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
 
                         // Places object in the scene if you are allowed to place there
-                        if (monoLevel.Level.IsEmpty(pos)) monoLevel.SetTile(objectToPlace, pos, TileType.TOWER, towerData, true);
+                        if (monoLevel.Level.IsEmpty(pos) && moneyHandler.Pay(storeData.cost))
+                        {
+                            GameManager.Instance.Save.data.stats.IncreaseTowersPlaced();
+                            monoLevel.SetTile(objectToPlace, pos, TileType.TOWER, towerData, true);
+                        }
                     }
 
                 }

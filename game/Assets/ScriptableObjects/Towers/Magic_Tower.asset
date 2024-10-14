@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: Magic
   menuSprite: {fileID: 21300000, guid: 17f5245db76160946bb0b06ea0cecbcf, type: 3}
-  cost: 15
+  cost: 75
   towerData:
-    tower: {fileID: 3938336332173716440, guid: 733e81976d6e2ec468407e4362382061, type: 3}
+    towerType: 2
     attackSpeed: 2
-    attackRange: 10
+    attackRange: 2.5
     attackDamage: 1
     projectileSpeed: 2
     level: 1
