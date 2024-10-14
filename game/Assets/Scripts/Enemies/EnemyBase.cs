@@ -28,6 +28,7 @@ public abstract class EnemyBase : MonoBehaviour
     // utility
     public bool OpenForPooling { get; private set; } // OpenForPooling = false is the same as this enemy being alive
     [HideInInspector] public int TargetNodeIndex = 0;
+    private bool isStunned = false;
 
 
 
@@ -91,9 +92,26 @@ public abstract class EnemyBase : MonoBehaviour
     {
         GameManager.Instance.Save.data.stats.IncreaseKills();
         moneyHandler.Earn(droppedMoney);
-        StartCoroutine(PrepareForPooling());
+        if (!OpenForPooling) StartCoroutine(PrepareForPooling());
     }
 
+    public void ApplyStun(float length)
+    {
+        if (!isStunned) StartCoroutine(StunMoveDelay(length));
+    }
+
+    private IEnumerator StunMoveDelay(float length)
+    {
+        isStunned = true;
+        StopMoving();
+
+        yield return new WaitForSeconds(length);
+
+        if (!OpenForPooling) StartMoving();
+        isStunned = false;
+
+        yield return null;
+    }
 
 
     /// <summary>
@@ -101,11 +119,9 @@ public abstract class EnemyBase : MonoBehaviour
     /// </summary>
     public void HasReachedEnd()
     {
-        Kill();
+        if (!OpenForPooling) StartCoroutine(PrepareForPooling());
         //damage player or smthn
     }
-
-
 
     /// <summary>
     /// allows this enemy to move.
@@ -132,4 +148,5 @@ public abstract class EnemyBase : MonoBehaviour
 
         yield return null;
     }
+
 }

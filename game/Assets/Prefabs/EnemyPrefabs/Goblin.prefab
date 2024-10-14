@@ -50,8 +50,10 @@ MonoBehaviour:
   enemyName: Goblin
   baseHealth: 10
   baseSpeed: 1
+  baseDroppedMoney: 9
   extraHealthPerLevel: 1
   extraSpeedPerLevel: 0.1
+  extraDroppedMoneyPerLevel: 1
   TargetNodeIndex: 0
 --- !u!65 &619773690922722690
 BoxCollider:

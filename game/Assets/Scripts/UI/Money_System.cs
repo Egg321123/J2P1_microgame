@@ -4,7 +4,8 @@ using UnityEngine;
 public class MoneyHandler : MonoBehaviour
 {
     [SerializeField] TMP_Text scoreUI;
-    [SerializeField] int money;
+    [SerializeField] long money;
+    private string[] suffixes = { "", "K", "M", "B", "T", "Q" };
 
     private void Start()
     {
@@ -45,5 +46,26 @@ public class MoneyHandler : MonoBehaviour
         UpdateUI();
     }
 
-    void UpdateUI() => scoreUI.text = money.ToString();
+    void UpdateUI()
+    {
+        scoreUI.text = MoneyFormatting();
+    }
+
+    string MoneyFormatting()
+    {
+        double tempMoney = money;
+
+        // Define the size suffixes for thousand, million, billion, trillion, etc.
+        int suffixIndex = 0;
+
+        // Keep dividing money by 1000 until it is less than 1000, tracking the suffix
+        while (tempMoney >= 1000 && suffixIndex < suffixes.Length - 1)
+        {
+            tempMoney /= 1000;
+            suffixIndex++;
+        }
+
+        // Format the number with the appropriate suffix and return
+        return tempMoney.ToString("0.##") + suffixes[suffixIndex];
+    }
 }

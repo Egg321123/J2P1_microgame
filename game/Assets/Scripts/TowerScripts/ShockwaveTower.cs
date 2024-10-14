@@ -7,6 +7,8 @@ public class ShockwaveTower : TowerBase
 
     protected override void ShotTarget(GameObject target)
     {
-        target.GetComponent<EnemyBase>().TakeDamage(towerData.attackDamage);
+        EnemyBase targetScript = target.GetComponent<EnemyBase>();
+        targetScript.ApplyStun(2);
+        targetScript.TakeDamage(towerData.attackDamage);
     }
 }

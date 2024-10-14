@@ -22,16 +22,22 @@ public class PlaceOnGrid : MonoBehaviour
         CreateGrid();
     }
 
-    public void PlaceModeToggle(TowerStoreData data)
+    public void EnablePlaceMode(TowerStoreData data)
     {
         storeData = data;
         towerData = storeData.towerData;
 
-        isInPlaceMode = !isInPlaceMode;
-        gridObj.SetActive(!gridObj.activeInHierarchy);
+        isInPlaceMode = true;
+        gridObj.SetActive(true);
 
         //go into the place mode cycle
         StartCoroutine(PlacingMode());
+    }
+
+    public void DisablePlaceMode()
+    {
+        isInPlaceMode = false;
+        gridObj.SetActive(false);
     }
 
     public void ChangeTower(TowerStoreData data)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class Shop : MonoBehaviour
 {
     //stores the towers you want available in the shop
@@ -10,6 +11,8 @@ public class Shop : MonoBehaviour
     //stores the toggles for the towers
     [SerializeField] GameObject[] toggles = new GameObject[4];
     [SerializeField] ToggleGroup group;
+
+    [SerializeField] GameObject shop;
 
     private TowerStoreData[] towersInShop = new TowerStoreData[4];
     private bool hasButtonPressed = false;
@@ -53,17 +56,27 @@ public class Shop : MonoBehaviour
         //if you have no toggles active anymore, disable place mode
         if (!group.AnyTogglesOn())
         {
-            place.PlaceModeToggle(towersInShop[index]);
+            place.DisablePlaceMode();
             hasButtonPressed = false;
         }
         else if (!hasButtonPressed)
         {
-            place.PlaceModeToggle(towersInShop[index]);
+            place.EnablePlaceMode(towersInShop[index]);
             hasButtonPressed = true;
         }
         else
         {
             place.ChangeTower(towersInShop[index]);
+        }
+    }
+
+    public void ShopToggle(bool open)
+    {
+        if (open) shop.SetActive(true);
+        else
+        {
+            group.SetAllTogglesOff();
+            shop.SetActive(false);
         }
     }
 }
