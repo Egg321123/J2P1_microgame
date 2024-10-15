@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Pool;
+using Random = UnityEngine.Random; // define which random we wanna use
 
 // if the wave is over, the data is saved.
 // if the last wave has been reached, a new level is generated
@@ -22,6 +22,12 @@ public class Waves : MonoBehaviour
 
     public void NextWave()
     {
+        // if we should progress to the next level
+        if (wave < waves.Length) {
+            throw new NotImplementedException();
+            return;
+        }
+
         StartCoroutine(SpawnEnemies(wave));
         wave++;
 
@@ -58,8 +64,20 @@ public class Waves : MonoBehaviour
             // await the spawn rate
             yield return new WaitForSeconds(1.0F / enemySpawnRate);
 
-            // spawning
-            throw new NotImplementedException("Enemy spawning hasn't been implemented yet");
+            // enemy spawning
+            {
+                // get a random spawn from the spawn data
+                int index = Random.Range(0, spawnData.Count);
+                EnemySpawnData spawn = spawnData[index];
+
+                // spawn the enemy and decrease the count
+                SpawnEnemy(spawn.difficulty);
+                spawn.count--;
+
+                // if the count is <= 0, remove the spawn data of this difficulty alltogether.
+                if (spawn.count <= 0)
+                    spawnData.RemoveAt(index);
+            }
 
             // spawn cap protection
             if (spawnCount >= MAX_SPAWNS)
@@ -67,6 +85,21 @@ public class Waves : MonoBehaviour
             spawnCount++;
             yield return null;
         }
+
+        // wave spawning is done; await when all enemies have been killed
+        StartCoroutine(AreEnemiesAlive());
+
+        yield return null;
+    }
+
+    private IEnumerator AreEnemiesAlive()
+    {
+        // check whether the enemy is open for pooling
+        while (allEnemies.Where(e => e.OpenForPooling).Count() > 0)
+            yield return new WaitForFixedUpdate();
+
+        NextWave(); // start the next wave, uwu
+        GameManager.Instance.Save.SaveFile(); // save the current state to the file
 
         yield return null;
     }
@@ -84,7 +117,7 @@ public class Waves : MonoBehaviour
                 enemyIndices.Add(i);
 
         // get a random index
-        int index = UnityEngine.Random.Range(0, enemyIndices.Count);
+        int index = Random.Range(0, enemyIndices.Count);
 
         // use the index to get an enemy within the pool
         ObjectPool<EnemyBase> pool = enemyPools[index];
