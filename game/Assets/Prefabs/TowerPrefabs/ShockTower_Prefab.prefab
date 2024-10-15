@@ -140,3 +140,15 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 8
+<<<<<<< Updated upstream:game/Assets/Prefabs/TowerPrefabs/ShockTower_Prefab.prefab
+=======
+  audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
+    type: 3}
+  clip: {fileID: 8300000, guid: 55e346861ecc01c479f8d8a3a64e8265, type: 3}
+--- !u!4 &4461968456749347170 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a4914b4b638c9044ca36b9a8d9cb1eb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4208228845561026185}
+  m_PrefabAsset: {fileID: 0}
+>>>>>>> Stashed changes:game/Assets/Prefabs/TowerPrefabs/ShockwaveTower_Prefab.prefab
