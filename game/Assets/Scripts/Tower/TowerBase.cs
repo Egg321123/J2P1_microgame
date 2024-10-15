@@ -11,7 +11,7 @@ public abstract class TowerBase : MonoBehaviour
     private bool isAllowedToShoot = true;               // whether the tower is allowed to shoot
 
     // shorthands and diverse properties
-    public TowerData TowerData => towerData;
+    public TowerData TowerData { get => towerData; set => towerData = value; }
     protected GameManager GameManager => GameManager.Instance;
     protected Waves Waves => GameManager.Waves;
 

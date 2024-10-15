@@ -9,7 +9,7 @@ public class ArrowTower : ProjectileTowerBase
 
     protected override IEnumerable<EnemyBase> SelectTargets() => GameManager.Instance.Waves.GetEnemiesInRadius(transform.position, TowerData.attackRange, 1);
 
-    protected override void ProjectileHit(EnemyBase target) => target.GetComponent<EnemyBase>().TakeDamage(towerData.attackDamage);
+    protected override void ProjectileHit(EnemyBase target) => target.GetComponent<EnemyBase>().TakeDamage(TowerData.attackDamage);
 
     protected override void ShotTarget(EnemyBase target)
     {
@@ -18,7 +18,7 @@ public class ArrowTower : ProjectileTowerBase
         //create new trail
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
         trail.transform.parent = transform;
-        trail.GetComponent<TrailProjectile>().Initialize(firingPoint.position, target.transform, towerData.projectileSpeed);
+        trail.GetComponent<TrailProjectile>().Initialize(firingPoint.position, target.transform, TowerData.projectileSpeed);
 
         base.ShotTarget(target);
     }
