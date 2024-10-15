@@ -51,8 +51,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Detail: 10
+    - _Detail: 8.59
+    - _Edge_strength: 1.66
+    - _IDK: 7.73
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    - _Water_speed: 0.67
+    m_Colors:
+    - _Foam: {r: 1, g: 1, b: 1, a: 1}
+    - _Water: {r: 0.2660199, g: 0.80609155, b: 0.9245283, a: 1}
+    - _WaterEdgeColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Water_Edge: {r: 0.19999999, g: 0.9284916, b: 1, a: 1}
+    - _Water_Edge_Color: {r: 0.29803923, g: 0.9372549, b: 1, a: 0}
   m_BuildTextureStacks: []
