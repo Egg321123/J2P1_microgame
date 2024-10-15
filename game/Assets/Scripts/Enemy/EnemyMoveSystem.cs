@@ -24,7 +24,7 @@ public class EnemyMovementSystem : MonoBehaviour
     private NativeArray<float> speeds;
     private NativeArray<Vector3> offsets;
     private NativeArray<int> targetNodeIndices;
-
+    private CreateAIPath pathCreator;
     // stores a reference to the job itself
     private JobHandle jobHandle;
 
@@ -34,10 +34,20 @@ public class EnemyMovementSystem : MonoBehaviour
 
     private void Start()
     {
-        // Initialize the path nodes array, this doesn't change (hopefully)
-        CreateAIPath pathCreator = FindFirstObjectByType<CreateAIPath>();
+        pathCreator = FindFirstObjectByType<CreateAIPath>();
+        pathCreator.RegeneratedPaths += InitializePathNodes;    // add the method as listener to the regenerated paths event
+        InitializePathNodes();                                  // initialize the path nodes, because in Start() the path has already been generated
+    }
+
+    public void InitializePathNodes()
+    {
         PathStart = pathCreator.Path[0];
         pathReachedEndIndex = pathCreator.Path.Count;
+
+        // Displose the pathnodes if it has alweady been cweated >//<
+        if (pathNodes.IsCreated)
+            pathNodes.Dispose();
+
         pathNodes = new NativeArray<Vector3>(pathCreator.Path.ToArray(), Allocator.Persistent);
     }
 
@@ -57,7 +67,7 @@ public class EnemyMovementSystem : MonoBehaviour
                 {
                     enemiesToUpdate[i].TargetNodeIndex = targetNodeIndices[i];
                     if (enemiesToUpdate[i].TargetNodeIndex == pathReachedEndIndex) enemiesToUpdate[i].HasReachedEnd();
-                } 
+                }
             }
 
             // Dispose of the data that changes between jobs to free up space

@@ -20,20 +20,29 @@ public class Waves : MonoBehaviour
     private List<EnemyBase> allEnemies = new();                 // contains all the enemies
 
     // refrences
-    private MonoLevel monoLevel = null;                         // reference to the MonoLevel
+    private MonoLevel monoLevel = null;                         // reference to the MonoLevel for regenerating the level on win
+    private CreateAIPath pathCreator = null;                    // reference to the path creator for regenerating the level on win
 
     // property shorthands
     private Save Save => GameManager.Instance.Save;
     private int Wave { get => Save.data.wave; set => Save.data.wave = value; }
     private int Level { get => Save.data.level; set => Save.data.level = value; }
+    private bool newLevel = false;
 
 
     public void NextWave()
     {
+        if (newLevel == true)
+        {
+            monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
+            pathCreator.RegeneratePath();                           // regenerate the AI path
+            newLevel = false;
+        }
+
+        winUI.SetActive(false);                                     // hide the win UI (again)
+
         Debug.Log($"started wave {Wave}");
         StartCoroutine(SpawnEnemies(Wave));
-        Wave++;
-
     }
 
     // get the enemies within a radius
@@ -102,12 +111,15 @@ public class Waves : MonoBehaviour
         while (allEnemies.Where(e => e.IsAlive).Count() > 0)
             yield return new WaitForFixedUpdate();
 
+        Wave++;
+
         // increase the level if the waves have been reached
         if (Wave >= waves.Length)
         {
             Wave = 0;   // reset wave
             Level++;    // increase the level
             Save.data.towers = Array.Empty<TileData>();
+            newLevel = true;
         }
 
         winUI.SetActive(true);                  // set the Win UI active
@@ -146,8 +158,9 @@ public class Waves : MonoBehaviour
         if (GameManager.Instance.Waves != null) throw new InvalidOperationException("an instance of waves already exists");
         GameManager.Instance.Waves = this;
 
-        // get monolevel
+        // get monobehaviours
         monoLevel = FindFirstObjectByType<MonoLevel>();
+        pathCreator = FindFirstObjectByType<CreateAIPath>();
 
         // create the enemy pools
         enemyPools = new ObjectPool<EnemyBase>[enemyTypes.Length];
@@ -160,6 +173,8 @@ public class Waves : MonoBehaviour
     // called before the first frame
     private void Start()
     {
+        monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
+        pathCreator.RegeneratePath();                           // regenerate the AI path
         NextWave();
     }
 }
