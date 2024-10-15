@@ -36,7 +36,6 @@ public class EnemyMovementSystem : MonoBehaviour
     {
         pathCreator = FindFirstObjectByType<CreateAIPath>();
         pathCreator.RegeneratedPaths += InitializePathNodes;    // add the method as listener to the regenerated paths event
-        InitializePathNodes();                                  // initialize the path nodes, because in Start() the path has already been generated
     }
 
     public void InitializePathNodes()

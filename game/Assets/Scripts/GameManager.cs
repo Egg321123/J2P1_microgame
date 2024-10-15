@@ -35,6 +35,13 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        MonoLevel ml = FindFirstObjectByType<MonoLevel>();
+        ml.RegenerateLevel(Save.data.level, Save.data.towers);  // generate the level
+        Waves.NextWave();                                       // start the first wave
+    }
+
 #if UNITY_EDITOR
     [ContextMenu("Set Save")]
     private void SetSave()

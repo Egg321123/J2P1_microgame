@@ -166,11 +166,4 @@ public class Waves : MonoBehaviour
         for (int i = 0; i < enemyTypes.Length; i++)
             enemyPools[i] = new ObjectPool<EnemyBase>();
     }
-
-    // called before the first frame
-    private void Start()
-    {
-        monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
-        NextWave();
-    }
 }
