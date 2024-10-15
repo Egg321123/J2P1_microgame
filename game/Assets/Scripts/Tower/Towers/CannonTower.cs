@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CannonTower : ProjectileTowerBase
 {
+    [SerializeField] private GameObject audioPrefab;
+    [SerializeField] private AudioClip clip;
+
     [SerializeField] private GameObject projectile;
     [SerializeField] private GameObject explosion;
     [SerializeField] private float explosionSize = 1;
@@ -13,10 +17,12 @@ public class CannonTower : ProjectileTowerBase
     protected override void ShotTarget(EnemyBase target)
     {
         //create new trail
+        GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
+        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
+
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
         trail.transform.parent = transform;
         trail.GetComponent<TrailProjectile>().Initialize(firingPoint.position, target.transform, towerData.projectileSpeed);
-        Collider[] exploded = Physics.OverlapSphere(target.transform.position, explosionSize, enemyMask);
 
         base.ShotTarget(target);
     }
@@ -24,7 +30,11 @@ public class CannonTower : ProjectileTowerBase
     protected override void ProjectileHit(EnemyBase target)
     {
         print("explosion");
-        Collider[] exploded = Physics.OverlapSphere(target.transform.position, explosionSize, enemyMask);
+        EnemyBase[] objects = GameManager.Instance.Waves.GetEnemiesInRadius(transform.position, towerData.attackRange, 0).ToArray();
         Instantiate(explosion, target.transform);
+        foreach (EnemyBase exploded in objects)
+        {
+            exploded.GetComponent<EnemyBase>().TakeDamage(towerData.attackDamage);
+        }
     }
 }
