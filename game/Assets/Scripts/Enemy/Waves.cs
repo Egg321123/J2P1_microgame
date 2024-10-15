@@ -114,10 +114,12 @@ public class Waves : MonoBehaviour
         // increase the level if the waves have been reached
         if (Wave >= waves.Length)
         {
-            Wave = 0;   // reset wave
-            Level++;    // increase the level
-            Save.data.towers = Array.Empty<TileData>();
+            Wave = 0;                       // reset wave
+            Level++;                        // increase the level
+            monoLevel.Level.ClearLevel();   // clear the level so we don't save towers
+
             newLevel = true;
+            Debug.Log("progressed level");
         }
 
         winUI.SetActive(true);                  // set the Win UI active

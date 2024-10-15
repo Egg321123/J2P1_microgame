@@ -1,10 +1,13 @@
 using System.IO;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance = null;
+
     public static GameManager Instance => instance;
+    private string SavePath => Application.persistentDataPath + Path.DirectorySeparatorChar + "save.json";
 
     // properties
     public Save Save { get; private set; }
@@ -29,7 +32,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Save = new Save(Application.persistentDataPath + Path.DirectorySeparatorChar + "save.json");
+        Save = new Save(SavePath);
 
         // make this object persistent
         DontDestroyOnLoad(gameObject);
@@ -52,11 +55,9 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Reset Save")]
     private void ResetSave()
     {
-        string path = Application.persistentDataPath + Path.DirectorySeparatorChar + "save.json";
-
-        if (File.Exists(path))
+        if (File.Exists(SavePath))
         {
-            File.Delete(path);
+            File.Delete(SavePath);
             Debug.Log("Removed the save file");
         }
         else
