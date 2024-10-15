@@ -9,6 +9,8 @@ public class MonoLevel : MonoBehaviour
     [SerializeField] private MonoTile pathPrefab;           // contains the path prefabs
     private readonly List<MonoTile> placedTiles = new();    // contains the tiles that have been placed
 
+    private CreateAIPath pathCreator = null;                // reference to the path creator for the enemies
+
     public Level Level { get; private set; }
 
     private void DestroyLevel()
@@ -39,6 +41,9 @@ public class MonoLevel : MonoBehaviour
             Level.SetTile(tower.pos, TileType.TOWER, tower.towerData);
             SetMonoTile(tower.monoTile, tower.pos, true);
         }
+
+        // regenerate the AI path, so enemies know where to walk
+        pathCreator.RegeneratePath();
     }
 
     /// <summary>
@@ -64,6 +69,8 @@ public class MonoLevel : MonoBehaviour
     // called when the script is being loaded
     private void Awake()
     {
+        pathCreator = FindFirstObjectByType<CreateAIPath>();
+
         if (GameManager.Instance.Level == null)
         {
             Level = new Level(width, height);
@@ -71,16 +78,6 @@ public class MonoLevel : MonoBehaviour
         }
         else
             Level = GameManager.Instance.Level;
-    }
-
-    // called when the script on first frame
-    private void Start()
-    {
-        // TEMP: regenerate the level with the safe data
-        RegenerateLevel(GameManager.Instance.Save.data.level, GameManager.Instance.Save.data.towers);
-
-        //load scene when the level has been loaded
-        SceneManager.LoadSceneAsync((int)Scene.MAIN_GAME, LoadSceneMode.Additive);
     }
 
 #if UNITY_EDITOR

@@ -10,12 +10,7 @@ public class CreateAIPath : MonoBehaviour
     public List<Vector3> Path { get; private set; } = null;
     public event Action RegeneratedPaths;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        RegeneratePath();
-    }
-
+    // called by MonoLevel
     public void RegeneratePath()
     {
         Level level = FindFirstObjectByType<MonoLevel>().Level;

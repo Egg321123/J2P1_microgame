@@ -21,7 +21,6 @@ public class Waves : MonoBehaviour
 
     // refrences
     private MonoLevel monoLevel = null;                         // reference to the MonoLevel for regenerating the level on win
-    private CreateAIPath pathCreator = null;                    // reference to the path creator for regenerating the level on win
 
     // property shorthands
     private Save Save => GameManager.Instance.Save;
@@ -35,7 +34,6 @@ public class Waves : MonoBehaviour
         if (newLevel == true)
         {
             monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
-            pathCreator.RegeneratePath();                           // regenerate the AI path
             newLevel = false;
         }
 
@@ -160,7 +158,6 @@ public class Waves : MonoBehaviour
 
         // get monobehaviours
         monoLevel = FindFirstObjectByType<MonoLevel>();
-        pathCreator = FindFirstObjectByType<CreateAIPath>();
 
         // create the enemy pools
         enemyPools = new ObjectPool<EnemyBase>[enemyTypes.Length];
@@ -174,7 +171,6 @@ public class Waves : MonoBehaviour
     private void Start()
     {
         monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
-        pathCreator.RegeneratePath();                           // regenerate the AI path
         NextWave();
     }
 }
