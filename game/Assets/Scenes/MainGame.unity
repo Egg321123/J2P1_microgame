@@ -2602,9 +2602,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves: 10
   spawnEnemies: 1000000
-  enemySpawnRate: 0.1
+  enemySpawnRate: 1
   enemies:
-  - {fileID: 8502515503591973096, guid: c6eff509518387e4e97341298448b786, type: 3}
+  - {fileID: 6796261505284752416, guid: c1306aa39fcc2634ba19e8d995da41b9, type: 3}
+  - {fileID: 1168776680903983884, guid: cd9d8c0291327984fa935d3b203f65dd, type: 3}
+  - {fileID: 1989224944000774679, guid: af215a47d5bdccc4d8913313696eb5b7, type: 3}
+  - {fileID: 1741509339909122093, guid: 5ada5a4b2433e5f45a1127e1700cf410, type: 3}
+  - {fileID: 6525832992298233716, guid: 3c7f2aba5a868ad458bfbe1cbe9e65c3, type: 3}
+  - {fileID: 3783896989870110513, guid: a50b324189bfef5448761c62a79ffc14, type: 3}
+  - {fileID: 4230912243311770051, guid: b7771f75e0193f94cbddec11222c7924, type: 3}
 --- !u!114 &1066355571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4704,7 +4710,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1f6cc1ade20b39647a180617962ec153, type: 2}
+  - {fileID: 2100000, guid: e27cf8300c24b824c9cf729ca1d73b77, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
