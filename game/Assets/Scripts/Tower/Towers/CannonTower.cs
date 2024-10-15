@@ -30,9 +30,9 @@ public class CannonTower : ProjectileTowerBase
     protected override void ProjectileHit(EnemyBase target)
     {
         print("explosion");
-        GameObject[] objects = GameManager.Instance.Waves.GetEnemiesInRadius(transform.position, towerData.attackRange, 0).ToArray();
+        EnemyBase[] objects = GameManager.Instance.Waves.GetEnemiesInRadius(transform.position, towerData.attackRange, 0).ToArray();
         Instantiate(explosion, target.transform);
-        foreach (GameObject exploded in objects)
+        foreach (EnemyBase exploded in objects)
         {
             exploded.GetComponent<EnemyBase>().TakeDamage(towerData.attackDamage);
         }
