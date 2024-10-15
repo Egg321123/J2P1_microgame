@@ -317,9 +317,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1615c23be8c9654cb4dc419b402ea19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minAmount: 2.2
-  maxAmount: 3.1415927
+  tiltAmount: 3
+  minTiltAmount: 2.2
+  maxTiltAmount: 3.1415927
   radius: 25
+  minRadius: 10
+  maxRadius: 35
 --- !u!114 &479919286
 MonoBehaviour:
   m_ObjectHideFlags: 0

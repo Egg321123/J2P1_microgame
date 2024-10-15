@@ -7,7 +7,7 @@ public class ShockwaveTower : TowerBase
     [SerializeField] private GameObject audioPrefab;
     [SerializeField] private AudioClip clip;
 
-    protected override void ShotTarget(GameObject target)
+    protected override void ShotTarget(EnemyBase target)
     {
         GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
         sound.GetComponent<AudioClipPlayer>().Initialize(clip);

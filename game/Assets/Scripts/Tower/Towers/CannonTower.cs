@@ -12,9 +12,9 @@ public class CannonTower : ProjectileTowerBase
     [SerializeField] private GameObject explosion;
     [SerializeField] private float explosionSize = 1;
 
-    protected override IEnumerable<GameObject> SelectTargets() => GameManager.Instance.Waves.GetEnemiesInRadius(transform.position,towerData.attackRange, 1);
+    protected override IEnumerable<EnemyBase> SelectTargets() => GameManager.Instance.Waves.GetEnemiesInRadius(transform.position,towerData.attackRange, 1);
 
-    protected override void ShotTarget(GameObject target)
+    protected override void ShotTarget(EnemyBase target)
     {
         //create new trail
         GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
@@ -27,7 +27,7 @@ public class CannonTower : ProjectileTowerBase
         base.ShotTarget(target);
     }
 
-    protected override void ProjectileHit(GameObject target)
+    protected override void ProjectileHit(EnemyBase target)
     {
         print("explosion");
         GameObject[] objects = GameManager.Instance.Waves.GetEnemiesInRadius(transform.position, towerData.attackRange, 0).ToArray();

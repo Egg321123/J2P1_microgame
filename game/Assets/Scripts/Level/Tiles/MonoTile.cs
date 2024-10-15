@@ -51,10 +51,10 @@ public class MonoTile : MonoBehaviour
             0b1110 => (tileMeshes.single, 0.0F),        // only -Y is free
 
             // if there is just a singular neighbor, just return the empty path type
-            0b1000 => (tileMeshes.empty, 0.0F),
-            0b0100 => (tileMeshes.empty, 0.0F),
-            0b0010 => (tileMeshes.empty, 0.0F),
-            0b0001 => (tileMeshes.empty, 0.0F),
+            0b1000 => (tileMeshes.end, 0.0F),           // neighbour at +X
+            0b0100 => (tileMeshes.end, -90.0F),         // neighbour at +Y
+            0b0010 => (tileMeshes.end, 180.0F),         // neighbour at -X
+            0b0001 => (tileMeshes.end, 90.0F),          // neighbour at -Y
 
             // if it's none of these options; throw an error, with the binary string
             _ => throw new Exception($"invalid state: 0b{Convert.ToString(neighbors, 2).PadLeft(4, '0')}"),
