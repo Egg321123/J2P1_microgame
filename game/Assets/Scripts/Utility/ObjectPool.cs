@@ -9,7 +9,7 @@ public class ObjectPool<T> where T : MonoBehaviour
     public T GetPooledObject(T prefab, Transform parent, Action<T> initializer = null)
     {
         for (int i = 0; i < pool.Count; i++)
-            if (pool[i].isActiveAndEnabled) return pool[i];
+            if (pool[i].isActiveAndEnabled == false) return pool[i];
 
         T obj = CreateNewObject(prefab, parent);
         initializer?.Invoke(obj);

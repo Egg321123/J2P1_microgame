@@ -63,7 +63,7 @@ MonoBehaviour:
     type: 3}
   MagicTower: {fileID: 4799747152397914917, guid: b814d778f7394014e9a56e0aec2f753f,
     type: 3}
-  ShockwaveTower: {fileID: 2320800557303085803, guid: 60e723498f75b1b458051bac71734b17,
+  ShockwaveTower: {fileID: 2320800557303085803, guid: 3963ae7b5b57bc0479276bf5282a818d,
     type: 3}
 --- !u!33 &-2851164240647530008
 MeshFilter:

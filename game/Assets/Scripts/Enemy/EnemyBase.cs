@@ -27,6 +27,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     // utility
     public bool OpenForPooling { get; private set; } // OpenForPooling = false is the same as this enemy being alive
+    public bool IsAlive => !OpenForPooling;
     [HideInInspector] public int TargetNodeIndex = 0;
     private bool isStunned = false;
 

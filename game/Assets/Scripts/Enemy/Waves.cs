@@ -11,7 +11,7 @@ public class Waves : MonoBehaviour
 {
     private const int MAX_SPAWNS = 1000;
 
-    [SerializeField] private GameObject winUI = null;
+    [SerializeField] private GameObject winUI = null;           // the UI that is shown when the game is won
     [SerializeField, Min(0)] private float enemySpawnRate = 1F; // how many times per second to spawn a new enemy
     [SerializeField] private EnemyTypeData[] enemyTypes = null; // the different enemy types
     [SerializeField] private SpawnData[] waves = null;          // the different waves constructed
@@ -30,19 +30,10 @@ public class Waves : MonoBehaviour
 
     public void NextWave()
     {
-        // if we should progress to the next level
-        if (Wave < waves.Length)
-        {
-            Wave = 0;   // reset wave
-            Level++;    // increase the level
-            monoLevel.RegenerateLevel(Level, Save.data.towers);
-            return;
-        }
-
+        Debug.Log($"started wave {Wave}");
         StartCoroutine(SpawnEnemies(Wave));
         Wave++;
 
-        Debug.Log($"progressed to wave {Wave}");
     }
 
     // get the enemies within a radius
@@ -85,6 +76,8 @@ public class Waves : MonoBehaviour
                 SpawnEnemy(spawn.difficulty);
                 spawn.count--;
 
+                spawnData[index] = spawn;
+
                 // if the count is <= 0, remove the spawn data of this difficulty alltogether.
                 if (spawn.count <= 0)
                     spawnData.RemoveAt(index);
@@ -98,19 +91,27 @@ public class Waves : MonoBehaviour
         }
 
         // wave spawning is done; await when all enemies have been killed
-        StartCoroutine(AreEnemiesAlive());
+        StartCoroutine(WinCheck());
 
         yield return null;
     }
 
-    private IEnumerator AreEnemiesAlive()
+    private IEnumerator WinCheck()
     {
         // check whether the enemy is open for pooling
-        while (allEnemies.Where(e => e.OpenForPooling).Count() > 0)
+        while (allEnemies.Where(e => e.IsAlive).Count() > 0)
             yield return new WaitForFixedUpdate();
 
-        winUI.SetActive(true);
-        GameManager.Instance.Save.SaveFile(); // save the current state to the file
+        // increase the level if the waves have been reached
+        if (Wave >= waves.Length)
+        {
+            Wave = 0;   // reset wave
+            Level++;    // increase the level
+            Save.data.towers = Array.Empty<TileData>();
+        }
+
+        winUI.SetActive(true);                  // set the Win UI active
+        GameManager.Instance.Save.SaveFile();   // save the current state to the file
 
         yield return null;
     }
