@@ -160,7 +160,7 @@ public class Level
         if (type == TileType.TOWER)
         {
             towers.Add(new Vector2Int(x, y));
-            tiles[x, y].towerData = towerData;
+            tiles[x, y].towerData = towerData ?? default;
         }
     }
 

@@ -10,9 +10,9 @@ public class MonoTowerTile : MonoTile
     [SerializeField] private GameObject MagicTower;
     [SerializeField] private GameObject ShockwaveTower;
 
-    private TowerData TowerData => Data.towerData ?? throw new NullReferenceException();
+    private TowerData TowerData => Data.towerData;
 
-    private void Start()
+    protected override void Initialize()
     {
         GameObject tower = Instantiate(GetTowerPrefab(), transform.position, Quaternion.identity);
         tower.transform.parent = transform;

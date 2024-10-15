@@ -2288,6 +2288,8 @@ MonoBehaviour:
   height: 20
   pathPrefab: {fileID: -1941801367899136033, guid: 28bb0a923d4642e35b60e17f3e7ab9d9,
     type: 3}
+  towerPrefab: {fileID: 2117355564909799346, guid: c1bc1d06e58051d4db925b76a60365f9,
+    type: 3}
 --- !u!4 &428327970
 Transform:
   m_ObjectHideFlags: 0
