@@ -15,8 +15,8 @@ public class MonoTowerTile : MonoTile
     private void Start()
     {
         GameObject tower = Instantiate(GetTowerPrefab(), transform.position, Quaternion.identity);
-        tower.GetComponent<TowerBase>().TowerData = TowerData;
         tower.transform.parent = transform;
+        tower.GetComponent<TowerBase>().TowerData = TowerData;
     }
 
     private GameObject GetTowerPrefab()

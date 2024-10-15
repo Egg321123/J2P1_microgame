@@ -320,7 +320,6 @@ MonoBehaviour:
   minAmount: 2.2
   maxAmount: 3.1415927
   radius: 25
-  ammount: 3
 --- !u!114 &479919286
 MonoBehaviour:
   m_ObjectHideFlags: 0
