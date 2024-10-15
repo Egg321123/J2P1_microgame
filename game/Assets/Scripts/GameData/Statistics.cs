@@ -3,8 +3,6 @@ using System;
 [Serializable]
 public struct Statistics
 {
-    // add here the statistics that you want to collect
-
     //current level
     public int kills;
     public int towersPlaced;

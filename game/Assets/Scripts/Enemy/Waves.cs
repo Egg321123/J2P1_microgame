@@ -9,8 +9,6 @@ using Random = UnityEngine.Random; // define which random we wanna use
 // if the last wave has been reached, a new level is generated
 public class Waves : MonoBehaviour
 {
-    private const int MAX_SPAWNS = 1000;
-
     [SerializeField] private GameObject winUI = null;           // the UI that is shown when the game is won
     [SerializeField, Min(0)] private float enemySpawnRate = 1F; // how many times per second to spawn a new enemy
     [SerializeField] private EnemyTypeData[] enemyTypes = null; // the different enemy types
@@ -39,8 +37,8 @@ public class Waves : MonoBehaviour
 
         winUI.SetActive(false);                                     // hide the win UI (again)
 
-        Debug.Log($"started wave {Wave}");
         StartCoroutine(SpawnEnemies(Wave));
+        Debug.Log($"started wave {Wave}");
     }
 
     // get the enemies within a radius
@@ -67,7 +65,6 @@ public class Waves : MonoBehaviour
     {
         List<EnemySpawnData> spawnData = waves[wave].enemySpawnData.ToList(); // create a copy of the enemy spawn data as a list for this wave to operate on
 
-        int spawnCount = 0; // for the spawn cap, in the case that the loop gets stuck
         while (spawnData.Count > 0)
         {
             // await the spawn rate
@@ -90,10 +87,6 @@ public class Waves : MonoBehaviour
                     spawnData.RemoveAt(index);
             }
 
-            // spawn cap protection
-            if (spawnCount >= MAX_SPAWNS)
-                throw new IndexOutOfRangeException($"spawncap of '{MAX_SPAWNS}' has been reached! Could not continue.");
-            spawnCount++;
             yield return null;
         }
 
@@ -103,12 +96,14 @@ public class Waves : MonoBehaviour
         yield return null;
     }
 
+    // checks whether the win condition has been met and all the enemies are no longer alive. (is called after the last enemy has been spawned :3)
     private IEnumerator WinCheck()
     {
-        // check whether the enemy is open for pooling
+        // hold the thread for as it takes till the amount of enemies alive is 0
         while (allEnemies.Where(e => e.IsAlive).Count() > 0)
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();  // check every fixed update, as we don't need to check every frame. :3
 
+        // all enemies have perished, increase the wave!
         Wave++;
 
         // increase the level if the waves have been reached
@@ -119,7 +114,7 @@ public class Waves : MonoBehaviour
             monoLevel.Level.ClearLevel();   // clear the level so we don't save towers
 
             newLevel = true;
-            Debug.Log("progressed level");
+            Debug.Log("progressed level!");
         }
 
         winUI.SetActive(true);                  // set the Win UI active
@@ -128,7 +123,7 @@ public class Waves : MonoBehaviour
         yield return null;
     }
 
-    // spawns an enemy
+    // spawns an enemy of a specific difficulty
     private void SpawnEnemy(EnemyDifficulty difficulty)
     {
         // create a list for the indices of the enemies with the capacity set to the amount of existing enemy types
@@ -140,7 +135,7 @@ public class Waves : MonoBehaviour
             if (enemyTypes[i].difficulty == difficulty)
                 enemyIndices.Add(i);
 
-        // get a random index
+        // get a random index of the previoursly selected indecencies
         int index = Random.Range(0, enemyIndices.Count);
 
         // use the index to get an enemy within the pool
@@ -154,14 +149,14 @@ public class Waves : MonoBehaviour
     // called when the script is being loaded
     private void Awake()
     {
-        // add self to the game manager
+        // add self to the game manager!
         if (GameManager.Instance.Waves != null) throw new InvalidOperationException("an instance of waves already exists");
         GameManager.Instance.Waves = this;
 
         // get monobehaviours
         monoLevel = FindFirstObjectByType<MonoLevel>();
 
-        // create the enemy pools
+        // create the enemy pools for each different type
         enemyPools = new ObjectPool<EnemyBase>[enemyTypes.Length];
 
         // populate the enemy pool array with the object pools

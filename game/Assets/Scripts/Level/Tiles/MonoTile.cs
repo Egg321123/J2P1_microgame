@@ -101,5 +101,6 @@ public class MonoTile : MonoBehaviour
         Initialize();
     }
 
+    // in the case that some extra initialisation logic needs to be implemented. :3
     protected virtual void Initialize() { }
 }

@@ -28,17 +28,7 @@ public class MonoTowerTile : MonoTile
             TowerType.CannonTower => CannonTower,
             TowerType.MagicTower => MagicTower,
             TowerType.ShockwaveTower => ShockwaveTower,
-            _ => ArrowTower,
+            _ => throw new IndexOutOfRangeException($"didn't recognise the tower: {TowerData.towerType}!"),
         };
     }
 }
-
-// update this list if you add new towers to the game
-public enum TowerType
-{
-    ArrowTower,
-    CannonTower,
-    MagicTower,
-    ShockwaveTower
-}
-

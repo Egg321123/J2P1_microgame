@@ -32,7 +32,7 @@ public abstract class EnemyBase : MonoBehaviour
     private bool isStunned = false;
 
 
-
+    // awake is called when the script is being loaded
     private void Awake()
     {
         // create a random offset to make it look like the enemies are not strictly following the path
@@ -121,7 +121,7 @@ public abstract class EnemyBase : MonoBehaviour
     public void HasReachedEnd()
     {
         if (!OpenForPooling) StartCoroutine(PrepareForPooling());
-        //damage player or smthn
+        // TODO: damage player or smth
     }
 
     /// <summary>

@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+// handy utility to set self to inactive and a target gameobject to active! :3
 public class SwitchItems : MonoBehaviour
 {
     [SerializeField] GameObject gO2;

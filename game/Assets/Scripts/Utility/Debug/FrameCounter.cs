@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-using System;
+using System.Linq;
 
 public class FrameCounter : MonoBehaviour
 {
@@ -17,7 +17,7 @@ public class FrameCounter : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         frameDeltaTimeArray[lastFrameIndex] = Time.unscaledDeltaTime;
         lastFrameIndex = (lastFrameIndex + 1) % frameDeltaTimeArray.Length;
@@ -25,17 +25,14 @@ public class FrameCounter : MonoBehaviour
         fpsCounter.text = Mathf.RoundToInt(CalculateFPS()).ToString();
     }
 
+    // get the calculated FPS
     private float CalculateFPS()
     {
-        float total = 0f;
-        foreach (float deltaTime in frameDeltaTimeArray)
-        {
-            total += deltaTime;
-        }
-
+        float total = frameDeltaTimeArray.Sum();
         return frameDeltaTimeArray.Length / total;
     }
 #else
+// if this is a release, just remove the fps count on awake
     private void Awake()
     {
         Destroy(GetComponent<TMP_Text>().gameObject);

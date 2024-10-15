@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+// contains the different meshes that is used by the ground tiles
 [Serializable]
 public struct TileMeshData
 {

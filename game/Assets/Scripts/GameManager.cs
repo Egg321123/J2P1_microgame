@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager instance = null;
-
-    public static GameManager Instance => instance;
+    public static GameManager Instance { get; private set; } = null;
     private string SavePath => Application.persistentDataPath + Path.DirectorySeparatorChar + "save.json";
 
     // properties
@@ -17,16 +15,15 @@ public class GameManager : MonoBehaviour
     // constructor
     public GameManager()
     {
-        if (instance == null)
-            instance = this;
-
+        if (Instance == null)
+            Instance = this;
     }
 
     // is called when the script is being loaded
     private void Awake()
     {
         // insure that there is always just one GameManager
-        if (instance != this && instance != null)
+        if (Instance != this && Instance != null)
         {
             Destroy(gameObject);
             return;
@@ -38,18 +35,26 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    // called before the first frame
     private void Start()
     {
         MonoLevel ml = FindFirstObjectByType<MonoLevel>();
+
         ml.RegenerateLevel(Save.data.level, Save.data.towers);  // generate the level
         Waves.NextWave();                                       // start the first wave
     }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR // debugging utility
     [ContextMenu("Set Save")]
     private void SetSave()
     {
-        Save.SaveFile();
+        if (Save == null)
+        {
+            Debug.LogError("Can only save the file whilst running due to lack of data.");
+            return;
+        }
+
+        Save.SaveFile(); // log is provided by the method itself
     }
 
     [ContextMenu("Reset Save")]
@@ -62,7 +67,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("The file doesn't exist");
+            Debug.LogError("The file doesn't exist");
         }
     }
 #endif

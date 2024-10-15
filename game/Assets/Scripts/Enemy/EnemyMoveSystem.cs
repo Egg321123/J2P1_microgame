@@ -50,6 +50,7 @@ public class EnemyMovementSystem : MonoBehaviour
         pathNodes = new NativeArray<Vector3>(pathCreator.Path.ToArray(), Allocator.Persistent);
     }
 
+    // called after when update functions have been called
     private void LateUpdate()
     {
         //if the job is completed, complete the job, write some data to the ai and create a new job
@@ -109,7 +110,7 @@ public class EnemyMovementSystem : MonoBehaviour
     }
 
 
-    // dispose of everything when this object is destroyed, otherwise uneccesary memory is used.
+    // dispose of everything when this object is destroyed, otherwise unnecessary memory is used.
     private void OnDestroy()
     {
         jobHandle.Complete();
