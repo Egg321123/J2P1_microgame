@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class CannonTower : ProjectileTowerBase
 {
+    [SerializeField] private GameObject audioPrefab;
+    [SerializeField] private AudioClip clip;
+
     [SerializeField] private GameObject projectile;
     [SerializeField] private GameObject explosion;
     [SerializeField] private float explosionSize = 1;
@@ -14,9 +17,13 @@ public class CannonTower : ProjectileTowerBase
     protected override void ShotTarget(GameObject target)
     {
         //create new trail
+        GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
+        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
+
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
         trail.transform.parent = transform;
         trail.GetComponent<TrailProjectile>().Initialize(firingPoint.position, target.transform, towerData.projectileSpeed);
+
         base.ShotTarget(target);
     }
 

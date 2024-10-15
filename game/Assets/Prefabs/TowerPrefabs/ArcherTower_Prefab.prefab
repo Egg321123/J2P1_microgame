@@ -135,5 +135,8 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 8
+  audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
+    type: 3}
+  clip: {fileID: 8300000, guid: 868c55b59c0258b428e0d96c0a0fc853, type: 3}
   projectile: {fileID: 404085437239518119, guid: 28cfc086930b3bc458ce791cdce33607,
     type: 3}
