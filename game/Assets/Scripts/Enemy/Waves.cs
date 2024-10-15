@@ -3,54 +3,42 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Pool;
 
 // if the wave is over, the data is saved.
 // if the last wave has been reached, a new level is generated
 public class Waves : MonoBehaviour
 {
-    [SerializeField, Min(1)] private int waves = 10;
-    [SerializeField, Min(1)] private int spawnEnemies = 50;
-    [SerializeField, Min(0)] private float enemySpawnRate = 1F;
+    private const int MAX_SPAWNS = 1000;
 
-    [SerializeField] private GameObject[] enemies;
-    private List<GameObject>[] enemyPools;
-    private List<GameObject> allEnemies = new();
+    [SerializeField, Min(0)] private float enemySpawnRate = 1F; // how many times per second to spawn a new enemy
+    [SerializeField] private EnemyTypeData[] enemyTypes = null; // the different enemy types
+    [SerializeField] private EnemySpawnData[][] waves = null;   // the different waves constructed
 
+    private int wave = 0;                                       // which wave we are at
+    private ObjectPool<EnemyBase>[] enemyPools = null;          // the pools for enemy pooling
+    private List<EnemyBase> allEnemies = new();                 // contains all the enemies
 
-    // called when the script is being loaded
-    private void Awake()
-    {
-        if (GameManager.Instance.Waves != null) throw new InvalidOperationException("an instance of waves already exists");
-        GameManager.Instance.Waves = this;
-
-        // create the enemy pools
-        enemyPools = new List<GameObject>[enemies.Length];
-
-        // populate the array with lists
-        for (int i = 0; i < enemies.Length; i++)
-            enemyPools[i] = new List<GameObject>();
-    }
-
-    // called before the first frame
-    private void Start()
-    {
-        NextWave();
-    }
 
     public void NextWave()
     {
-        StartCoroutine(SpawnLoop());
+        StartCoroutine(SpawnEnemies(wave));
+        wave++;
+
+        Debug.Log($"progressed to wave {wave}");
     }
 
-    public IEnumerable<GameObject> GetEnemiesInRadius(Vector3 pos, float radius, int count = -1)
+    // get the enemies within a radius
+    public IEnumerable<EnemyBase> GetEnemiesInRadius(Vector3 pos, float radius, int count = -1)
     {
-        if (count <= 0)
+        if (count < 0)
             count = allEnemies.Count;
 
         return (
-            from enemy in allEnemies.AsEnumerable()
-            where enemy.activeInHierarchy
+            from enemy in allEnemies.AsEnumerable() // loop through the enemies
+            where enemy.OpenForPooling == false     // check whether the enemy is alive
 
+            // ensure that the enemy resides within a certain radius
             let dist = Vector3.Distance(pos, enemy.transform.position)
             where dist <= radius
 
@@ -60,45 +48,70 @@ public class Waves : MonoBehaviour
     }
 
     // spawns the enemies
-    private IEnumerator SpawnLoop()
+    private IEnumerator SpawnEnemies(int wave)
     {
-        for (int i = 0; i < spawnEnemies; i++)
+        List<EnemySpawnData> spawnData = waves[wave].ToList(); // create a copy of the enemy spawn data as a list for this wave to operate on
+
+        int spawnCount = 0; // for the spawn cap, in the case that the loop gets stuck
+        while (spawnData.Count > 0)
         {
             // await the spawn rate
-            yield return new WaitForSeconds(enemySpawnRate);
+            yield return new WaitForSeconds(1.0F / enemySpawnRate);
 
-            // get a random enemy
-            int index = UnityEngine.Random.Range(0, enemies.Length);
-            GameObject enemy = GetPooledEnemy(index);
-            enemy.GetComponent<EnemyBase>().Initialize(1);
+            // spawning
+            throw new NotImplementedException("Enemy spawning hasn't been implemented yet");
 
+            // spawn cap protection
+            if (spawnCount >= MAX_SPAWNS)
+                throw new IndexOutOfRangeException($"spawncap of '{MAX_SPAWNS}' has been reached! Could not continue.");
+            spawnCount++;
             yield return null;
         }
 
         yield return null;
     }
 
-    // gets an enemy inside of the pool
-    private GameObject GetPooledEnemy(int index)
+    // spawns an enemy
+    private void SpawnEnemy(EnemyDifficulty difficulty)
     {
-        //search for available objects
-        for (int i = 0; i < enemyPools[index].Count; i++)
-        {
-            if (enemyPools[index][i].GetComponent<EnemyBase>().OpenForPooling) return enemyPools[index][i];
-        }
+        // create a list for the indices of the enemies with the capacity set to the amount of existing enemy types
+        // because that is the max it will ever be so we don't have to redefine the internal array when adding items.
+        List<int> enemyIndices = new(enemyTypes.Length);
 
-        return CreateNewEnemy(index);
+        // get the indices of the enemies that match the difficult requested
+        for (int i = 0; i < enemyTypes.Length; i++)
+            if (enemyTypes[i].difficulty == difficulty)
+                enemyIndices.Add(i);
+
+        // get a random index
+        int index = UnityEngine.Random.Range(0, enemyIndices.Count);
+
+        // use the index to get an enemy within the pool
+        ObjectPool<EnemyBase> pool = enemyPools[index];
+        EnemyBase enemy = pool.GetPooledObject(enemyTypes[index].enemy, transform, enemy => allEnemies.Add(enemy));
+
+        // initialize the enemy
+        enemy.Initialize(GameManager.Instance.Save.data.level);
     }
 
-    // creates a new enemy instance and adds it to the pool
-    private GameObject CreateNewEnemy(int index)
+    // called when the script is being loaded
+    private void Awake()
     {
-        // create a new instance of the enemy set to false
-        GameObject obj = Instantiate(enemies[index], transform);
+        // add self to the game manager
+        if (GameManager.Instance.Waves != null) throw new InvalidOperationException("an instance of waves already exists");
+        GameManager.Instance.Waves = this;
 
-        // add it to the pool and return the object
-        enemyPools[index].Add(obj);
-        allEnemies.Add(obj);
-        return obj;
+        // create the enemy pools
+        enemyPools = new ObjectPool<EnemyBase>[enemyTypes.Length];
+
+        // populate the enemy pool array with the object pools
+        for (int i = 0; i < enemyTypes.Length; i++)
+            enemyPools[i] = new ObjectPool<EnemyBase>();
+    }
+
+    // called before the first frame
+    private void Start()
+    {
+        NextWave();
     }
 }
