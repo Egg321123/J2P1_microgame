@@ -11,27 +11,38 @@ public class Waves : MonoBehaviour
 {
     private const int MAX_SPAWNS = 1000;
 
+    [SerializeField] private GameObject winUI = null;
     [SerializeField, Min(0)] private float enemySpawnRate = 1F; // how many times per second to spawn a new enemy
     [SerializeField] private EnemyTypeData[] enemyTypes = null; // the different enemy types
-    [SerializeField] private EnemySpawnData[][] waves = null;   // the different waves constructed
+    [SerializeField] private SpawnData[] waves = null;          // the different waves constructed
 
-    private int wave = 0;                                       // which wave we are at
     private ObjectPool<EnemyBase>[] enemyPools = null;          // the pools for enemy pooling
     private List<EnemyBase> allEnemies = new();                 // contains all the enemies
+
+    // refrences
+    private MonoLevel monoLevel = null;                         // reference to the MonoLevel
+
+    // property shorthands
+    private Save Save => GameManager.Instance.Save;
+    private int Wave { get => Save.data.wave; set => Save.data.wave = value; }
+    private int Level { get => Save.data.level; set => Save.data.level = value; }
 
 
     public void NextWave()
     {
         // if we should progress to the next level
-        if (wave < waves.Length) {
-            throw new NotImplementedException();
+        if (Wave < waves.Length)
+        {
+            Wave = 0;   // reset wave
+            Level++;    // increase the level
+            monoLevel.RegenerateLevel(Level, Save.data.towers);
             return;
         }
 
-        StartCoroutine(SpawnEnemies(wave));
-        wave++;
+        StartCoroutine(SpawnEnemies(Wave));
+        Wave++;
 
-        Debug.Log($"progressed to wave {wave}");
+        Debug.Log($"progressed to wave {Wave}");
     }
 
     // get the enemies within a radius
@@ -56,7 +67,7 @@ public class Waves : MonoBehaviour
     // spawns the enemies
     private IEnumerator SpawnEnemies(int wave)
     {
-        List<EnemySpawnData> spawnData = waves[wave].ToList(); // create a copy of the enemy spawn data as a list for this wave to operate on
+        List<EnemySpawnData> spawnData = waves[wave].enemySpawnData.ToList(); // create a copy of the enemy spawn data as a list for this wave to operate on
 
         int spawnCount = 0; // for the spawn cap, in the case that the loop gets stuck
         while (spawnData.Count > 0)
@@ -98,7 +109,7 @@ public class Waves : MonoBehaviour
         while (allEnemies.Where(e => e.OpenForPooling).Count() > 0)
             yield return new WaitForFixedUpdate();
 
-        NextWave(); // start the next wave, uwu
+        winUI.SetActive(true);
         GameManager.Instance.Save.SaveFile(); // save the current state to the file
 
         yield return null;
@@ -133,6 +144,9 @@ public class Waves : MonoBehaviour
         // add self to the game manager
         if (GameManager.Instance.Waves != null) throw new InvalidOperationException("an instance of waves already exists");
         GameManager.Instance.Waves = this;
+
+        // get monolevel
+        monoLevel = FindFirstObjectByType<MonoLevel>();
 
         // create the enemy pools
         enemyPools = new ObjectPool<EnemyBase>[enemyTypes.Length];
