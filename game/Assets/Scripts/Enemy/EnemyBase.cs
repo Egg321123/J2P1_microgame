@@ -18,6 +18,7 @@ public abstract class EnemyBase : MonoBehaviour
     //saves the movement script that controls all ai
     EnemyMovementSystem movement;
     MoneyHandler moneyHandler;
+    public GameObject deathParticles;
 
     // enemy stats
     private int health;
@@ -94,6 +95,7 @@ public abstract class EnemyBase : MonoBehaviour
         GameManager.Instance.Save.data.stats.IncreaseKills();
         moneyHandler.Earn(droppedMoney);
         if (!OpenForPooling) StartCoroutine(PrepareForPooling());
+        Instantiate(deathParticles, transform.position, Quaternion.identity);
     }
 
     public void ApplyStun(float length)
