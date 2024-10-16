@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlaceOnGrid : MonoBehaviour
 {
+    [SerializeField] private GameObject audioPrefab;
+    [SerializeField] private AudioClip clip;
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private GameObject grid;
     [SerializeField] private MonoTile objectToPlace = null;
@@ -75,6 +77,8 @@ public class PlaceOnGrid : MonoBehaviour
                         // Places object in the scene if you are allowed to place there
                         if (monoLevel.Level.IsEmpty(pos) && moneyHandler.Pay(storeData.cost))
                         {
+                            GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
+                            sound.GetComponent<AudioClipPlayer>().Initialize(clip);
                             GameManager.Instance.Save.data.stats.IncreaseTowersPlaced();
                             monoLevel.SetTile(objectToPlace, pos, TileType.TOWER, towerData, true);
                         }
