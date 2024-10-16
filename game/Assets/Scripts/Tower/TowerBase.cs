@@ -25,13 +25,20 @@ public abstract class TowerBase : MonoBehaviour
     protected abstract IEnumerable<EnemyBase> SelectTargets();  // implementation for selecting targets
     protected abstract void ShotTarget(EnemyBase target);       // implementation for when a target has been shot
 
+    protected virtual void BeforeShootDelay() { }                    // implementation to get when it getting ready to shoot
+    protected virtual void AfterShootDelay() { }                    // implementation to get when it getting ready to shoot
+
     // timer for shooting
     private IEnumerator ShootLoop()
     {
         while (isAllowedToShoot)
         {
+            BeforeShootDelay();
+
             //wait for shooting delay
             yield return new WaitForSeconds(1 / TowerData.attackSpeed);
+
+            AfterShootDelay();
 
             foreach (EnemyBase target in targets)
                 ShotTarget(target);

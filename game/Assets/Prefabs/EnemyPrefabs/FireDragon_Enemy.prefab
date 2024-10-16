@@ -92,13 +92,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1989224944000774679}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71da5bfbd051ad74c97d8301dec30243, type: 3}
+  m_Script: {fileID: 11500000, guid: 66f05e0840e6c86038d15e5a9388f5c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyName: Fire dragon
+  enemyName: 
   baseHealth: 10
-  baseSpeed: 1.1
-  baseDroppedMoney: 9
+  baseSpeed: 1
+  baseDroppedMoney: 10
   extraHealthPerLevel: 1
   extraSpeedPerLevel: 0.1
   extraDroppedMoneyPerLevel: 1
