@@ -169,7 +169,14 @@ public struct EnemyMoveJob : IJobParallelForTransform
 
         // Check if needs to be rotated, if so rotate
         Vector3 direction = (targetPosition - currentPosition).normalized;
-        if (direction.magnitude > 0) transform.rotation = Quaternion.LookRotation(direction);
+        // If there's a valid direction, rotate smoothly
+        if (direction.sqrMagnitude > 0.0001f) // Avoid division by zero and insignificant values
+        {
+            // Get the target rotation based on the direction
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            // Smoothly rotate from current rotation to target rotation
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * DeltaTime);
+        }
 
         // Check if enemy has reached the target node with a tolerance
         if (Vector3.Distance(transform.position, targetPosition) <= 0.01f) TargetNodeIndices[index]++;

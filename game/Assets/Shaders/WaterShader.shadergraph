@@ -13,9 +13,6 @@
             "m_Id": "bbb5f0a12f534a9094f55cd4464d0519"
         },
         {
-            "m_Id": "28ac848c0055446fa33168f688e675fc"
-        },
-        {
             "m_Id": "623f8c0eac5e46f4a69eeb4209c192e6"
         },
         {
@@ -1660,36 +1657,6 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
-}
-
-{
-    "m_SGVersion": 3,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
-    "m_ObjectId": "28ac848c0055446fa33168f688e675fc",
-    "m_Guid": {
-        "m_GuidSerialized": "6b84e086-1e14-4168-b0f2-d37e82ea3399"
-    },
-    "m_Name": "Water Edge",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Water Edge",
-    "m_DefaultReferenceName": "_Water_Edge",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": {
-        "r": 0.2980392277240753,
-        "g": 0.9372549057006836,
-        "b": 1.0,
-        "a": 0.0
-    },
-    "isMainColor": false,
-    "m_ColorMode": 0
 }
 
 {
@@ -3705,9 +3672,6 @@
             "m_Id": "586ab04527d445a4a291dfa4a892b090"
         },
         {
-            "m_Id": "28ac848c0055446fa33168f688e675fc"
-        },
-        {
             "m_Id": "9f763b8bfd1f4d398657dc1e27021622"
         },
         {
@@ -3767,7 +3731,7 @@
     "m_ShaderOutputName": "B",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 22.700000762939454,
+        "x": 44.70000076293945,
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
@@ -4167,8 +4131,8 @@
     "m_ShaderOutputName": "OutMinMax",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 1.0,
-        "y": 2.5
+        "x": 2.0,
+        "y": 3.0
     },
     "m_DefaultValue": {
         "x": 0.0,

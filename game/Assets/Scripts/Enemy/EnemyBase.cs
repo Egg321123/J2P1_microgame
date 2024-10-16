@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public abstract class EnemyBase : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public abstract class EnemyBase : MonoBehaviour
     private int health;
     private int droppedMoney;
     public float Speed { get; private set; }
-    public Vector3 RandomOffset { get; private set; }
+    public Vector3 RandomOffset { get { return randomOffset; }}
+    protected Vector3 randomOffset = Vector3.zero;
 
     // utility
     public bool OpenForPooling { get; private set; } // OpenForPooling = false is the same as this enemy being alive
@@ -33,14 +35,15 @@ public abstract class EnemyBase : MonoBehaviour
     [HideInInspector] public int TargetNodeIndex = 0;
     private bool isStunned = false;
 
+    protected virtual void Update() { }
 
     // awake is called when the script is being loaded
-    private void Awake()
+    protected virtual void Awake()
     {
         // create a random offset to make it look like the enemies are not strictly following the path
         float randomX = Random.Range(-0.25f, 0.25f);
         float randomZ = Random.Range(-0.25f, 0.25f);
-        RandomOffset = new(randomX, 0, randomZ);
+        randomOffset = new(randomX, 0, randomZ);
 
         //get a reference to the movement script
         movement = FindFirstObjectByType<EnemyMovementSystem>();
