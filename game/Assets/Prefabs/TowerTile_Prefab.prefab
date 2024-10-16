@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileMeshes:
+    end: {fileID: 2576813411084897944, guid: 3f98e2d502f992448b24f1214eebb923, type: 3}
     straight: {fileID: -3100206920804286779, guid: 105ae3c88776ee048ad6b106b2fd213c,
       type: 3}
     corner: {fileID: 8560692323155104116, guid: e55be166eff78044ab3014ce5dbde810,
@@ -56,13 +57,13 @@ MonoBehaviour:
     full: {fileID: 9154874406465099594, guid: 18cf3160a7674624e9429129a5ec34dd, type: 3}
     empty: {fileID: -2368555150270231412, guid: 9c05e35fe1b880e4bb87ca45ab2814f4,
       type: 3}
-  ArrowTower: {fileID: 3938336332173716440, guid: 4a9bf0def9bf5de46b54335095f1c803,
+  ArrowTower: {fileID: 8963619658345935335, guid: 0d5961edf69aa3548b041a40de364350,
     type: 3}
-  CannonTower: {fileID: 3938336332173716440, guid: 5028ee8cc29ca5647986cdad2cf2546d,
+  CannonTower: {fileID: 4423082325038212542, guid: 9eab24403613b2840ba5e16d8c69e88b,
     type: 3}
-  MagicTower: {fileID: 3938336332173716440, guid: 733e81976d6e2ec468407e4362382061,
+  MagicTower: {fileID: 4799747152397914917, guid: b814d778f7394014e9a56e0aec2f753f,
     type: 3}
-  ShockwaveTower: {fileID: 3938336332173716440, guid: 08806b9936609cf418de91da343be9ab,
+  ShockwaveTower: {fileID: 2320800557303085803, guid: 3963ae7b5b57bc0479276bf5282a818d,
     type: 3}
 --- !u!33 &-2851164240647530008
 MeshFilter:

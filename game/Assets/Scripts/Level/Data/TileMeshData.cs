@@ -1,12 +1,14 @@
 using System;
 using UnityEngine;
 
+// contains the different meshes that is used by the ground tiles
 [Serializable]
 public struct TileMeshData
 {
-    public Mesh straight;     // has 2 opposing neighbours
-    public Mesh corner;       // has 2 adjointed neighbours
-    public Mesh single;       // has 3 adjointed neighbours
-    public Mesh full;         // has no neighbours
-    public Mesh empty;        // has neighbours on each side
+    public Mesh end;            // has 1 adjointed neighbour
+    public Mesh straight;       // has 2 opposing neighbours
+    public Mesh corner;         // has 2 adjointed neighbours
+    public Mesh single;         // has 3 adjointed neighbours
+    public Mesh full;           // has no neighbours
+    public Mesh empty;          // has neighbours on each side
 }

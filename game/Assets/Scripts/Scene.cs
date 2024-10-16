@@ -1,5 +1,5 @@
+// contains the different scenes set to their scene index
 public enum Scene
 {
-    PRE_LOAD = 0,
-    MAIN_GAME = 1,
+    MAIN_GAME = 0,
 }

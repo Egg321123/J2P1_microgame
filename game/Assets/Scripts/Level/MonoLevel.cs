@@ -6,8 +6,11 @@ public class MonoLevel : MonoBehaviour
 {
     [SerializeField, Min(1)] private int width = 10;        // non-negative value corresponding to the maximum amount of tiles on the horizontal axis
     [SerializeField, Min(1)] private int height = 10;       // non-negative value corresponding to the maximum amount of tiles on the vertucal axis
-    [SerializeField] private MonoTile pathPrefab;           // contains the path prefabs
+    [SerializeField] private MonoTile pathPrefab = null;    // contains the path prefab
+    [SerializeField] private MonoTile towerPrefab = null;   // contains the prefab used for towers
     private readonly List<MonoTile> placedTiles = new();    // contains the tiles that have been placed
+
+    private CreateAIPath pathCreator = null;                // reference to the path creator for the enemies
 
     public Level Level { get; private set; }
 
@@ -28,17 +31,18 @@ public class MonoLevel : MonoBehaviour
         DestroyLevel();
         Level.GenerateLevel(level); // generate the level
 
-        // generate the path monotiles
-        foreach (Vector2Int pathPos in Level.GetPath())
-        {
-            SetMonoTile(pathPrefab, pathPos);
-        }
-
+        // set the tower tiles within the level
         foreach (TileData tower in towers)
-        {
             Level.SetTile(tower.pos, TileType.TOWER, tower.towerData);
-            SetMonoTile(tower.monoTile, tower.pos, true);
-        }
+
+        // generate all the monotiles
+        foreach (Vector2Int pathPos in Level.GetPath())
+            SetMonoTile(pathPrefab, pathPos);
+        foreach (Vector2Int tower in Level.GetTowers())
+            SetMonoTile(towerPrefab, tower);
+
+        // regenerate the AI path, so enemies know where to walk
+        pathCreator.RegeneratePath();
     }
 
     /// <summary>
@@ -56,7 +60,7 @@ public class MonoLevel : MonoBehaviour
     public void SetMonoTile(MonoTile prefab, Vector2Int pos, bool updateNeighbours = false)
     {
         MonoTile tile = Instantiate(prefab, transform);
-        tile.name = pos.ToString();
+        tile.name = $"{Level.GetTile(pos).type}: {pos}";
         tile.Initialize(Level, pos, updateNeighbours);
         placedTiles.Add(tile);
     }
@@ -64,6 +68,8 @@ public class MonoLevel : MonoBehaviour
     // called when the script is being loaded
     private void Awake()
     {
+        pathCreator = FindFirstObjectByType<CreateAIPath>();
+
         if (GameManager.Instance.Level == null)
         {
             Level = new Level(width, height);
@@ -71,16 +77,6 @@ public class MonoLevel : MonoBehaviour
         }
         else
             Level = GameManager.Instance.Level;
-    }
-
-    // called when the script on first frame
-    private void Start()
-    {
-        // TEMP: regenerate the level with the safe data
-        RegenerateLevel(GameManager.Instance.Save.data.level, GameManager.Instance.Save.data.towers);
-
-        //load scene when the level has been loaded
-        SceneManager.LoadSceneAsync((int)Scene.MAIN_GAME, LoadSceneMode.Additive);
     }
 
 #if UNITY_EDITOR
