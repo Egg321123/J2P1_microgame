@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,19 +8,16 @@ public class CreateAIPath : MonoBehaviour
 
     //path for ai to use
     public List<Vector3> Path { get; private set; } = null;
+    public event Action RegeneratedPaths;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        RegeneratePath();
-    }
-
+    // called by MonoLevel
     public void RegeneratePath()
     {
         Level level = FindFirstObjectByType<MonoLevel>().Level;
         IReadOnlyList<Vector2Int> list = level.GetPath();
         Path = AdjustListToWorld(list, level);
         CreateLineRenderer();
+        RegeneratedPaths?.Invoke();
     }
 
     private void CreateLineRenderer()

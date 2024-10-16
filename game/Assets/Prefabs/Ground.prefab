@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileMeshes:
+    end: {fileID: 2576813411084897944, guid: 3f98e2d502f992448b24f1214eebb923, type: 3}
     straight: {fileID: -3100206920804286779, guid: 105ae3c88776ee048ad6b106b2fd213c,
       type: 3}
     corner: {fileID: 8560692323155104116, guid: e55be166eff78044ab3014ce5dbde810,

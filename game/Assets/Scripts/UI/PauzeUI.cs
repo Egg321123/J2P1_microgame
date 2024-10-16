@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PauzeUI : MonoBehaviour
@@ -19,6 +17,5 @@ public class PauzeUI : MonoBehaviour
         Time.timeScale = time;
         gameUI.SetActive(gameIsFreezing);
         pauseUI.SetActive(!gameIsFreezing);
-
     }
 }
