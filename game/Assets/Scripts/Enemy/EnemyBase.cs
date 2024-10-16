@@ -4,6 +4,8 @@ using UnityEngine;
 public abstract class EnemyBase : MonoBehaviour
 {
     [SerializeField] private string enemyName;
+    [SerializeField] private GameObject audioPrefab;
+    [SerializeField] private AudioClip clip;
 
     [Header("default values")]
     [SerializeField] private int baseHealth = 10;
@@ -91,6 +93,8 @@ public abstract class EnemyBase : MonoBehaviour
     /// </summary>
     protected virtual void Kill()
     {
+        GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
+        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
         GameManager.Instance.Save.data.stats.IncreaseKills();
         moneyHandler.Earn(droppedMoney);
         if (!OpenForPooling) StartCoroutine(PrepareForPooling());
