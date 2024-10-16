@@ -105,4 +105,6 @@ MonoBehaviour:
   extraHealthPerLevel: 1
   extraSpeedPerLevel: 0.1
   extraDroppedMoneyPerLevel: 1
+  deathParticles: {fileID: 3975219934923308966, guid: ebba3ea0eaeda634fb9b03546677f01f,
+    type: 3}
   TargetNodeIndex: 0
