@@ -4,18 +4,16 @@ public class PauzeUI : MonoBehaviour
 {
     [SerializeField] GameObject gameUI;
     [SerializeField] GameObject pauseUI;
-    bool gameIsFreezing = false;
-    public void FreezeSwitch()
+    public void Pause(bool goalIsActive)//this method activate and deactivate the pause menue based on the parameter
     {
-        if (!gameIsFreezing) Pause(0);
-        else Pause(1);
+        if (goalIsActive) Time.timeScale = 0;//if the goal is to activate the pause menu than freeze the game, otherwise the game will play as normal
+        else Time.timeScale = 1;
 
-        gameIsFreezing = !gameIsFreezing;
+        gameUI.SetActive(!goalIsActive);
+        pauseUI.SetActive(goalIsActive);
     }
-    void Pause(int time)
+    private void OnApplicationFocus(bool focus)//if the aplication loses the foces it will automaticly acitavte the pause menu
     {
-        Time.timeScale = time;
-        gameUI.SetActive(gameIsFreezing);
-        pauseUI.SetActive(!gameIsFreezing);
+        if (!focus) Pause(true);
     }
 }
