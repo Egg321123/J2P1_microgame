@@ -11,7 +11,7 @@ public class MagicTower : ProjectileTowerBase
     {
         animatedComponent.transform.Rotate(0, 30 * Time.deltaTime, 0);
         Vector3 anim = Vector3.zero;
-        anim.y = Mathf.Sin(Time.deltaTime * 10) * 100;
+        //anim.y = Mathf.Sin(Time.deltaTime * 10) * 100;
         animatedComponent.transform.localPosition = anim;
 
         base.FixedUpdate();
