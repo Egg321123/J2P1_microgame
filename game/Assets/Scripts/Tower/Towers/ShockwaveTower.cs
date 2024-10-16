@@ -4,8 +4,6 @@ using UnityEngine;
 public class ShockwaveTower : TowerBase
 {
     protected override IEnumerable<EnemyBase> SelectTargets() => Waves.GetEnemiesInRadius(transform.position, TowerData.attackRange, -1);
-    [SerializeField] private GameObject audioPrefab;
-    [SerializeField] private AudioClip clip;
 
     protected override void ShotTarget(EnemyBase target)
     {

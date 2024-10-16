@@ -1767,9 +1767,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 136412082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -222, y: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -120, y: -75}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &295697772
@@ -1818,15 +1818,15 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 108037597}
         m_TargetAssemblyTypeName: PauzeUI, Assembly-CSharp
-        m_MethodName: FreezeSwitch
-        m_Mode: 1
+        m_MethodName: Pause
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &295697773
 MonoBehaviour:
@@ -11478,7 +11478,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -221, y: -74.5199}
+  m_AnchoredPosition: {x: -119, y: -74.5199}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1951009506
@@ -11527,8 +11527,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 108037597}
         m_TargetAssemblyTypeName: PauzeUI, Assembly-CSharp
-        m_MethodName: FreezeSwitch
-        m_Mode: 1
+        m_MethodName: Pause
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

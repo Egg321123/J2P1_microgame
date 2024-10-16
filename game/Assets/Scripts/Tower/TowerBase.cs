@@ -6,6 +6,9 @@ using UnityEngine;
 public abstract class TowerBase : MonoBehaviour
 {
     [SerializeField] protected Transform firingPoint;
+    [SerializeField] protected GameObject audioPrefab;
+    [SerializeField] protected AudioClip clip;
+
     private TowerData towerData;                        // contains the data of this tower
     private IEnumerable<EnemyBase> targets = null;      // the enemies that are currently being targeted
     private bool isAllowedToShoot = true;               // whether the tower is allowed to shoot

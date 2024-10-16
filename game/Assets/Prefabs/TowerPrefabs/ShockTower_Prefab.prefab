@@ -92,7 +92,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7ab1683f1d07d0a47bb0f3ad582b884b,
         type: 3}
       propertyPath: m_Name
-      value: Shock_Tower
+      value: ShockTower_Prefab
       objectReference: {fileID: 0}
     - target: {fileID: 2371647777209246491, guid: 7ab1683f1d07d0a47bb0f3ad582b884b,
         type: 3}
@@ -137,6 +137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firingPoint: {fileID: 237033528650527169}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 8
+  audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
+    type: 3}
+  clip: {fileID: 8300000, guid: 2aa0bfa2fd15d6b4f92b3d2d53322e33, type: 3}
