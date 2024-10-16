@@ -1,9 +1,21 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
-public class ArrowTower : ProjectileTowerBase
+public class MagicTower : ProjectileTowerBase
 {
     [SerializeField] private GameObject projectile;
+    [SerializeField] GameObject animatedComponent;
+
+    protected override void FixedUpdate()
+    {
+        animatedComponent.transform.Rotate(0, 30 * Time.deltaTime, 0);
+        Vector3 anim = Vector3.zero;
+        anim.y = Mathf.Sin(Time.deltaTime * 10) * 100;
+        animatedComponent.transform.localPosition = anim;
+
+        base.FixedUpdate();
+    }
 
     protected override IEnumerable<EnemyBase> SelectTargets() => GameManager.Instance.Waves.GetEnemiesInRadius(transform.position, TowerData.attackRange, 1);
 

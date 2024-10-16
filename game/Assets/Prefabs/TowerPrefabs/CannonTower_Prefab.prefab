@@ -92,7 +92,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: dc9ac00cb88d39b40a5085758446c574,
         type: 3}
       propertyPath: m_Name
-      value: Cannon_Tower
+      value: CannonTower_Prefab
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -126,9 +126,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firingPoint: {fileID: 177019679079208944}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 8
   audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
     type: 3}
   clip: {fileID: 8300000, guid: 99777da520abb0945a6af9b0c6ee3c39, type: 3}
@@ -137,9 +134,16 @@ MonoBehaviour:
   explosion: {fileID: 2012334141519626885, guid: a0fd4edff1cbc334b90a4ab46b2c82b9,
     type: 3}
   explosionSize: 1
+  animatedComponent: {fileID: 7199901029681279640}
 --- !u!4 &5059212215777576528 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -606448188789465409, guid: dc9ac00cb88d39b40a5085758446c574,
+    type: 3}
+  m_PrefabInstance: {fileID: 3576025372845349103}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7199901029681279640 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3293336427984311689, guid: dc9ac00cb88d39b40a5085758446c574,
     type: 3}
   m_PrefabInstance: {fileID: 3576025372845349103}
   m_PrefabAsset: {fileID: 0}
