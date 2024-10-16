@@ -8804,13 +8804,39 @@ MonoBehaviour:
   enemyTypes:
   - difficulty: 0
     enemy: {fileID: 2693015609963267340, guid: 5ada5a4b2433e5f45a1127e1700cf410, type: 3}
+  - difficulty: 0
+    enemy: {fileID: -2418015025505699720, guid: cd9d8c0291327984fa935d3b203f65dd,
+      type: 3}
+  - difficulty: 0
+    enemy: {fileID: 3336465970108709476, guid: c1306aa39fcc2634ba19e8d995da41b9, type: 3}
+  - difficulty: 1
+    enemy: {fileID: 7691908818730006059, guid: a50b324189bfef5448761c62a79ffc14, type: 3}
+  - difficulty: 1
+    enemy: {fileID: 5023633266415292632, guid: 3c7f2aba5a868ad458bfbe1cbe9e65c3, type: 3}
+  - difficulty: 2
+    enemy: {fileID: 4745358176435624967, guid: af215a47d5bdccc4d8913313696eb5b7, type: 3}
+  - difficulty: 2
+    enemy: {fileID: 5645542686406565367, guid: b7771f75e0193f94cbddec11222c7924, type: 3}
   waves:
   - enemySpawnData:
     - difficulty: 0
-      count: 3
+      count: 5
   - enemySpawnData:
     - difficulty: 0
+      count: 2
+    - difficulty: 1
+      count: 3
+  - enemySpawnData:
+    - difficulty: 1
+      count: 10
+  - enemySpawnData:
+    - difficulty: 1
       count: 5
+    - difficulty: 2
+      count: 3
+  - enemySpawnData:
+    - difficulty: 2
+      count: 20
 --- !u!114 &1066355571
 MonoBehaviour:
   m_ObjectHideFlags: 0
