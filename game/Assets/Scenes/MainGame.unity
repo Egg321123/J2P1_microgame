@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.12107873, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2092,14 +2092,14 @@ MonoBehaviour:
       - m_Target: {fileID: 108037597}
         m_TargetAssemblyTypeName: PauzeUI, Assembly-CSharp
         m_MethodName: FreezeSwitch
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &295697773
 MonoBehaviour:
@@ -9471,17 +9471,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 629de7770d6587e6ba007672777fd9d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves: 10
-  spawnEnemies: 1000000
-  enemySpawnRate: 1
-  enemies:
-  - {fileID: 6796261505284752416, guid: c1306aa39fcc2634ba19e8d995da41b9, type: 3}
-  - {fileID: 1168776680903983884, guid: cd9d8c0291327984fa935d3b203f65dd, type: 3}
-  - {fileID: 1989224944000774679, guid: af215a47d5bdccc4d8913313696eb5b7, type: 3}
-  - {fileID: 1741509339909122093, guid: 5ada5a4b2433e5f45a1127e1700cf410, type: 3}
-  - {fileID: 6525832992298233716, guid: 3c7f2aba5a868ad458bfbe1cbe9e65c3, type: 3}
-  - {fileID: 3783896989870110513, guid: a50b324189bfef5448761c62a79ffc14, type: 3}
-  - {fileID: 4230912243311770051, guid: b7771f75e0193f94cbddec11222c7924, type: 3}
 --- !u!114 &1066355571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10576,9 +10565,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1920334860}
+      - m_Target: {fileID: 1154019725}
         m_TargetAssemblyTypeName: SwitchItems, Assembly-CSharp
-        m_MethodName: Switch
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12814,7 +12803,7 @@ MonoBehaviour:
       - m_Target: {fileID: 108037597}
         m_TargetAssemblyTypeName: PauzeUI, Assembly-CSharp
         m_MethodName: FreezeSwitch
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
