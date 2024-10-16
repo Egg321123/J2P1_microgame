@@ -26,6 +26,7 @@ public class Waves : MonoBehaviour
 
     // refrences
     private MonoLevel monoLevel = null;                         // reference to the MonoLevel for regenerating the level on win
+    private Shop shop = null;                                   // reference to the shop so we can disable it
 
     // property shorthands
     private Save Save => GameManager.Instance.Save;
@@ -43,6 +44,7 @@ public class Waves : MonoBehaviour
         }
 
         winUI.SetActive(false);                                     // hide the win UI (again)
+        shop.ShopToggle(true);                                      // make the shop active again
 
         StartCoroutine(SpawnEnemies(Wave));
         Debug.Log($"started wave {Wave} in level {Level}");
@@ -123,6 +125,7 @@ public class Waves : MonoBehaviour
             newLevel = true;
             Debug.Log($"progressed to level {Level}!");
             winUI.SetActive(true);                  // set the Win UI active
+            shop.ShopToggle(false);                 // disable the shop
 
         }
 
@@ -131,6 +134,7 @@ public class Waves : MonoBehaviour
         if (newLevel == false)
         {
             counter.gameObject.SetActive(true);
+            shop.ShopToggle(false);
 
             for (int i = 0; i < waveDelaySeconds; i++)
             {
@@ -139,8 +143,7 @@ public class Waves : MonoBehaviour
             }
 
             counter.gameObject.SetActive(false);
-
-            NextWave();
+            NextWave(); // shop is set active in this method
         }
 
         yield return null;
@@ -178,6 +181,7 @@ public class Waves : MonoBehaviour
 
         // get monobehaviours
         monoLevel = FindFirstObjectByType<MonoLevel>();
+        shop = FindFirstObjectByType<Shop>();
 
         // create the enemy pools for each different type
         enemyPools = new ObjectPool<EnemyBase>[enemyTypes.Length];
