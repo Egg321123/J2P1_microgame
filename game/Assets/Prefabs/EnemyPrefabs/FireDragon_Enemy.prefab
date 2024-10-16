@@ -107,16 +107,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c6c5643427fcf45a06ee99ccb4eeb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyName: 
+  enemyName: Fire dragon
   audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
     type: 3}
   clip: {fileID: 8300000, guid: b8456a8dbfa31f444ab22d6fba02fc63, type: 3}
-  baseHealth: 10
-  baseSpeed: 1
+  baseHealth: 15
+  baseSpeed: 1.1
   baseDroppedMoney: 10
   extraHealthPerLevel: 1
   extraSpeedPerLevel: 0.1
   extraDroppedMoneyPerLevel: 1
+  deathParticles: {fileID: 3975219934923308966, guid: ebba3ea0eaeda634fb9b03546677f01f,
+    type: 3}
   TargetNodeIndex: 0
   animTarget: {fileID: 5610982786893455841}
 --- !u!1001 &4692573567707028656
