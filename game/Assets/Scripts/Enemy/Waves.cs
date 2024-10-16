@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random; // define which random we wanna use
 
@@ -9,11 +10,17 @@ using Random = UnityEngine.Random; // define which random we wanna use
 // if the last wave has been reached, a new level is generated
 public class Waves : MonoBehaviour
 {
+    [Header("UI stuff")]
     [SerializeField] private GameObject winUI = null;           // the UI that is shown when the game is won
+    [SerializeField] private TextMeshProUGUI counter = null;    // for showing a count down between waves
+    [SerializeField, Min(0)] private int waveDelaySeconds = 5;  // the delay in seconds between waves
+
+    [Header("enemy spawning")]
     [SerializeField, Min(0)] private float enemySpawnRate = 1F; // how many times per second to spawn a new enemy
     [SerializeField] private EnemyTypeData[] enemyTypes = null; // the different enemy types
     [SerializeField] private SpawnData[] waves = null;          // the different waves constructed
 
+    // enemy storage
     private ObjectPool<EnemyBase>[] enemyPools = null;          // the pools for enemy pooling
     private List<EnemyBase> allEnemies = new();                 // contains all the enemies
 
@@ -38,7 +45,7 @@ public class Waves : MonoBehaviour
         winUI.SetActive(false);                                     // hide the win UI (again)
 
         StartCoroutine(SpawnEnemies(Wave));
-        Debug.Log($"started wave {Wave}");
+        Debug.Log($"started wave {Wave} in level {Level}");
     }
 
     // get the enemies within a radius
@@ -114,11 +121,27 @@ public class Waves : MonoBehaviour
             monoLevel.Level.ClearLevel();   // clear the level so we don't save towers
 
             newLevel = true;
-            Debug.Log("progressed level!");
+            Debug.Log($"progressed to level {Level}!");
+            winUI.SetActive(true);                  // set the Win UI active
+
         }
 
-        winUI.SetActive(true);                  // set the Win UI active
         GameManager.Instance.Save.SaveFile();   // save the current state to the file
+
+        if (newLevel == false)
+        {
+            counter.gameObject.SetActive(true);
+
+            for (int i = 0; i < waveDelaySeconds; i++)
+            {
+                counter.text = (waveDelaySeconds - i).ToString();
+                yield return new WaitForSeconds(1.0F);
+            }
+
+            counter.gameObject.SetActive(false);
+
+            NextWave();
+        }
 
         yield return null;
     }
