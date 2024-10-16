@@ -52,11 +52,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _Detail: 8.59
-    - _Edge_strength: 1.66
+    - _Detail2: 8.68
+    - _Edge_strength: 2.4
     - _IDK: 7.73
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Water_speed: 0.67
+    - _Water_speed: 1.23
     m_Colors:
     - _Foam: {r: 1, g: 1, b: 1, a: 1}
     - _Water: {r: 0.2660199, g: 0.80609155, b: 0.9245283, a: 1}

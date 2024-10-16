@@ -165,8 +165,9 @@ public class Waves : MonoBehaviour
         int index = Random.Range(0, enemyIndices.Count);
 
         // use the index to get an enemy within the pool
-        ObjectPool<EnemyBase> pool = enemyPools[index];
-        EnemyBase enemy = pool.GetPooledObject(enemyTypes[index].enemy, transform, enemy => allEnemies.Add(enemy));
+        int targetIndex = enemyIndices[index];
+        ObjectPool<EnemyBase> pool = enemyPools[targetIndex];
+        EnemyBase enemy = pool.GetPooledObject(enemyTypes[targetIndex].enemy, transform, enemy => allEnemies.Add(enemy));
 
         // initialize the enemy
         enemy.Initialize(GameManager.Instance.Save.data.level);
