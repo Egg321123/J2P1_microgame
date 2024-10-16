@@ -8798,7 +8798,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winUI: {fileID: 202109077}
-  counter: {fileID: 0}
+  counter: {fileID: 457746402}
   waveDelaySeconds: 5
   enemySpawnRate: 1
   enemyTypes:

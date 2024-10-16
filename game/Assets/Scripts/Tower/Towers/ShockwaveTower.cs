@@ -9,15 +9,12 @@ public class ShockwaveTower : TowerBase
 
     protected override IEnumerable<EnemyBase> SelectTargets() => Waves.GetEnemiesInRadius(transform.position, TowerData.attackRange, -1);
 
-    protected override void BeforeShootDelay()
-    {
-        StartCoroutine(TowerAnimation());
-    }
+    protected override void BeforeShootDelay() => StartCoroutine(TowerAnimation());
 
     private IEnumerator TowerAnimation()
     {
         float currentTime = 0;
-        float animTime = 1 / TowerData.attackSpeed;
+        float animTime = (1 / TowerData.attackSpeed) - 0.1f;
 
         while (currentTime < animTime)
         {
