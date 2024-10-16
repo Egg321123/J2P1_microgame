@@ -10,9 +10,9 @@ public class MonoTowerTile : MonoTile
     [SerializeField] private GameObject MagicTower;
     [SerializeField] private GameObject ShockwaveTower;
 
-    private TowerData TowerData => Data.towerData ?? throw new NullReferenceException();
+    private TowerData TowerData => Data.towerData;
 
-    private void Start()
+    protected override void Initialize()
     {
         GameObject tower = Instantiate(GetTowerPrefab(), transform.position, Quaternion.identity);
         tower.transform.parent = transform;
@@ -28,17 +28,7 @@ public class MonoTowerTile : MonoTile
             TowerType.CannonTower => CannonTower,
             TowerType.MagicTower => MagicTower,
             TowerType.ShockwaveTower => ShockwaveTower,
-            _ => ArrowTower,
+            _ => throw new IndexOutOfRangeException($"didn't recognise the tower: {TowerData.towerType}!"),
         };
     }
 }
-
-// update this list if you add new towers to the game
-public enum TowerType
-{
-    ArrowTower,
-    CannonTower,
-    MagicTower,
-    ShockwaveTower
-}
-

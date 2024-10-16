@@ -6,25 +6,29 @@ using UnityEngine;
 public abstract class TowerBase : MonoBehaviour
 {
     [SerializeField] protected Transform firingPoint;
-    [SerializeField] protected LayerMask enemyMask;
-    protected TowerData towerData;
-    private IEnumerable<EnemyBase> targets = null;
-    private bool isAllowedToShoot = true;
+    private TowerData towerData;                        // contains the data of this tower
+    private IEnumerable<EnemyBase> targets = null;      // the enemies that are currently being targeted
+    private bool isAllowedToShoot = true;               // whether the tower is allowed to shoot
 
-    public TowerData TowerData { set { towerData = value; } }
+    // shorthands and diverse properties
+    public TowerData TowerData { get => towerData; set => towerData = value; }
+    protected GameManager GameManager => GameManager.Instance;
+    protected Waves Waves => GameManager.Waves;
 
+    // unity update functions
     protected virtual void Start() => StartCoroutine(ShootLoop());
     protected virtual void FixedUpdate() => targets = SelectTargets(); //only try finding target every fixed updated (for fewer updates)
 
-    protected abstract IEnumerable<EnemyBase> SelectTargets();
-    protected abstract void ShotTarget(EnemyBase target);
+    protected abstract IEnumerable<EnemyBase> SelectTargets();  // implementation for selecting targets
+    protected abstract void ShotTarget(EnemyBase target);       // implementation for when a target has been shot
 
+    // timer for shooting
     private IEnumerator ShootLoop()
     {
         while (isAllowedToShoot)
         {
             //wait for shooting delay
-            yield return new WaitForSeconds(1 / towerData.attackSpeed);
+            yield return new WaitForSeconds(1 / TowerData.attackSpeed);
 
             foreach (EnemyBase target in targets)
                 ShotTarget(target);
@@ -34,12 +38,12 @@ public abstract class TowerBase : MonoBehaviour
         yield return null;
     }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR // debug utilities
     // draw path for debuggong
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, towerData.attackRange);
+        Gizmos.DrawWireSphere(transform.position, TowerData.attackRange);
 
         Gizmos.color = Color.red;
         if (targets != null)

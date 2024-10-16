@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    // tau is a better mathematical constant to use than pi, because pi is only half a circle in radians, instead of a full circle.
+    // in the various formulas it's thus more intuitive to use tau.
     public const float TAU = MathF.PI * 2; // τ > π
 
     [Header("camera tilt (radians)")]
@@ -22,14 +24,19 @@ public class CameraMovement : MonoBehaviour
     // updates the input variables
     private void UpdateInput(int fingers)
     {
+        // switch for the amount of fingers that are touching the screen :3
         switch (fingers)
         {
+            // if only one finger is touching the screen
             case 1:
-                Touch touch = Input.GetTouch(0);
+                Touch touch = Input.GetTouch(0);                                                    // get the finger
                 float moveAmount = touch.deltaPosition.y / Screen.height * TAU;                     // get the amount that should be tilted
                 tiltAmount = Mathf.Clamp(tiltAmount - moveAmount, minTiltAmount, maxTiltAmount);    // apply the tilt amount, clamping the value between the min and max
                 break;
+
+            // if two fingers are touching the screens
             case 2:
+                // get the fingers
                 Touch t1 = Input.GetTouch(0);
                 Touch t2 = Input.GetTouch(1);
 
@@ -44,17 +51,22 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
+    // get the camera position from the radius and tiltAmount where it falls on a circle on a ZY plane
     private Vector3 GetCameraPosition()
     {
+        // calculate the Z and Y position of the camera
+        // shifting the amount by half a circle, as I found it more easy number-wise to get values you want
         float z = MathF.Sin(tiltAmount + (TAU / 2.0F)) * radius;
         float y = MathF.Cos(tiltAmount + (TAU / 2.0F)) * radius;
 
+        // return the camera position, relative to the level's dimensions (assuming level is rendered from 0,0 towards the positive axes)
         return new Vector3(lvlWidth / 2.0F, y, (lvlHeight / 2.0F) + z);
     }
 
     // start is called before the first frame update
     private void Start()
     {
+        // get the monolevel and extract the level dimensions
         Level level = FindFirstObjectByType<MonoLevel>().Level;
         lvlWidth = level.width;
         lvlHeight = level.height;
@@ -63,10 +75,11 @@ public class CameraMovement : MonoBehaviour
     // update is called every frame
     private void Update()
     {
+        // if no fingers are touching, return
         if (Input.touchCount < 0)
             return;
 
-        // update the input
+        // get the latest data from the input
         UpdateInput(Input.touchCount);
 
         // set the camera position
@@ -74,7 +87,7 @@ public class CameraMovement : MonoBehaviour
         transform.LookAt(new Vector3(lvlWidth / 2.0F, 0.0F, lvlHeight / 2.0F));
     }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR // debugging utility
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.magenta;

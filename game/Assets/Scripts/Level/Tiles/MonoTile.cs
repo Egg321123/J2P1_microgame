@@ -97,5 +97,10 @@ public class MonoTile : MonoBehaviour
         level.tiles[tilePos.x, tilePos.y].monoTile = this;
 
         SetModel(tilePos, updateNeighbours);
+
+        Initialize();
     }
+
+    // in the case that some extra initialisation logic needs to be implemented. :3
+    protected virtual void Initialize() { }
 }

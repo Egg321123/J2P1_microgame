@@ -23,7 +23,7 @@ public class MoneyHandler : MonoBehaviour
         if (money >= price)
         {
             money -= price;
-            
+
             GameManager.Instance.Save.data.money = money;
             GameManager.Instance.Save.data.stats.IncreaseMoneySpent(price);
 

@@ -74,8 +74,8 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da2aff2bb706ebf409b5cab61552258e,
         type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 5800599498311863601}
+      insertIndex: -1
+      addedObject: {fileID: 2693015609963267340}
   m_SourcePrefab: {fileID: 100100000, guid: da2aff2bb706ebf409b5cab61552258e, type: 3}
 --- !u!1 &1741509339909122093 stripped
 GameObject:
@@ -83,7 +83,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1507153731672855932}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5800599498311863601
+--- !u!114 &2693015609963267340
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,13 +92,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1741509339909122093}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71da5bfbd051ad74c97d8301dec30243, type: 3}
+  m_Script: {fileID: 11500000, guid: 66f05e0840e6c86038d15e5a9388f5c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyName: Goblin
+  enemyName: Goblinerino
   baseHealth: 10
-  baseSpeed: 1.5
-  baseDroppedMoney: 9
+  baseSpeed: 1
+  baseDroppedMoney: 10
   extraHealthPerLevel: 1
   extraSpeedPerLevel: 0.1
   extraDroppedMoneyPerLevel: 1

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using Random = System.Random;
 
 public class Level
 {
@@ -38,16 +39,9 @@ public class Level
     }
 
     // attempt to generate a new path, return TRUE if successful, FALSE if unsuccessful
-    private bool GeneratePath(System.Random rand)
+    private bool GeneratePath(Random rand)
     {
-        // fill the level with empty tiles
-        for (int x = 0; x < width; x++)
-            for (int y = 0; y < height; y++)
-                tiles[x, y] = new TileData(TileType.EMPTY, new Vector2Int(x, y));
-
-        // clear the lists
-        path.Clear();
-        towers.Clear();
+        ClearLevel();
 
         int directions = rand.Next(int.MaxValue);   // store the directions as a binary-encoded random string
         int posX = 0;                               // the current tile X position
@@ -111,15 +105,27 @@ public class Level
         return true;
     }
 
+    public void ClearLevel()
+    {
+        // fill the level with empty tiles
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                tiles[x, y] = new TileData(TileType.EMPTY, new Vector2Int(x, y));
+
+        // clear the lists
+        path.Clear();
+        towers.Clear();
+    }
+
     /// <summary>
     /// attempts to generate a valid level with a random path until <see cref="MAX_ATTEMPTS"/> has been reached.
     /// </summary>
     /// <exception cref="IndexOutOfRangeException"></exception>
     public void GenerateLevel(int level)
     {
-        System.Random rand = new(level);    // create a new random using the current level as the seed
-        int attempts = 0;                   // the amount of times that a path has been attempted to generate
-        bool success = false;               // whether the generation was successful
+        Random rand = new(level);   // create a new random using the current level as the seed
+        int attempts = 0;           // the amount of times that a path has been attempted to generate
+        bool success = false;       // whether the generation was successful
 
         // generate a new level until successful or MAX_ATTEMPTS has been reached
         while (success == false && attempts < MAX_ATTEMPTS)
@@ -160,7 +166,7 @@ public class Level
         if (type == TileType.TOWER)
         {
             towers.Add(new Vector2Int(x, y));
-            tiles[x, y].towerData = towerData;
+            tiles[x, y].towerData = towerData ?? default;
         }
     }
 

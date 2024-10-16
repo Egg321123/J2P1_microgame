@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Save
 {
-    public readonly string savePath;
-    public SaveData data;
+    public readonly string savePath;    // save path is set externally because Unity doesn't like you touching persistentDataPath in constructors
+    public SaveData data;               // contains the save data (duh)
 
-    // acquires the latest safe data
+    // acquires the latest safe data!
     private void UpdateSaveData()
     {
         Level level = GameManager.Instance.Level;

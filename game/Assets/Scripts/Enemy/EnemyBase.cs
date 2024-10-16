@@ -27,11 +27,12 @@ public abstract class EnemyBase : MonoBehaviour
 
     // utility
     public bool OpenForPooling { get; private set; } // OpenForPooling = false is the same as this enemy being alive
+    public bool IsAlive => !OpenForPooling;
     [HideInInspector] public int TargetNodeIndex = 0;
     private bool isStunned = false;
 
 
-
+    // awake is called when the script is being loaded
     private void Awake()
     {
         // create a random offset to make it look like the enemies are not strictly following the path
@@ -120,7 +121,7 @@ public abstract class EnemyBase : MonoBehaviour
     public void HasReachedEnd()
     {
         if (!OpenForPooling) StartCoroutine(PrepareForPooling());
-        //damage player or smthn
+        // TODO: damage player or smth
     }
 
     /// <summary>

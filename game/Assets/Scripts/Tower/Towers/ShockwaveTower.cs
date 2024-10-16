@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ShockwaveTower : TowerBase
 {
-    protected override IEnumerable<EnemyBase> SelectTargets() => GameManager.Instance.Waves.GetEnemiesInRadius(transform.position,towerData.attackRange, -1);
+    protected override IEnumerable<EnemyBase> SelectTargets() => Waves.GetEnemiesInRadius(transform.position, TowerData.attackRange, -1);
     [SerializeField] private GameObject audioPrefab;
     [SerializeField] private AudioClip clip;
 
@@ -13,6 +13,6 @@ public class ShockwaveTower : TowerBase
         sound.GetComponent<AudioClipPlayer>().Initialize(clip);
         EnemyBase targetScript = target.GetComponent<EnemyBase>();
         targetScript.ApplyStun(2);
-        targetScript.TakeDamage(towerData.attackDamage);
+        targetScript.TakeDamage(TowerData.attackDamage);
     }
 }
