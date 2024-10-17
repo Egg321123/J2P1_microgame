@@ -120,7 +120,7 @@ public class Waves : MonoBehaviour
         {
             Wave = 0;                       // reset wave
             Level++;                        // increase the level
-            Save.ResetLevelData();          // reset the level data so we don't save needless data
+            monoLevel.Level.ClearLevel();   // clear the level so we don't save towers
 
             newLevel = true;
             Debug.Log($"progressed to level {Level}!");
