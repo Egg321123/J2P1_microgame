@@ -134,9 +134,10 @@ public abstract class EnemyBase : MonoBehaviour
     public void HasReachedEnd()
     {
         if (!OpenForPooling) StartCoroutine(PrepareForPooling());
+
+        // damage the player
         GameManager.Instance.Save.data.hp --;
         GameManager.Instance.Waves.LoseCheck();
-        // TODO: damage player or smth
     }
 
     /// <summary>
