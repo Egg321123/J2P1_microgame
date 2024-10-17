@@ -4405,7 +4405,7 @@ MonoBehaviour:
   winUI: {fileID: 202109077}
   counter: {fileID: 457746402}
   waveDelaySeconds: 5
-  enemySpawnRate: 1
+  enemySpawnRate: 4
   enemyTypes:
   - difficulty: 0
     enemy: {fileID: 2693015609963267340, guid: 5ada5a4b2433e5f45a1127e1700cf410, type: 3}
@@ -4425,23 +4425,56 @@ MonoBehaviour:
   waves:
   - enemySpawnData:
     - difficulty: 0
-      count: 5
+      count: 25
   - enemySpawnData:
     - difficulty: 0
-      count: 2
-    - difficulty: 1
-      count: 3
-  - enemySpawnData:
+      count: 40
     - difficulty: 1
       count: 10
   - enemySpawnData:
+    - difficulty: 0
+      count: 30
     - difficulty: 1
-      count: 5
-    - difficulty: 2
-      count: 3
+      count: 20
   - enemySpawnData:
+    - difficulty: 0
+      count: 15
+    - difficulty: 1
+      count: 40
+    - difficulty: 2
+      count: 5
+  - enemySpawnData:
+    - difficulty: 0
+      count: 10
+    - difficulty: 1
+      count: 50
+    - difficulty: 2
+      count: 10
+  - enemySpawnData:
+    - difficulty: 1
+      count: 60
     - difficulty: 2
       count: 20
+  - enemySpawnData:
+    - difficulty: 1
+      count: 55
+    - difficulty: 2
+      count: 30
+  - enemySpawnData:
+    - difficulty: 1
+      count: 40
+    - difficulty: 2
+      count: 40
+  - enemySpawnData:
+    - difficulty: 1
+      count: 20
+    - difficulty: 2
+      count: 60
+  - enemySpawnData:
+    - difficulty: 1
+      count: 10
+    - difficulty: 2
+      count: 100
 --- !u!114 &1066355571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8055,6 +8088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7096a0035ee1f04ffb195e7ca202fbc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _timeScale: 1
 --- !u!4 &1963407811
 Transform:
   m_ObjectHideFlags: 0
