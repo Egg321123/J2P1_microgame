@@ -68,22 +68,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireDragon_Enemy
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -5754084199372789682, guid: f609c3ad34df70b4bad7cc97334c0d65, type: 3}
+    - {fileID: -7511558181221131132, guid: f609c3ad34df70b4bad7cc97334c0d65, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5086226103042702171}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f609c3ad34df70b4bad7cc97334c0d65,
         type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 4745358176435624967}
+      insertIndex: -1
+      addedObject: {fileID: 1066862212141638980}
   m_SourcePrefab: {fileID: 100100000, guid: f609c3ad34df70b4bad7cc97334c0d65, type: 3}
+--- !u!4 &1211737819952933037 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+    type: 3}
+  m_PrefabInstance: {fileID: 1682741377144590150}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1989224944000774679 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f609c3ad34df70b4bad7cc97334c0d65,
     type: 3}
   m_PrefabInstance: {fileID: 1682741377144590150}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4745358176435624967
+--- !u!114 &1066862212141638980
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,17 +104,105 @@ MonoBehaviour:
   m_GameObject: {fileID: 1989224944000774679}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71da5bfbd051ad74c97d8301dec30243, type: 3}
+  m_Script: {fileID: 11500000, guid: c5c6c5643427fcf45a06ee99ccb4eeb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: Fire dragon
   audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
     type: 3}
   clip: {fileID: 8300000, guid: b8456a8dbfa31f444ab22d6fba02fc63, type: 3}
-  baseHealth: 10
+  baseHealth: 15
   baseSpeed: 1.1
-  baseDroppedMoney: 9
+  baseDroppedMoney: 10
   extraHealthPerLevel: 1
   extraSpeedPerLevel: 0.1
   extraDroppedMoneyPerLevel: 1
+  deathParticles: {fileID: 3975219934923308966, guid: ebba3ea0eaeda634fb9b03546677f01f,
+    type: 3}
   TargetNodeIndex: 0
+  animTarget: {fileID: 5610982786893455841}
+--- !u!1001 &4692573567707028656
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1211737819952933037}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f609c3ad34df70b4bad7cc97334c0d65,
+        type: 3}
+      propertyPath: m_Name
+      value: FireDragon_Enemy
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f609c3ad34df70b4bad7cc97334c0d65, type: 3}
+--- !u!4 &5086226103042702171 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f609c3ad34df70b4bad7cc97334c0d65,
+    type: 3}
+  m_PrefabInstance: {fileID: 4692573567707028656}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5610982786893455841 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f609c3ad34df70b4bad7cc97334c0d65,
+    type: 3}
+  m_PrefabInstance: {fileID: 4692573567707028656}
+  m_PrefabAsset: {fileID: 0}

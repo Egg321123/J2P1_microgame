@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Shockwave_Tower
   m_EditorClassIdentifier: 
   towerName: Shockwave
-  menuSprite: {fileID: 21300000, guid: 17f5245db76160946bb0b06ea0cecbcf, type: 3}
+  menuSprite: {fileID: 21300000, guid: b8b2c22f278863b4badc028daefb29d1, type: 3}
   cost: 250
   towerData:
     towerType: 3
-    attackSpeed: 0.1
-    attackRange: 5
-    attackDamage: 0
+    attackSpeed: 0.15
+    attackRange: 7
+    attackDamage: 1
     projectileSpeed: 2
     level: 1

@@ -96,6 +96,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2371647777209246491, guid: 7ab1683f1d07d0a47bb0f3ad582b884b,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371647777209246491, guid: 7ab1683f1d07d0a47bb0f3ad582b884b,
+        type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -134,12 +139,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 824b0a6154813784382700f09d1192cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   firingPoint: {fileID: 237033528650527169}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 8
   audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
     type: 3}
-  clip: {fileID: 8300000, guid: 55e346861ecc01c479f8d8a3a64e8265, type: 3}
+  clip: {fileID: 8300000, guid: 2aa0bfa2fd15d6b4f92b3d2d53322e33, type: 3}
+  animatedComponent: {fileID: 3706894829251542889}
+--- !u!1 &3706894829251542889 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2271436178238224595, guid: 7ab1683f1d07d0a47bb0f3ad582b884b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3239295526450563002}
+  m_PrefabAsset: {fileID: 0}

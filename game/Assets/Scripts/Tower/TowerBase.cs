@@ -6,6 +6,9 @@ using UnityEngine;
 public abstract class TowerBase : MonoBehaviour
 {
     [SerializeField] protected Transform firingPoint;
+    [SerializeField] protected GameObject audioPrefab;
+    [SerializeField] protected AudioClip clip;
+
     private TowerData towerData;                        // contains the data of this tower
     private IEnumerable<EnemyBase> targets = null;      // the enemies that are currently being targeted
     private bool isAllowedToShoot = true;               // whether the tower is allowed to shoot
@@ -22,13 +25,20 @@ public abstract class TowerBase : MonoBehaviour
     protected abstract IEnumerable<EnemyBase> SelectTargets();  // implementation for selecting targets
     protected abstract void ShotTarget(EnemyBase target);       // implementation for when a target has been shot
 
+    protected virtual void BeforeShootDelay() { }                    // implementation to get when it getting ready to shoot
+    protected virtual void AfterShootDelay() { }                    // implementation to get when it getting ready to shoot
+
     // timer for shooting
     private IEnumerator ShootLoop()
     {
         while (isAllowedToShoot)
         {
+            BeforeShootDelay();
+
             //wait for shooting delay
             yield return new WaitForSeconds(1 / TowerData.attackSpeed);
+
+            AfterShootDelay();
 
             foreach (EnemyBase target in targets)
                 ShotTarget(target);
