@@ -6,12 +6,15 @@ public class MagicTower : ProjectileTowerBase
 {
     [SerializeField] private GameObject projectile;
     [SerializeField] GameObject animatedComponent;
+    private float towerTime = 0;
 
     protected override void FixedUpdate()
     {
+        towerTime += Time.deltaTime;
+
         animatedComponent.transform.Rotate(0, 30 * Time.deltaTime, 0);
         Vector3 anim = Vector3.zero;
-        //anim.y = Mathf.Sin(Time.deltaTime * 10) * 100;
+        anim.y = Mathf.Sin(towerTime * 1) * 0.2f;
         animatedComponent.transform.localPosition = anim;
 
         base.FixedUpdate();

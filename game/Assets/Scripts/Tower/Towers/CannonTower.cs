@@ -9,12 +9,6 @@ public class CannonTower : ProjectileTowerBase
     [SerializeField] private float explosionSize = 1;
     [SerializeField] GameObject animatedComponent;
 
-    protected override void FixedUpdate()
-    {
-
-        base.FixedUpdate();
-    }
-
     protected override IEnumerable<EnemyBase> SelectTargets() => Waves.GetEnemiesInRadius(transform.position,TowerData.attackRange, 1);
 
     protected override void ShotTarget(EnemyBase target)

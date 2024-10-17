@@ -5,8 +5,12 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
+    [SerializeField] private GameObject audioPrefab;
+    [SerializeField] private AudioClip clip;
+
     //stores the towers you want available in the shop
     [SerializeField] TowerStoreData[] availableTowers;
+
 
     //stores the toggles for the towers
     [SerializeField] GameObject[] toggles = new GameObject[4];
@@ -53,6 +57,9 @@ public class Shop : MonoBehaviour
 
     public void StoreButtons(int index)
     {
+        GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
+        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
+
         //if you have no toggles active anymore, disable place mode
         if (!group.AnyTogglesOn())
         {
@@ -63,6 +70,7 @@ public class Shop : MonoBehaviour
         {
             place.EnablePlaceMode(towersInShop[index]);
             hasButtonPressed = true;
+            
         }
         else
         {

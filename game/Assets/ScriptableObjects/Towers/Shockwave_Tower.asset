@@ -17,8 +17,8 @@ MonoBehaviour:
   cost: 250
   towerData:
     towerType: 3
-    attackSpeed: 0.2
+    attackSpeed: 0.15
     attackRange: 7
-    attackDamage: 0
+    attackDamage: 1
     projectileSpeed: 2
     level: 1
