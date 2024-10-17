@@ -30,7 +30,7 @@ public class Waves : MonoBehaviour
 
     // property shorthands
     private Save Save => GameManager.Instance.Save;
-    private int Wave { get => Save.data.wave; set => Save.data.wave = value; }
+    public int Wave { get => Save.data.wave; set => Save.data.wave = value; }
     private int Level { get => Save.data.level; set => Save.data.level = value; }
     private bool newLevel = false;
 
