@@ -35,6 +35,7 @@ public class Waves : MonoBehaviour
     private Shop shop = null;                                   // reference to the shop so we can disable it
 
     // property shorthands
+    public int MaxWaves => waves.Length;
     private Save Save => GameManager.Instance.Save;
     public int Wave { get => Save.data.wave; set => Save.data.wave = value; }
     private int Level { get => Save.data.level; set => Save.data.level = value; }
