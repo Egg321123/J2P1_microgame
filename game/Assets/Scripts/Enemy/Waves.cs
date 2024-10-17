@@ -47,7 +47,7 @@ public class Waves : MonoBehaviour
         shop.ShopToggle(true);                                      // make the shop active again
 
         StartCoroutine(SpawnEnemies(Wave));
-        Debug.Log($"started wave {Wave} in level {Level}");
+        Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
     }
 
     // get the enemies within a radius

@@ -138,7 +138,7 @@ public class Level
         if (attempts >= MAX_ATTEMPTS)
             throw new IndexOutOfRangeException($"could not find a valid path for level '{level}'");
 
-        Debug.Log($"Generated level {level} in {attempts} attempts.");
+        Debug.Log($"Generated level {level + 1} id:{level} in {attempts} attempts.");
     }
 
     [Obsolete("IsValidPlacement is deprecated, use IsEmpty")] public bool IsValidPlacement(Vector2Int pos, bool ignoreLevelBounds = false) => throw new NotImplementedException("IsValidPlacement is deprecated, use IsEmpty");
