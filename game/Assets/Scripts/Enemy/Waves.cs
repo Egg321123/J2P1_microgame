@@ -49,7 +49,7 @@ public class Waves : MonoBehaviour
         shop.ShopToggle(true);                                      // make the shop active again
 
         StartCoroutine(SpawnEnemies(Wave));
-        Debug.Log($"started wave {Wave} in level {Level}");
+        Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
     }
 
     // get the enemies within a radius
@@ -122,7 +122,7 @@ public class Waves : MonoBehaviour
         {
             Wave = 0;                       // reset wave
             Level++;                        // increase the level
-            Save.ResetLevelData();          // reset the level data so we don't save needless data
+            monoLevel.Level.ClearLevel();   // clear the level so we don't save towers
 
             newLevel = true;
             Debug.Log($"progressed to level {Level}!");
@@ -141,7 +141,7 @@ public class Waves : MonoBehaviour
             for (int i = 0; i < waveDelaySeconds; i++)
             {
                 counter.text = (waveDelaySeconds - i).ToString();
-                yield return new WaitForSeconds(1.0F);
+                yield return new WaitForSecondsRealtime(1.0F);
             }
 
             counter.gameObject.SetActive(false);
