@@ -51,6 +51,17 @@ public class Waves : MonoBehaviour
         StartCoroutine(SpawnEnemies(Wave));
         Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
     }
+    public void TryAgain()/*Daniël*/
+    {
+        //acitvate and deactivate the UI so the player can paly again
+        Time.timeScale = 1.0f;
+        LoseUI.SetActive(false);
+        foreach (EnemyBase enemy in allEnemies)
+        {
+            if (enemy.IsAlive) enemy.DisableEnemy();
+        }
+        NextWave();
+    }
 
     // get the enemies within a radius
     public IEnumerable<EnemyBase> GetEnemiesInRadius(Vector3 pos, float radius, int count = -1)
@@ -153,8 +164,10 @@ public class Waves : MonoBehaviour
     public void LoseCheck()/*Daniël*/
     {
         if (Save.data.hp != 0) return;
+        Time.timeScale = 0;
         //reset the level
-        StopCoroutine(SpawnEnemies(Wave));
+        //StopCoroutine(SpawnEnemies(Wave));
+        StopAllCoroutines();
         Wave = 0;
         Save.ResetLevelData();
         //switch between UI
