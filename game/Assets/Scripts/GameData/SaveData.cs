@@ -3,6 +3,8 @@ using System;
 [Serializable]
 public struct SaveData
 {
+    public const int MAX_HP = 10;
+
     // add more save data here
     public Statistics stats;
     public int hp;
@@ -15,7 +17,7 @@ public struct SaveData
     public void Initialize()
     {
         // assign the default values
-        hp = 10;
+        hp = MAX_HP;
         level = 0;
         wave = 0;
         money = 100;

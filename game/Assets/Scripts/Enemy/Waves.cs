@@ -22,6 +22,10 @@ public class Waves : MonoBehaviour
     [SerializeField] private EnemyTypeData[] enemyTypes = null; // the different enemy types
     [SerializeField] private SpawnData[] waves = null;          // the different waves constructed
 
+    // event
+    public event Action NewWave;
+    public event Action HealthDecreased;
+
     // enemy storage
     private ObjectPool<EnemyBase>[] enemyPools = null;          // the pools for enemy pooling
     private List<EnemyBase> allEnemies = new();                 // contains all the enemies
@@ -49,9 +53,10 @@ public class Waves : MonoBehaviour
         shop.ShopToggle(true);                                      // make the shop active again
 
         StartCoroutine(SpawnEnemies(Wave));
+        NewWave?.Invoke();
         Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
     }
-    public void TryAgain()/*Daniël*/
+    public void TryAgain()/*Daniï¿½l*/
     {
         //acitvate and deactivate the UI so the player can paly again
         Time.timeScale = 1.0f;
@@ -161,8 +166,9 @@ public class Waves : MonoBehaviour
 
         yield return null;
     }
-    public void LoseCheck()/*Daniël*/
+    public void LoseCheck()/*Daniï¿½l*/
     {
+        HealthDecreased?.Invoke();
         if (Save.data.hp != 0) return;
         Time.timeScale = 0;
         //reset the level
