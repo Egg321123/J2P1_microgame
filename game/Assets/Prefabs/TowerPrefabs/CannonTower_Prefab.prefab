@@ -133,7 +133,9 @@ MonoBehaviour:
     type: 3}
   explosion: {fileID: 2012334141519626885, guid: a0fd4edff1cbc334b90a4ab46b2c82b9,
     type: 3}
-  explosionSize: 1
+  explosionSize: 5
+  explosionParticles: {fileID: 3975219934923308966, guid: cb39fb7de21912f4dac60956c4dbc86a,
+    type: 3}
   animatedComponent: {fileID: 7199901029681279640}
 --- !u!4 &5059212215777576528 stripped
 Transform:
