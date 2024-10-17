@@ -7,6 +7,7 @@ public class TowerStoreData : ScriptableObject
 
     [Header("Store specific values")]
     public string towerName = "Default";
+    [TextArea]public string towerInfo = "Default";
     public Sprite menuSprite;
     public int cost = 1;
 
