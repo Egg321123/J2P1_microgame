@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73f2e4673a8ad644c9d3acde87ee2b8e, type: 3}
   m_Name: Magic_Tower
   m_EditorClassIdentifier: 
-  towerName: Magic
+  towerName: Magic Tower
+  towerInfo: This tower shoots multiple enemies within its range.
   menuSprite: {fileID: 21300000, guid: 0c03f0903adfa4a4a9b679870cf285f7, type: 3}
   cost: 75
   towerData:
