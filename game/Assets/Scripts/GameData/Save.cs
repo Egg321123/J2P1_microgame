@@ -7,7 +7,7 @@ public class Save
     public readonly string savePath;    // save path is set externally because Unity doesn't like you touching persistentDataPath in constructors
     public SaveData data;               // contains the save data (duh)
 
-    // acquires the latest safe data!
+    // acquires the latest save data!
     private void UpdateSaveData()
     {
         Level level = GameManager.Instance.Level;
@@ -57,5 +57,21 @@ public class Save
         File.WriteAllText(savePath, json);      // write the serialized JSON data to the file
 
         Debug.Log($"saved the data to '{savePath}'.");
+    }
+
+    /// <summary>
+    /// resets the save data that is level-specific
+    /// </summary>
+    public void ResetLevelData()
+    {
+        // reset level-specific statistic
+        data.stats.kills = 0;
+        data.stats.towersPlaced = 0;
+        data.stats.towersUpgraded = 0;
+        data.stats.moneySpent = 0;
+
+        // clear the level
+        Level level = GameManager.Instance.Level;
+        level.ClearLevel();
     }
 }

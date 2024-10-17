@@ -1,5 +1,4 @@
 using System.IO;
-using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -11,6 +10,11 @@ public class GameManager : MonoBehaviour
     public Save Save { get; private set; }
     public Level Level { get; set; }        // is set by MonoLevel in Awake
     public Waves Waves { get; set; }        // is set by Waves in Awake
+
+#if UNITY_EDITOR // debug utility
+    [Header("DEBUG")]
+    [SerializeField, Range(0, 64)] private float _timeScale = 1.0F;
+#endif
 
     // constructor
     public GameManager()
@@ -42,6 +46,10 @@ public class GameManager : MonoBehaviour
 
         ml.RegenerateLevel(Save.data.level, Save.data.towers);  // generate the level
         Waves.NextWave();                                       // start the first wave
+
+#if UNITY_EDITOR
+        Time.timeScale = _timeScale;
+#endif
     }
 
 #if UNITY_EDITOR // debugging utility
@@ -70,5 +78,9 @@ public class GameManager : MonoBehaviour
             Debug.LogError("The file doesn't exist");
         }
     }
+
+    // time management :3
+    private void OnDrawGizmosSelected() => _timeScale = Time.timeScale;
+    private void OnValidate() => Time.timeScale = _timeScale;
 #endif
 }
