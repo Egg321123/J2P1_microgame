@@ -7,6 +7,7 @@ public class CannonTower : ProjectileTowerBase
     [SerializeField] private GameObject projectile;
     [SerializeField] private GameObject explosion;
     [SerializeField] private float explosionSize = 1;
+    [SerializeField] private GameObject explosionParticles;
     [SerializeField] GameObject animatedComponent;
 
     protected override IEnumerable<EnemyBase> SelectTargets() => Waves.GetEnemiesInRadius(transform.position,TowerData.attackRange, 1);
@@ -23,6 +24,7 @@ public class CannonTower : ProjectileTowerBase
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
         trail.transform.parent = transform;
         trail.GetComponent<TrailProjectile>().Initialize(firingPoint.position, target.transform, TowerData.projectileSpeed);
+        Instantiate(explosionParticles, target.transform.position, Quaternion.identity);
 
         base.ShotTarget(target);
     }
@@ -32,6 +34,7 @@ public class CannonTower : ProjectileTowerBase
         print("explosion");
         EnemyBase[] objects = Waves.GetEnemiesInRadius(transform.position, explosionSize, -1).ToArray();
         Instantiate(explosion, target.transform);
+        print(objects.Length);
         foreach (EnemyBase exploded in objects)
         {
             exploded.GetComponent<EnemyBase>().TakeDamage(TowerData.attackDamage);
