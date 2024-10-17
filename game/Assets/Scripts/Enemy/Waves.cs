@@ -12,8 +12,10 @@ public class Waves : MonoBehaviour
 {
     [Header("UI stuff")]
     [SerializeField] private GameObject winUI = null;           // the UI that is shown when the game is won
+    [SerializeField] private GameObject LoseUI = null;          // the UI that is shown when u didn't survive the level
     [SerializeField] private TextMeshProUGUI counter = null;    // for showing a count down between waves
     [SerializeField, Min(0)] private int waveDelaySeconds = 5;  // the delay in seconds between waves
+
 
     [Header("enemy spawning")]
     [SerializeField, Min(0)] private float enemySpawnRate = 1F; // how many times per second to spawn a new enemy
@@ -147,6 +149,17 @@ public class Waves : MonoBehaviour
         }
 
         yield return null;
+    }
+    public void LoseCheck()/*Daniël*/
+    {
+        if (Save.data.hp != 0) return;
+        //reset the level
+        StopCoroutine(SpawnEnemies(Wave));
+        Wave = 0;
+        Save.ResetLevelData();
+        //switch between UI
+        LoseUI.SetActive(true);
+        shop.ShopToggle(false);
     }
 
     // spawns an enemy of a specific difficulty

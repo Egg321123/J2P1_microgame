@@ -64,6 +64,7 @@ public class Save
     /// </summary>
     public void ResetLevelData()
     {
+        data.hp = 10;
         // reset level-specific statistic
         data.stats.kills = 0;
         data.stats.towersPlaced = 0;

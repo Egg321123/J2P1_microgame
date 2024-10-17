@@ -3987,6 +3987,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winUI: {fileID: 202109077}
+  LoseUI: {fileID: 1462242093}
   counter: {fileID: 457746402}
   waveDelaySeconds: 5
   enemySpawnRate: 1
@@ -7113,6 +7114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7096a0035ee1f04ffb195e7ca202fbc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _timeScale: 1
 --- !u!4 &1963407811
 Transform:
   m_ObjectHideFlags: 0
