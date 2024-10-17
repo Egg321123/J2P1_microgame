@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class StoreToggle : MonoBehaviour
 {
-    [SerializeField] TMP_Text topText;
     [SerializeField] TMP_Text bottomText;
 
     [SerializeField] Image BackroundImg;
@@ -13,7 +12,6 @@ public class StoreToggle : MonoBehaviour
 
     public void SetButtonValues(TowerStoreData data)
     {
-        topText.text = data.towerName;
         bottomText.text = data.cost.ToString();
 
         BackroundImg.sprite = data.menuSprite;

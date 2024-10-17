@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
+    [SerializeField] TowerInfoDisplay towerInfo;
+
     [SerializeField] private GameObject audioPrefab;
     [SerializeField] private AudioClip clip;
 
@@ -65,16 +67,19 @@ public class Shop : MonoBehaviour
         {
             place.DisablePlaceMode();
             hasButtonPressed = false;
+            towerInfo.gameObject.SetActive(false);
         }
         else if (!hasButtonPressed)
         {
             place.EnablePlaceMode(towersInShop[index]);
             hasButtonPressed = true;
-            
+            towerInfo.gameObject.SetActive(true);
+            towerInfo.UpdateInformation(towersInShop[index]);
         }
         else
         {
             place.ChangeTower(towersInShop[index]);
+            towerInfo.UpdateInformation(towersInShop[index]);
         }
     }
 

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73f2e4673a8ad644c9d3acde87ee2b8e, type: 3}
   m_Name: Arrow_Tower
   m_EditorClassIdentifier: 
-  towerName: Archer
+  towerName: Archer Tower
+  towerInfo: This tower shoots a single target.
   menuSprite: {fileID: 21300000, guid: 6fec3123d44bb1b4b9489107c318df39, type: 3}
   cost: 50
   towerData:
