@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public Waves Waves { get; set; }        // is set by Waves in Awake
 
 #if UNITY_EDITOR // debug utility
+    [Header("DEBUG")]
     [SerializeField, Range(0, 64)] private float _timeScale = 1.0F;
 #endif
 

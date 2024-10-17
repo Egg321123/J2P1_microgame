@@ -52,19 +52,4 @@ public struct Statistics
         moneySpent += amount;
         totalMoneySpent += amount;
     }
-
-
-
-    /// <summary>
-    /// clears the statistics connected to this specific level, does not clear between waves,
-    /// only when going to the next level, or restarting the level.
-    /// </summary>
-    public void ClearLevelStats()
-    {
-        // assign the default values
-        kills = 0;
-        towersPlaced = 0;
-        towersUpgraded = 0;
-        moneySpent = 0;
-    }
 }
