@@ -85,11 +85,7 @@ public class Shop : MonoBehaviour
 
     public void ShopToggle(bool open)
     {
-        if (open) shop.SetActive(true);
-        else
-        {
-            group.SetAllTogglesOff();
-            shop.SetActive(false);
-        }
+        shop.SetActive(open);
+        if (!open) group.SetAllTogglesOff();
     }
 }

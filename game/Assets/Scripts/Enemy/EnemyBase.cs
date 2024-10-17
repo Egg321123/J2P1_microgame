@@ -101,8 +101,12 @@ public abstract class EnemyBase : MonoBehaviour
         sound.GetComponent<AudioClipPlayer>().Initialize(clip);
         GameManager.Instance.Save.data.stats.IncreaseKills();
         moneyHandler.Earn(droppedMoney);
-        if (!OpenForPooling) StartCoroutine(PrepareForPooling());
+        DisableEnemy();
         Instantiate(deathParticles, transform.position, Quaternion.identity);
+    }
+    public void DisableEnemy()
+    {
+        if (!OpenForPooling) StartCoroutine(PrepareForPooling());
     }
 
     public void ApplyStun(float length)
@@ -130,6 +134,8 @@ public abstract class EnemyBase : MonoBehaviour
     public void HasReachedEnd()
     {
         if (!OpenForPooling) StartCoroutine(PrepareForPooling());
+        GameManager.Instance.Save.data.hp --;
+        GameManager.Instance.Waves.LoseCheck();
         // TODO: damage player or smth
     }
 
