@@ -6,6 +6,7 @@ public class ShockwaveTower : TowerBase
 {
     //when in delay, move movingcomponent to 0.7 until delay is done, then go back to 0 quickly
     [SerializeField] GameObject animatedComponent;
+    [SerializeField] GameObject shockwaveParticle;
 
     protected override IEnumerable<EnemyBase> SelectTargets() => Waves.GetEnemiesInRadius(transform.position, TowerData.attackRange, -1);
 
@@ -32,6 +33,10 @@ public class ShockwaveTower : TowerBase
             
             yield return null;
         }
+
+        GameObject shockwave = Instantiate(shockwaveParticle, transform.position + new Vector3(0,0.1f,0), Quaternion.identity);
+        shockwave.transform.parent = transform;
+        shockwave.GetComponent<ShockwaveProjectile>().Initialize(TowerData.attackRange);
 
         currentTime = 0;
         animTime = 0.1f;

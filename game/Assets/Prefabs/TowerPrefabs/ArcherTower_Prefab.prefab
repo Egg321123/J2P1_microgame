@@ -92,7 +92,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 30b4e2bf40ab75c4593996b8801280ca,
         type: 3}
       propertyPath: m_Name
-      value: ArcherTower
+      value: ArcherTower_Prefab
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -132,11 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firingPoint: {fileID: 1126944251183472691}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 8
   audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
     type: 3}
   clip: {fileID: 8300000, guid: 868c55b59c0258b428e0d96c0a0fc853, type: 3}
-  projectile: {fileID: 404085437239518119, guid: 28cfc086930b3bc458ce791cdce33607,
+  projectile: {fileID: 404085437239518119, guid: c54bde7a7285742498ad1e8804847163,
     type: 3}

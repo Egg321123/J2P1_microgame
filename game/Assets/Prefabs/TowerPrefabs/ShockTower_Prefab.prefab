@@ -146,6 +146,8 @@ MonoBehaviour:
     type: 3}
   clip: {fileID: 8300000, guid: 55e346861ecc01c479f8d8a3a64e8265, type: 3}
   animatedComponent: {fileID: 3706894829251542889}
+  shockwaveParticle: {fileID: 822246382668647286, guid: 3b47234efe83326419c3d7edf6ffd1d4,
+    type: 3}
 --- !u!1 &3706894829251542889 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2271436178238224595, guid: 7ab1683f1d07d0a47bb0f3ad582b884b,
