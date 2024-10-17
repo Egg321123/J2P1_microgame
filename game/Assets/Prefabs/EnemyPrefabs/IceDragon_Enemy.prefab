@@ -192,16 +192,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c6c5643427fcf45a06ee99ccb4eeb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyName: Ice dragon
   audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
     type: 3}
   clip: {fileID: 8300000, guid: b8456a8dbfa31f444ab22d6fba02fc63, type: 3}
-  baseHealth: 20
-  baseSpeed: 1.5
-  baseDroppedMoney: 15
-  extraHealthPerLevel: 1
-  extraSpeedPerLevel: 0.1
-  extraDroppedMoneyPerLevel: 1
+  baseHealth: 7
+  baseSpeed: 2.5
+  baseDroppedMoney: 8
+  extraHealthPerLevel: 0.7
+  extraSpeedPerLevel: 0.026
+  extraDroppedMoneyPerLevel: 0.7
   deathParticles: {fileID: 3975219934923308966, guid: ebba3ea0eaeda634fb9b03546677f01f,
     type: 3}
   TargetNodeIndex: 0
