@@ -11,23 +11,21 @@ public class ProgressBar : MonoBehaviour
     private void Start()
     {
         waves = GameManager.Instance.Waves;
-    }
-
-    public void Update()
-        {
+        
         if (slider == null || waves == null)
         {
             Debug.LogWarning("Slider or Waves is not assigned!");
             return;
         }
+        slider.minValue = 0;
+        slider.maxValue = waves.MaxWaves - 1;
+        //Adds the method to the event, so it's called when it's triggered
+        waves.NewWave += OnNewWave;
+    }
 
-        if (waves.Wave >= 1 && waves.Wave <= 5)
-        {
+    public void OnNewWave()
+    {
+       
             slider.value = waves.Wave + 1;
-        }
-        else
-        {
-            Debug.LogWarning("Wave value is out of range!");
-        }
     }
 }
