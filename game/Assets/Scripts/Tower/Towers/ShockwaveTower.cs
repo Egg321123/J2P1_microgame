@@ -11,6 +11,13 @@ public class ShockwaveTower : TowerBase
 
     protected override void BeforeShootDelay() => StartCoroutine(TowerAnimation());
 
+    protected override void AfterShootDelay()
+    {
+        GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
+        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
+        base.AfterShootDelay();
+    }
+
     private IEnumerator TowerAnimation()
     {
         float currentTime = 0;
@@ -44,8 +51,6 @@ public class ShockwaveTower : TowerBase
 
     protected override void ShotTarget(EnemyBase target)
     {
-        GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
-        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
         EnemyBase targetScript = target.GetComponent<EnemyBase>();
         targetScript.ApplyStun(2);
         targetScript.TakeDamage(TowerData.attackDamage);
