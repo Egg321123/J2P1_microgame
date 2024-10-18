@@ -110,12 +110,12 @@ MonoBehaviour:
   audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
     type: 3}
   clip: {fileID: 8300000, guid: b8456a8dbfa31f444ab22d6fba02fc63, type: 3}
-  baseHealth: 8
+  baseHealth: 800
   baseSpeed: 2.7
-  baseDroppedMoney: 12
+  baseDroppedMoney: 40
   extraHealthPerLevel: 0.75
   extraSpeedPerLevel: 0.03
-  extraDroppedMoneyPerLevel: 0.75
+  extraDroppedMoneyPerLevel: 0
   deathParticles: {fileID: 3975219934923308966, guid: ebba3ea0eaeda634fb9b03546677f01f,
     type: 3}
   TargetNodeIndex: 0
