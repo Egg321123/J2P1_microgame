@@ -1,22 +1,22 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
+using Random = UnityEngine.Random;
 
 public abstract class EnemyBase : MonoBehaviour
 {
-    [SerializeField] private string enemyName;
     [SerializeField] private GameObject audioPrefab;
     [SerializeField] private AudioClip clip;
 
     [Header("default values")]
-    [SerializeField] private int baseHealth = 10;
-    [SerializeField] private float baseSpeed = 1;
-    [SerializeField] private int baseDroppedMoney = 10;
+    [SerializeField, Min(1)] private int baseHealth = 10;
+    [SerializeField, Min(1)] private float baseSpeed = 1;
+    [SerializeField, Min(0)] private int baseDroppedMoney = 10;
 
     [Header("Level scaling stats")]
-    [SerializeField] private int extraHealthPerLevel = 1;
-    [SerializeField] private float extraSpeedPerLevel = 0.1f;
-    [SerializeField] private int extraDroppedMoneyPerLevel = 1;
+    [SerializeField, Min(0)] private float extraHealthPerLevel = 1.0f;
+    [SerializeField, Min(0)] private float extraSpeedPerLevel = 0.1f;
+    [SerializeField, Min(0)] private float extraDroppedMoneyPerLevel = 1.0f;
 
     //saves the movement script that controls all ai
     EnemyMovementSystem movement;
@@ -70,9 +70,9 @@ public abstract class EnemyBase : MonoBehaviour
         OpenForPooling = false;
 
         // sets the values back to needed values
-        health = baseHealth + (extraHealthPerLevel * level);
+        health = baseHealth + (int)MathF.Floor(extraHealthPerLevel * level);
         Speed = baseSpeed + (extraSpeedPerLevel * level);
-        droppedMoney = baseDroppedMoney + (extraDroppedMoneyPerLevel * level);
+        droppedMoney = baseDroppedMoney + (int)MathF.Floor(extraDroppedMoneyPerLevel * level);
 
         //prepare for moving again, make sure to reset these values, otherwise the movement script might get angry
         TargetNodeIndex = 0;
@@ -101,8 +101,12 @@ public abstract class EnemyBase : MonoBehaviour
         sound.GetComponent<AudioClipPlayer>().Initialize(clip);
         GameManager.Instance.Save.data.stats.IncreaseKills();
         moneyHandler.Earn(droppedMoney);
-        if (!OpenForPooling) StartCoroutine(PrepareForPooling());
+        DisableEnemy();
         Instantiate(deathParticles, transform.position, Quaternion.identity);
+    }
+    public void DisableEnemy()
+    {
+        if (!OpenForPooling) StartCoroutine(PrepareForPooling());
     }
 
     public void ApplyStun(float length)
@@ -130,7 +134,10 @@ public abstract class EnemyBase : MonoBehaviour
     public void HasReachedEnd()
     {
         if (!OpenForPooling) StartCoroutine(PrepareForPooling());
-        // TODO: damage player or smth
+
+        // damage the player
+        GameManager.Instance.Save.data.hp --;
+        GameManager.Instance.Waves.LoseCheck();
     }
 
     /// <summary>

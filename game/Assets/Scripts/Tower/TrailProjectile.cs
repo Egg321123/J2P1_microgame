@@ -2,20 +2,24 @@ using System.Collections;
 using UnityEngine;
 public class TrailProjectile : MonoBehaviour
 {
+    [SerializeField] ParticleSystem system;
+
     Vector3 origin;
     Transform target;
     float projectileSpeed;
 
     public void Initialize(Vector3 origin, Transform target, float projectileSpeed)
     {
+        ParticleSystem.MainModule main = system.main;
+
         this.origin = origin;
         this.target = target;
         this.projectileSpeed = projectileSpeed;
 
-        StartCoroutine(Move());
+        StartCoroutine(Move(main));
     }
 
-    private IEnumerator Move()
+    private IEnumerator Move(ParticleSystem.MainModule main)
     {
         Vector3 targetPos = target.position;
         float actualProjectileSpeed = 1 / projectileSpeed;
@@ -37,7 +41,9 @@ public class TrailProjectile : MonoBehaviour
             yield return null;
         }
 
-        //destroy the trail
+
+        yield return new WaitForSeconds(main.duration);
+
         Destroy(gameObject);
 
         //wait for next frame
