@@ -171,7 +171,7 @@ public class Waves : MonoBehaviour
         //reset the level
         //StopCoroutine(SpawnEnemies(Wave));
         StopAllCoroutines();
-        foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();
+        //foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();
         Wave = 0;
 
 
