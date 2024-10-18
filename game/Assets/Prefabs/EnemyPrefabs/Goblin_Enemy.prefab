@@ -98,9 +98,9 @@ MonoBehaviour:
   audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
     type: 3}
   clip: {fileID: 8300000, guid: b8456a8dbfa31f444ab22d6fba02fc63, type: 3}
-  baseHealth: 200
+  baseHealth: 100
   baseSpeed: 2
-  baseDroppedMoney: 4
+  baseDroppedMoney: 15
   extraHealthPerLevel: 0.375
   extraSpeedPerLevel: 0.02
   extraDroppedMoneyPerLevel: 0

@@ -4968,28 +4968,29 @@ MonoBehaviour:
       count: 25
   - enemySpawnData:
     - difficulty: 0
-      count: 40
+      count: 50
+  - enemySpawnData:
+    - difficulty: 0
+      count: 50
     - difficulty: 1
       count: 10
   - enemySpawnData:
     - difficulty: 0
-      count: 30
+      count: 40
     - difficulty: 1
-      count: 20
+      count: 30
   - enemySpawnData:
     - difficulty: 0
-      count: 15
+      count: 40
     - difficulty: 1
       count: 40
+  - enemySpawnData:
+    - difficulty: 0
+      count: 20
+    - difficulty: 1
+      count: 60
     - difficulty: 2
       count: 5
-  - enemySpawnData:
-    - difficulty: 0
-      count: 10
-    - difficulty: 1
-      count: 50
-    - difficulty: 2
-      count: 10
   - enemySpawnData:
     - difficulty: 1
       count: 60
@@ -4997,17 +4998,12 @@ MonoBehaviour:
       count: 20
   - enemySpawnData:
     - difficulty: 1
-      count: 55
-    - difficulty: 2
-      count: 30
-  - enemySpawnData:
-    - difficulty: 1
-      count: 40
+      count: 60
     - difficulty: 2
       count: 40
   - enemySpawnData:
     - difficulty: 1
-      count: 20
+      count: 40
     - difficulty: 2
       count: 60
   - enemySpawnData:

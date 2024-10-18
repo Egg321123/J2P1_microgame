@@ -100,7 +100,7 @@ MonoBehaviour:
   clip: {fileID: 8300000, guid: b8456a8dbfa31f444ab22d6fba02fc63, type: 3}
   baseHealth: 1000
   baseSpeed: 2.3
-  baseDroppedMoney: 15
+  baseDroppedMoney: 50
   extraHealthPerLevel: 1
   extraSpeedPerLevel: 0.035
   extraDroppedMoneyPerLevel: 0
