@@ -44,6 +44,8 @@ public class Waves : MonoBehaviour
 
     public void NextWave()
     {
+        if (Wave == 0) GameManager.Instance.Save.data.moneyStartLVL = GameManager.Instance.Save.data.money;
+
         if (newLevel == true)
         {
             monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
@@ -179,7 +181,9 @@ public class Waves : MonoBehaviour
         LoseUI.SetActive(true);
         shop.ShopToggle(false);
         //clear all the saved data or this level, clear the 
+
         Save.ResetLevelData();
+        GameManager.Instance.Save.data.money = GameManager.Instance.Save.data.moneyStartLVL;
         GameManager.Instance.Save.SaveFile();
         monoLevel.RegenerateLevel(Level, Save.data.towers);
 
