@@ -8,7 +8,6 @@ public class StatsUI : MonoBehaviour
     {
         UpdateStats();
     }
-
     void OnEnable()//everytime the gameObject where this script is connected to will be activated the Text will get its value
     {
         UpdateStats();
