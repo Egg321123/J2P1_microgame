@@ -15,7 +15,7 @@ public class Shop : MonoBehaviour
 
 
     //stores the toggles for the towers
-    [SerializeField] GameObject[] toggles = new GameObject[4];
+    [SerializeField] StoreToggle[] toggles = new StoreToggle[4];
     [SerializeField] ToggleGroup group;
 
     [SerializeField] GameObject shop;
@@ -31,6 +31,16 @@ public class Shop : MonoBehaviour
         //load place, and generate new shop
         place = FindFirstObjectByType<PlaceOnGrid>();
         RegenerateStore();
+    }
+
+    private void FixedUpdate()
+    {
+        //update the ui
+        for (int i = 0; i < toggles.Length; i++) 
+        {
+            bool available = towersInShop[i].cost <= GameManager.Instance.Save.data.money;
+            toggles[i].UpdateAvailable(available);
+        }
     }
 
     public void RegenerateStore()
@@ -51,10 +61,7 @@ public class Shop : MonoBehaviour
         }
 
         //update buttons
-        for (int i = 0; i < toggles.Length; i++)
-        {
-            toggles[i].GetComponent<StoreToggle>().SetButtonValues(towersInShop[i]);
-        }
+        for (int i = 0; i < toggles.Length; i++) toggles[i].SetButtonValues(towersInShop[i]);
     }
 
     public void StoreButtons(int index)

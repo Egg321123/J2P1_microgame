@@ -6,6 +6,7 @@ public class MoneyHandler : MonoBehaviour
     [SerializeField] TMP_Text scoreUI;
     [SerializeField] long money;
     private string[] suffixes = { "", "K", "M", "B", "T", "Q" };
+    [SerializeField] StoreToggle[] toggles;
 
     private void Start()
     {
