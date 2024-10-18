@@ -62,10 +62,8 @@ public class Waves : MonoBehaviour
         //acitvate and deactivate the UI so the player can paly again
         Time.timeScale = 1.0f;
         LoseUI.SetActive(false);
-        foreach (EnemyBase enemy in allEnemies)
-        {
-            if (enemy.IsAlive) enemy.DisableEnemy();
-        }
+        foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();
+        
         NextWave();
     }
 
