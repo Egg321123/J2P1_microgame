@@ -5,7 +5,6 @@ using UnityEngine;
 public class CannonTower : ProjectileTowerBase
 {
     [SerializeField] private GameObject projectile;
-    [SerializeField] private GameObject explosion;
     [SerializeField] private float explosionSize = 1;
     [SerializeField] private GameObject explosionParticles;
     [SerializeField] GameObject animatedComponent;
@@ -24,17 +23,16 @@ public class CannonTower : ProjectileTowerBase
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
         trail.transform.parent = transform;
         trail.GetComponent<TrailProjectile>().Initialize(firingPoint.position, target.transform, TowerData.projectileSpeed);
-        Instantiate(explosionParticles, target.transform.position, Quaternion.identity);
+
 
         base.ShotTarget(target);
     }
 
     protected override void ProjectileHit(EnemyBase target)
     {
-        print("explosion");
+        Instantiate(explosionParticles, target.transform.position, Quaternion.identity);
+
         EnemyBase[] objects = Waves.GetEnemiesInRadius(transform.position, explosionSize, -1).ToArray();
-        Instantiate(explosion, target.transform);
-        print(objects.Length);
         foreach (EnemyBase exploded in objects)
         {
             exploded.GetComponent<EnemyBase>().TakeDamage(TowerData.attackDamage);
