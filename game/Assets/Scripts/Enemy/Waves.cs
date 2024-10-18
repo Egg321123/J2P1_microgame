@@ -62,7 +62,6 @@ public class Waves : MonoBehaviour
         //acitvate and deactivate the UI so the player can paly again
         Time.timeScale = 1.0f;
         LoseUI.SetActive(false);
-        foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();
         
         NextWave();
     }
@@ -169,15 +168,22 @@ public class Waves : MonoBehaviour
     {
         HealthDecreased?.Invoke();
         if (Save.data.hp != 0) return;
-        Time.timeScale = 0;
         //reset the level
         //StopCoroutine(SpawnEnemies(Wave));
         StopAllCoroutines();
+        foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();
         Wave = 0;
-        Save.ResetLevelData();
+
+
         //switch between UI
         LoseUI.SetActive(true);
         shop.ShopToggle(false);
+        //clear all the saved data or this level, clear the 
+        Save.ResetLevelData();
+        GameManager.Instance.Save.SaveFile();
+        monoLevel.RegenerateLevel(Level, Save.data.towers);
+
+        Time.timeScale = 0;
     }
 
     // spawns an enemy of a specific difficulty
