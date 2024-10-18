@@ -168,12 +168,10 @@ public class Waves : MonoBehaviour
     {
         HealthDecreased?.Invoke();
         if (Save.data.hp > 0) return;
-        //reset the level
-        //StopCoroutine(SpawnEnemies(Wave));
-        StopAllCoroutines();
-        //foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();
-        Wave = 0;
 
+        StopAllCoroutines();
+        foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();
+        Wave = 0;
 
         //switch between UI
         LoseUI.SetActive(true);
