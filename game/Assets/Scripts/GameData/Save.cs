@@ -37,7 +37,11 @@ public class Save
             data = JsonUtility.FromJson<SaveData>(json);
 
             Debug.Log($"loaded data: '{json}'");
-            return;
+
+            // if this was production code, obviously you'd tell the script what to do when converting from that specific version
+            if (data.dataVersion == SaveData.DATA_VERSION)
+                return;
+            Debug.LogWarning("Data version didn't match, overriding data.");
         }
 
         // initialize the data with default values
@@ -64,8 +68,12 @@ public class Save
     /// </summary>
     public void ResetLevelData()
     {
+        // reset level-specific data
         data.hp = 10;
-        // reset level-specific statistic
+        data.towerBoughtCount = new int[(int)TowerType.TOWER_COUNT - 1];
+        data.money = 500 + (500 * data.level); // calculation for what the money amount should be for this level
+
+        // level-specific
         data.stats.kills = 0;
         data.stats.towersPlaced = 0;
         data.stats.towersUpgraded = 0;
