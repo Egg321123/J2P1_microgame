@@ -12,6 +12,7 @@ public struct SaveData
     public int level;
     public int wave;
     public long money;
+    public long moneyStartLVL;//
     public int[] towerBoughtCount;
     public TileData[] towers;
     public Statistics stats;

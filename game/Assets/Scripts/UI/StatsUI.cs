@@ -20,7 +20,18 @@ public class StatsUI : MonoBehaviour
 
         foreach (TextMeshProUGUI ui in statUIs)
         {
-            ui.text = string.Format(ui.text,
+            ui.text = 
+                $"\nKills: {stats.kills}\n " +
+                $"Towers Placed: {stats.towersPlaced}\n" +
+                $"Towers Upgraded: {stats.towersUpgraded}\n" +
+                $"Money Spend: {stats.moneySpent}\n\n" +
+
+                $"Total Kills: {stats.totalKills}\n " +
+                $"Total Towers Placed: {stats.totalTowersPlaced}\n" +
+                $"Total Towers Upgraded: {stats.totalTowersUpgraded}\n" +
+                $"Total Money Spend: {stats.totalMoneySpent}" ;
+
+           /* ui.text = string.Format(ui.text,
                     stats.kills,                // {0}
                     stats.towersPlaced,         // {1}
                     stats.towersUpgraded,       // {2}
@@ -29,7 +40,7 @@ public class StatsUI : MonoBehaviour
                     stats.totalTowersPlaced,    // {5}
                     stats.totalTowersUpgraded,  // {6}
                     stats.totalMoneySpent       // {7}
-            );
+            );*/
         }
     }
 }
