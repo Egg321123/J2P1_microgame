@@ -12,7 +12,7 @@ public class StoreToggle : MonoBehaviour
 
     public void SetButtonValues(TowerStoreData data)
     {
-        bottomText.text = data.cost.ToString();
+        bottomText.text = data.ScaledCost.ToString();
 
         BackroundImg.sprite = data.menuSprite;
         ToggledImg.sprite = data.menuSprite;

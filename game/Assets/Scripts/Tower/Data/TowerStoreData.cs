@@ -7,9 +7,19 @@ public class TowerStoreData : ScriptableObject
 
     [Header("Store specific values")]
     public string towerName = "Default";
-    [TextArea]public string towerInfo = "Default";
+    [TextArea] public string towerInfo = "Default";
     public Sprite menuSprite;
     public int cost = 1;
+
+    public int ScaledCost
+    {
+        get
+        {
+            Save save = GameManager.Instance.Save;
+            TowerType type = towerData.towerType;
+            return save.data.towerBoughtCount[(int)type];
+        }
+    }
 
     [Header("Base tower information")]
     public TowerData towerData = new()
