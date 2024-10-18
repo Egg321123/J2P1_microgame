@@ -167,7 +167,7 @@ public class Waves : MonoBehaviour
     public void LoseCheck()/*Dani�l*/
     {
         HealthDecreased?.Invoke();
-        if (Save.data.hp != 0) return;
+        if (Save.data.hp > 0) return;
         //reset the level
         //StopCoroutine(SpawnEnemies(Wave));
         StopAllCoroutines();
