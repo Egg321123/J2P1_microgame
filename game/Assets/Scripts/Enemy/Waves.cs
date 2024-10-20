@@ -22,7 +22,7 @@ public class Waves : MonoBehaviour
     [SerializeField] private EnemyTypeData[] enemyTypes = null; // the different enemy types
     [SerializeField] private SpawnData[] waves = null;          // the different waves constructed
 
-    // event
+    // events
     public event Action NewWave;
     public event Action HealthDecreased;
 
@@ -34,35 +34,43 @@ public class Waves : MonoBehaviour
     private MonoLevel monoLevel = null;                         // reference to the MonoLevel for regenerating the level on win
     private Shop shop = null;                                   // reference to the shop so we can disable it
 
+    private bool regenLevel = false;
+
     // property shorthands
     public int MaxWaves => waves.Length;
     private Save Save => GameManager.Instance.Save;
     public int Wave { get => Save.data.wave; set => Save.data.wave = value; }
     private int Level { get => Save.data.level; set => Save.data.level = value; }
-    private bool newLevel = false;
 
 
+    // progresses to the next wave
     public void NextWave()
     {
-        if (newLevel == true)
+        if (regenLevel == true)
         {
             monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
-            newLevel = false;
+            regenLevel = false;
+
+            // hide the win ui, as this is the only time when it needs to be active
+            winUI.SetActive(false);
         }
 
-        winUI.SetActive(false);                                     // hide the win UI (again)
-        shop.ShopToggle(true);                                      // make the shop active again
+        // make the shop active again
+        shop.ShopToggle(true);
 
         StartCoroutine(SpawnEnemies(Wave));
         NewWave?.Invoke();
         Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
     }
-    public void TryAgain()/*Dani�l*/
+
+    // called when the "Try again" button is pressed, is meant to start the wave when
+    public void TryAgain() /*Daniel*/
     {
-        //acitvate and deactivate the UI so the player can paly again
-        Time.timeScale = 1.0f;
+        //activate and deactivate the UI so the player can play again
+        Time.timeScale = 1.0F;
         LoseUI.SetActive(false);
 
+        // initiate the next wave
         NextWave();
     }
 
@@ -85,11 +93,111 @@ public class Waves : MonoBehaviour
         ).Take(count);
     }
 
+    // checks whether the win condition has been met and all the enemies are no longer alive. (is called after the last enemy has been spawned :3)
+    private IEnumerator WinCheck()
+    {
+        // hold the thread for as it takes till the amount of enemies alive is 0
+        while (allEnemies.Where(e => e.IsAlive).Count() > 0)
+            yield return new WaitForFixedUpdate();  // check every fixed update, as we don't need to check every frame. :3
+
+        // all enemies have perished, increase the wave!
+        Wave++;
+
+        // increase the level if the waves have been reached
+        if (Wave >= waves.Length)
+        {
+            Wave = 0;                       // reset wave
+            Level++;                        // increase the level
+            monoLevel.Level.ClearLevel();   // clear the level so we don't save towers
+
+            regenLevel = true;
+            Debug.Log($"progressed to level {Level}!");
+            winUI.SetActive(true);                  // set the Win UI active
+            shop.ShopToggle(false);                 // disable the shop
+
+        }
+
+        GameManager.Instance.Save.SaveFile();   // save the current state to the file
+
+        // if we are not at a new level, show the wave count down
+        if (regenLevel == false)
+        {
+            counter.gameObject.SetActive(true);
+            shop.ShopToggle(false);
+
+            // counts down every second. :3
+            for (int i = waveDelaySeconds; i > 0; i--)
+            {
+                counter.text = i.ToString();
+                yield return new WaitForSecondsRealtime(1.0F);
+            }
+
+            counter.gameObject.SetActive(false);
+            NextWave(); // shop is set active in this method
+        }
+
+        yield return null;
+    }
+
+    // checks whether the player has lost and runs associated code; called every time the player was dealt damage.
+    public void LoseCheck() /*Daniel*/
+    {
+        // if the health is greater than 0 = alive
+        if (Save.data.hp > 0)
+        {
+            // invoke the health decreased event and just return
+            HealthDecreased?.Invoke();
+            return;
+        }
+
+        // cleanup
+        StopAllCoroutines();                                                                // stop all coroutines within this behaviour
+        foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();    // disable all enemies that are alive
+        Wave = 0;                                                                           // set wave back to 0
+
+        // switch between UI
+        LoseUI.SetActive(true);
+        shop.ShopToggle(false);
+
+        // reset all data for this level, save it and signal that the level needs to be regenerated
+        Save.ResetLevelData();
+        GameManager.Instance.Save.SaveFile();
+        regenLevel = true;
+
+        // pause the game
+        Time.timeScale = 0;
+    }
+
+    // spawns an enemy of a specific difficulty
+    private void SpawnEnemy(EnemyDifficulty difficulty)
+    {
+        // create a list for the indices of the enemies with the capacity set to the amount of existing enemy types
+        // because that is the max it will ever be so we don't have to redefine the internal array when adding items.
+        List<int> enemyIndices = new(enemyTypes.Length);
+
+        // get the indices of the enemies that match the difficult requested
+        for (int i = 0; i < enemyTypes.Length; i++)
+            if (enemyTypes[i].difficulty == difficulty)
+                enemyIndices.Add(i);
+
+        // get a random index of the previoursly selected indecencies
+        int index = Random.Range(0, enemyIndices.Count);
+
+        // use the index to get an enemy within the pool
+        int targetIndex = enemyIndices[index];
+        ObjectPool<EnemyBase> pool = enemyPools[targetIndex];
+        EnemyBase enemy = pool.GetPooledObject(enemyTypes[targetIndex].enemy, transform, enemy => allEnemies.Add(enemy));
+
+        // initialize the enemy
+        enemy.Initialize(GameManager.Instance.Save.data.level);
+    }
+
     // spawns the enemies
     private IEnumerator SpawnEnemies(int wave)
     {
         List<EnemySpawnData> spawnData = waves[wave].enemySpawnData.ToList(); // create a copy of the enemy spawn data as a list for this wave to operate on
 
+        // while we still have spawn data left
         while (spawnData.Count > 0)
         {
             // await the spawn rate
@@ -119,94 +227,6 @@ public class Waves : MonoBehaviour
         StartCoroutine(WinCheck());
 
         yield return null;
-    }
-
-    // checks whether the win condition has been met and all the enemies are no longer alive. (is called after the last enemy has been spawned :3)
-    private IEnumerator WinCheck()
-    {
-        // hold the thread for as it takes till the amount of enemies alive is 0
-        while (allEnemies.Where(e => e.IsAlive).Count() > 0)
-            yield return new WaitForFixedUpdate();  // check every fixed update, as we don't need to check every frame. :3
-
-        // all enemies have perished, increase the wave!
-        Wave++;
-
-        // increase the level if the waves have been reached
-        if (Wave >= waves.Length)
-        {
-            Wave = 0;                       // reset wave
-            Level++;                        // increase the level
-            monoLevel.Level.ClearLevel();   // clear the level so we don't save towers
-
-            newLevel = true;
-            Debug.Log($"progressed to level {Level}!");
-            winUI.SetActive(true);                  // set the Win UI active
-            shop.ShopToggle(false);                 // disable the shop
-
-        }
-
-        GameManager.Instance.Save.SaveFile();   // save the current state to the file
-
-        if (newLevel == false)
-        {
-            counter.gameObject.SetActive(true);
-            shop.ShopToggle(false);
-
-            for (int i = 0; i < waveDelaySeconds; i++)
-            {
-                counter.text = (waveDelaySeconds - i).ToString();
-                yield return new WaitForSecondsRealtime(1.0F);
-            }
-
-            counter.gameObject.SetActive(false);
-            NextWave(); // shop is set active in this method
-        }
-
-        yield return null;
-    }
-    public void LoseCheck()/*Dani�l*/
-    {
-        HealthDecreased?.Invoke();
-        if (Save.data.hp > 0) return;
-
-        StopAllCoroutines();
-        foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();
-        Wave = 0;
-
-        //switch between UI
-        LoseUI.SetActive(true);
-        shop.ShopToggle(false);
-        //clear all the saved data or this level, clear the
-
-        Save.ResetLevelData();
-        GameManager.Instance.Save.SaveFile();
-        monoLevel.RegenerateLevel(Level, Save.data.towers);
-
-        Time.timeScale = 0;
-    }
-
-    // spawns an enemy of a specific difficulty
-    private void SpawnEnemy(EnemyDifficulty difficulty)
-    {
-        // create a list for the indices of the enemies with the capacity set to the amount of existing enemy types
-        // because that is the max it will ever be so we don't have to redefine the internal array when adding items.
-        List<int> enemyIndices = new(enemyTypes.Length);
-
-        // get the indices of the enemies that match the difficult requested
-        for (int i = 0; i < enemyTypes.Length; i++)
-            if (enemyTypes[i].difficulty == difficulty)
-                enemyIndices.Add(i);
-
-        // get a random index of the previoursly selected indecencies
-        int index = Random.Range(0, enemyIndices.Count);
-
-        // use the index to get an enemy within the pool
-        int targetIndex = enemyIndices[index];
-        ObjectPool<EnemyBase> pool = enemyPools[targetIndex];
-        EnemyBase enemy = pool.GetPooledObject(enemyTypes[targetIndex].enemy, transform, enemy => allEnemies.Add(enemy));
-
-        // initialize the enemy
-        enemy.Initialize(GameManager.Instance.Save.data.level);
     }
 
     // called when the script is being loaded
