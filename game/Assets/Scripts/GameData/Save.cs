@@ -71,7 +71,7 @@ public class Save
         // reset level-specific data
         data.hp = 10;
         data.towerBoughtCount = new int[(int)TowerType.TOWER_COUNT - 1];
-        data.money = 500 + (500 * data.level); // calculation for what the money amount should be for this level
+        data.money = 500 + (250 * data.level); // calculation for what the money amount should be for this level
 
         // level-specific
         data.stats.kills = 0;
