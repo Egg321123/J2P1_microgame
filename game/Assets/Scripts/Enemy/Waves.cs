@@ -138,6 +138,9 @@ public class Waves : MonoBehaviour
         GameManager.Instance.Save.SaveFile();
         regenLevel = true;
 
+        // invoke the health decreased event now, because health was updated in Save.ResetLevelData
+        HealthDecreased?.Invoke();
+
         // pause the game
         Time.timeScale = 0;
     }
