@@ -10,6 +10,7 @@ using Random = UnityEngine.Random; // define which random we wanna use
 // if the last wave has been reached, a new level is generated
 public class Waves : MonoBehaviour
 {
+    #region fields
     [Header("UI stuff")]
     [SerializeField] private GameObject winUI = null;           // the UI that is shown when the game is won
     [SerializeField] private GameObject LoseUI = null;          // the UI that is shown when u didn't survive the level
@@ -41,39 +42,10 @@ public class Waves : MonoBehaviour
     private Save Save => GameManager.Instance.Save;
     public int Wave { get => Save.data.wave; set => Save.data.wave = value; }
     private int Level { get => Save.data.level; set => Save.data.level = value; }
+    #endregion // fields
 
 
-    // progresses to the next wave
-    public void NextWave()
-    {
-        if (regenLevel == true)
-        {
-            monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
-            regenLevel = false;
-
-            // hide the win ui, as this is the only time when it needs to be active
-            winUI.SetActive(false);
-        }
-
-        // make the shop active again
-        shop.ShopToggle(true);
-
-        StartCoroutine(SpawnEnemies(Wave));
-        NewWave?.Invoke();
-        Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
-    }
-
-    // called when the "Try again" button is pressed, is meant to start the wave when
-    public void TryAgain() /*Daniel*/
-    {
-        //activate and deactivate the UI so the player can play again
-        Time.timeScale = 1.0F;
-        LoseUI.SetActive(false);
-
-        // initiate the next wave
-        NextWave();
-    }
-
+    #region utility
     // get the enemies within a radius
     public IEnumerable<EnemyBase> GetEnemiesInRadius(Vector3 pos, float radius, int count = -1)
     {
@@ -92,7 +64,9 @@ public class Waves : MonoBehaviour
             select enemy
         ).Take(count);
     }
+    #endregion // utility
 
+    #region win / lose checks
     // checks whether the win condition has been met and all the enemies are no longer alive. (is called after the last enemy has been spawned :3)
     private IEnumerator WinCheck()
     {
@@ -167,7 +141,9 @@ public class Waves : MonoBehaviour
         // pause the game
         Time.timeScale = 0;
     }
+    #endregion // win / lose checks
 
+    #region enemy spawning
     // spawns an enemy of a specific difficulty
     private void SpawnEnemy(EnemyDifficulty difficulty)
     {
@@ -228,7 +204,42 @@ public class Waves : MonoBehaviour
 
         yield return null;
     }
+    #endregion // enemy spawning
 
+    #region wave progression
+    // progresses to the next wave
+    public void NextWave()
+    {
+        if (regenLevel == true)
+        {
+            monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
+            regenLevel = false;
+
+            // hide the win ui, as this is the only time when it needs to be active
+            winUI.SetActive(false);
+        }
+
+        // make the shop active again
+        shop.ShopToggle(true);
+
+        StartCoroutine(SpawnEnemies(Wave));
+        NewWave?.Invoke();
+        Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
+    }
+
+    // called when the "Try again" button is pressed, is meant to start the wave when
+    public void TryAgain() /*Daniel*/
+    {
+        //activate and deactivate the UI so the player can play again
+        Time.timeScale = 1.0F;
+        LoseUI.SetActive(false);
+
+        // initiate the next wave
+        NextWave();
+    }
+    #endregion // wave progression
+
+    #region unity functions
     // called when the script is being loaded
     private void Awake()
     {
@@ -247,4 +258,5 @@ public class Waves : MonoBehaviour
         for (int i = 0; i < enemyTypes.Length; i++)
             enemyPools[i] = new ObjectPool<EnemyBase>();
     }
+    #endregion // unity functions
 }
