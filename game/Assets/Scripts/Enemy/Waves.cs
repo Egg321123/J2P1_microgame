@@ -91,7 +91,8 @@ public class Waves : MonoBehaviour
             winUI.UpdateStats(true);
 
             shop.ShopToggle(false);                 // disable the shop
-            Save.ResetLevelData();                  // reset the level data
+            Save.ResetLevelData(true);              // reset the level data
+            shop.UpdateStore();                     // update the shop prices
         }
 
         Save.SaveFile();   // save the current state to the file
@@ -126,7 +127,9 @@ public class Waves : MonoBehaviour
 
         // reset all data for this level, save it and signal that the level needs to be regenerated
         Save.ResetLevelData();
-        GameManager.Instance.Save.SaveFile();
+        shop.UpdateStore();                     // update the shop prices
+        Save.data.stats.IncreaseDeaths();
+        Save.SaveFile();
         regenLevel = true;
 
         // invoke the health decreased event now, because health was updated in Save.ResetLevelData
@@ -209,7 +212,7 @@ public class Waves : MonoBehaviour
         for (int i = waveDelaySeconds; i > 0; i--)
         {
             counter.text = i.ToString();
-            yield return new WaitForSecondsRealtime(1.0F);
+            yield return new WaitForSeconds(1.0F);
         }
 
         counter.gameObject.SetActive(false);

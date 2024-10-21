@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: Magic_Tower
   m_EditorClassIdentifier: 
   towerName: Magic Tower
-  towerInfo: This tower shoots multiple enemies within its range.
+  towerInfo: This tower shoots 6 enemies within a radius of 5.
   menuSprite: {fileID: 21300000, guid: 0c03f0903adfa4a4a9b679870cf285f7, type: 3}
-  cost: 1000
+  cost: 700
   towerData:
     towerType: 2
-    attackSpeed: 2
+    attackSpeed: 4
     attackRadius: 5
     attackDamage: 15
     targetCount: 6
-    projectileSpeed: 2
-    level: 1
+    projectileSpeed: 4

@@ -5366,14 +5366,14 @@ MonoBehaviour:
       count: 10
   - enemySpawnData:
     - difficulty: 0
-      count: 40
+      count: 50
     - difficulty: 1
-      count: 30
+      count: 20
   - enemySpawnData:
     - difficulty: 0
       count: 40
     - difficulty: 1
-      count: 40
+      count: 35
   - enemySpawnData:
     - difficulty: 0
       count: 20

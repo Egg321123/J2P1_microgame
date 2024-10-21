@@ -31,6 +31,5 @@ public class TowerStoreData : ScriptableObject
         attackDamage = 1,
         targetCount = 1,
         projectileSpeed = 2,
-        level = 1
     };
 }

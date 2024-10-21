@@ -66,7 +66,7 @@ public class Save
     /// <summary>
     /// resets the save data that is level-specific
     /// </summary>
-    public void ResetLevelData()
+    public void ResetLevelData(bool levelUp = false)
     {
         // reset level-specific data
         data.hp = 10;
@@ -78,6 +78,9 @@ public class Save
         data.stats.towersPlaced = 0;
         data.stats.towersUpgraded = 0;
         data.stats.moneySpent = 0;
+
+        if (levelUp == true)
+            data.stats.deaths = 0;
 
         // clear the level
         Level level = GameManager.Instance.Level;

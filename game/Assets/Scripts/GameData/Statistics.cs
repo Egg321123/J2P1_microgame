@@ -8,8 +8,10 @@ public struct Statistics
     public int towersPlaced;
     public int towersUpgraded;
     public long moneySpent;
+    public int deaths;
 
     //total
+    public int totalDeaths;
     public int totalKills;
     public int totalTowersPlaced;
     public int totalTowersUpgraded;
@@ -18,15 +20,24 @@ public struct Statistics
     public void Initialize()
     {
         // assign the default values
+        deaths = 0;
         kills = 0;
         towersPlaced = 0;
         towersUpgraded = 0;
         moneySpent = 0;
 
+        totalDeaths = 0;
         totalKills = 0;
         totalTowersPlaced = 0;
         totalTowersUpgraded = 0;
         totalMoneySpent = 0;
+    }
+
+
+    public void IncreaseDeaths(int amount = 1)
+    {
+        deaths += amount;
+        totalDeaths += amount;
     }
 
     public void IncreaseKills(int amount = 1)
@@ -51,20 +62,5 @@ public struct Statistics
     {
         moneySpent += amount;
         totalMoneySpent += amount;
-    }
-
-
-
-    /// <summary>
-    /// clears the statistics connected to this specific level, does not clear between waves,
-    /// only when going to the next level, or restarting the level.
-    /// </summary>
-    public void ClearLevelStats()
-    {
-        // assign the default values
-        kills = 0;
-        towersPlaced = 0;
-        towersUpgraded = 0;
-        moneySpent = 0;
     }
 }
