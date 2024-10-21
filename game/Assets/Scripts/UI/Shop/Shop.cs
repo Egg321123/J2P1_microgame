@@ -36,7 +36,7 @@ public class Shop : MonoBehaviour
         //update the ui
         for (int i = 0; i < toggles.Length; i++)
         {
-            bool available = towersInShop[i].cost <= GameManager.Instance.Save.data.money;
+            bool available = towersInShop[i].ScaledCost <= GameManager.Instance.Save.data.money;
             toggles[i].UpdateAvailable(available);
         }
     }
