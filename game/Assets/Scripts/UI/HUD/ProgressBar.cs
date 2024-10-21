@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +9,7 @@ public class ProgressBar : MonoBehaviour
     private void Start()
     {
         waves = GameManager.Instance.Waves;
-        
+
         if (slider == null || waves == null)
         {
             Debug.LogWarning("Slider or Waves is not assigned!");
@@ -19,13 +17,14 @@ public class ProgressBar : MonoBehaviour
         }
         slider.minValue = 0;
         slider.maxValue = waves.MaxWaves - 1;
+        slider.value = waves.Wave + 1;
+
         //Adds the method to the event, so it's called when it's triggered
         waves.NewWave += OnNewWave;
     }
 
     public void OnNewWave()
     {
-       
-            slider.value = waves.Wave + 1;
+        slider.value = waves.Wave + 1;
     }
 }
