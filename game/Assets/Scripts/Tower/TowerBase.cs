@@ -25,7 +25,11 @@ public abstract class TowerBase : MonoBehaviour
     protected abstract void ShotTarget(EnemyBase target);               // implementation for when a target has been shot
 
     protected virtual void BeforeShootDelay() { }                       // implementation to get when it getting ready to shoot
-    protected virtual void AfterShootDelay() { }                        // implementation to get when it getting ready to shoot
+    protected virtual void AfterShootDelay()                         // implementation to get when it getting ready to shoot
+    {
+        GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
+        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
+    }  
 
 
     // selects the targets that will be shot

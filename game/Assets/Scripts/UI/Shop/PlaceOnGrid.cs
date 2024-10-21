@@ -1,6 +1,7 @@
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlaceOnGrid : MonoBehaviour
 {
@@ -60,7 +61,6 @@ public class PlaceOnGrid : MonoBehaviour
                 Touch touch = Input.GetTouch(0);
 
                 //avoids race condition from ui toggle (takes longer to toggle then to send raycast)
-                yield return new WaitForSeconds(0.1f);
                 if (!isInPlaceMode) yield break;
 
                 bool placeTower = false;
@@ -88,12 +88,16 @@ public class PlaceOnGrid : MonoBehaviour
                 // if we need to place a tower
                 if (placeTower == true)
                 {
+                    //makes sure you can't click through the ui
+                    if (EventSystem.current.IsPointerOverGameObject(0)) yield break;
+
                     //creates the ray with proper parameters
                     Ray ray = Camera.main.ScreenPointToRay(new(touch.position.x, touch.position.y, 0));
 
                     // Does the raycast check
                     if (Physics.Raycast(ray, out RaycastHit hit, 1000f, targetLayer))
                     {
+
                         // Gets the world position
                         Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
 

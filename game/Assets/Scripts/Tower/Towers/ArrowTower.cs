@@ -9,8 +9,6 @@ public class ArrowTower : ProjectileTowerBase
 
     protected override void ShotTarget(EnemyBase target)
     {
-        GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
-        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
         //create new trail
         GameObject trail = Instantiate(projectile, firingPoint.position, Quaternion.identity);
         trail.transform.parent = transform;

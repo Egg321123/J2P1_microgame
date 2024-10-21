@@ -33,13 +33,11 @@ public class StatsUI : MonoBehaviour
             ui.text =
                 $"\nKills: {stats.kills}\n " +
                 $"Towers Placed: {stats.towersPlaced}\n" +
-                $"Towers Upgraded: {stats.towersUpgraded}\n" +
                 $"Money Spend: {stats.moneySpent}\n\n" +
 
                 $"Total Kills: {stats.totalKills}\n " +
                 $"Total Towers Placed: {stats.totalTowersPlaced}\n" +
-                $"Total Towers Upgraded: {stats.totalTowersUpgraded}\n" +
-                $"Total Money Spend: {stats.totalMoneySpent}";
+                $"Total Money Spend: {stats.totalMoneySpent}" ;
 
             /* ui.text = string.Format(ui.text,
                      stats.kills,                // {0}

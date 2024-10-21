@@ -35,7 +35,7 @@ public class AudioToggle : MonoBehaviour
     public void ToggleMusic()
     {
         bool isOn = toggleMusic.isOn;
-        float volume = isOn ? 0 : -80;
+        float volume = isOn ? 15 : -80;
 
         audioMixer.SetFloat("MusicVol", volume);
         PlayerPrefs.SetInt("toggleMusic", Convert.ToInt32(isOn));
