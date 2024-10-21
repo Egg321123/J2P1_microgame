@@ -1,10 +1,8 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public abstract class EnemyBase : MonoBehaviour
 {
-    [SerializeField] private string enemyName;
     [SerializeField] private GameObject audioPrefab;
     [SerializeField] private AudioClip clip;
 
