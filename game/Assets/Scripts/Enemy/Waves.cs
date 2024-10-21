@@ -101,6 +101,7 @@ public class Waves : MonoBehaviour
         if (regenLevel == false)
             NextWave(); // shop is set active in this method
 
+        Time.timeScale = 0.0F;
         yield return null;
     }
 
@@ -136,7 +137,7 @@ public class Waves : MonoBehaviour
         HealthDecreased?.Invoke();
 
         // pause the game
-        Time.timeScale = 0;
+        Time.timeScale = 0.0F;
     }
     #endregion // win / lose checks
 
@@ -226,6 +227,9 @@ public class Waves : MonoBehaviour
         // signal that a new wave has started.
         NewWave?.Invoke();
 
+        // re-enable time :3
+        Time.timeScale = 1.0F;
+
         // set the shop to be inactive
         shop.ShopToggle(false);
 
@@ -259,7 +263,6 @@ public class Waves : MonoBehaviour
     public void TryAgain() /*Daniel*/
     {
         //activate and deactivate the UI so the player can play again
-        Time.timeScale = 1.0F;
         loseUI.gameObject.SetActive(false);
 
         // initiate the next wave
