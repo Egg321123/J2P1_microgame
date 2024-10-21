@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random; // define which random we wanna use
@@ -95,20 +96,7 @@ public class Waves : MonoBehaviour
 
         // if we are not at a new level, show the wave count down
         if (regenLevel == false)
-        {
-            counter.gameObject.SetActive(true);
-            shop.ShopToggle(false);
-
-            // counts down every second. :3
-            for (int i = waveDelaySeconds; i > 0; i--)
-            {
-                counter.text = i.ToString();
-                yield return new WaitForSecondsRealtime(1.0F);
-            }
-
-            counter.gameObject.SetActive(false);
             NextWave(); // shop is set active in this method
-        }
 
         yield return null;
     }
@@ -210,9 +198,30 @@ public class Waves : MonoBehaviour
     #endregion // enemy spawning
 
     #region wave progression
-    // progresses to the next wave
-    public void NextWave()
+    private IEnumerator ShowTimer(TaskCompletionSource<bool> completion)
     {
+        counter.gameObject.SetActive(true);
+        shop.ShopToggle(false);
+
+        // counts down every second. :3
+        for (int i = waveDelaySeconds; i > 0; i--)
+        {
+            counter.text = i.ToString();
+            yield return new WaitForSecondsRealtime(1.0F);
+        }
+
+        counter.gameObject.SetActive(false);
+        completion.SetResult(true);
+        yield return null;
+    }
+
+    // progresses to the next wave and shows relative UI
+    public async void NextWave()
+    {
+        TaskCompletionSource<bool> completion = new();
+        Coroutine coroutine = StartCoroutine(ShowTimer(completion));
+        await completion.Task;
+
         if (regenLevel == true)
         {
             monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
