@@ -72,7 +72,7 @@ public class Shop : MonoBehaviour
     public void StoreButtons(int index)
     {
         GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
-        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
+        sound.GetComponent<AudioClipPlayer>().Initialize(clip, true);
 
         //if you have no toggles active anymore, disable place mode
         if (!group.AnyTogglesOn())
@@ -97,7 +97,7 @@ public class Shop : MonoBehaviour
 
     public void ShopToggle(bool open)
     {
-        shop.SetActive(open);
         if (!open) group.SetAllTogglesOff();
+        shop.SetActive(open);
     }
 }

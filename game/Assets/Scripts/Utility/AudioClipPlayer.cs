@@ -5,20 +5,26 @@ public class AudioClipPlayer : MonoBehaviour
 {
     [SerializeField] AudioSource source;
 
-    public void Initialize(AudioClip clip)
+    public void Initialize(AudioClip clip, bool realTime = false, int priority = 128) => Initialize(clip, priority, realTime);
+    public void Initialize(AudioClip clip, int priority = 128, bool realTime = false)
     {
-        StartCoroutine(DestroyAfterPlay(clip));
+        StartCoroutine(DestroyAfterPlay(clip, realTime, priority));
     }
 
-    IEnumerator DestroyAfterPlay(AudioClip clip)
+    IEnumerator DestroyAfterPlay(AudioClip clip, bool realTime, int priority)
     {
         float clipLength = clip.length;
 
         source.clip = clip;
-        source.pitch = (Random.Range(0.8f, 1.2f));
+        source.priority = priority;
+
+        if (!realTime) source.pitch = Time.timeScale;
+        else source.pitch = Random.Range(0.8f, 1.2f);
+
         source.Play();
 
-        yield return new WaitForSecondsRealtime(clipLength);
+        if (realTime) yield return new WaitForSecondsRealtime(clipLength);
+        else yield return new WaitForSeconds(clipLength);
 
         Destroy(gameObject);
 
