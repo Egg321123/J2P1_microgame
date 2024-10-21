@@ -102,7 +102,7 @@ public class PlaceOnGrid : MonoBehaviour
                 Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
 
                 // Places object in the scene if you are allowed to place there
-                if (monoLevel.Level.IsEmpty(pos) && moneyHandler.Pay(storeData.ScaledCost))
+                if (monoLevel.Level.IsEmpty(pos) && moneyHandler.Pay(storeData))
                 {
                     GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
                     sound.GetComponent<AudioClipPlayer>().Initialize(clip, 20, true);
