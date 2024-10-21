@@ -4,7 +4,7 @@ using System;
 public struct SaveData
 {
     public const int MAX_HP = 10;
-    public const int DATA_VERSION = 0;      // change this every time you make a change to the stored data
+    public const int DATA_VERSION = 1;      // change this every time you make a change to the stored data
 
     // add more save data here
     public int dataVersion;
