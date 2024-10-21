@@ -1,2 +1,7 @@
 # for removing temporary ms word files
 ~*
+
+# remove the stupid run info, which we don't need on GIT
+game/Assets/Resources/PerformanceTestRunInfo.json
+game/Assets/Resources/PerformanceTestRunInfo.json.meta
+game/Assets/Resources/PerformanceTestRunSettings.json
