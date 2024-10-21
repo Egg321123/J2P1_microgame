@@ -220,26 +220,26 @@ public class Waves : MonoBehaviour
     // progresses to the next wave and shows relative UI
     public async void NextWave()
     {
+        // set the shop to be inactive
+        shop.ShopToggle(false);
+
+        // start the show timer coroutine
+        TaskCompletionSource<bool> counterCompletion = new();
+        Coroutine coroutine = StartCoroutine(ShowTimer(counterCompletion));
+
         // if the level needs to be regenerated, regenerate it
-        Task regenLevelTask = Task.CompletedTask;
         if (regenLevel == true)
         {
             // hide the win ui, as this is the only time when it needs to be active
             winUI.gameObject.SetActive(false);
 
             // regenerate the level asynchronously and store the task of this process
-            regenLevelTask = new Task(() => monoLevel.RegenerateLevel(Level, Save.data.towers));
-            regenLevelTask.Start();
+            monoLevel.RegenerateLevel(Level, Save.data.towers);
             regenLevel = false;
         }
 
-        // set the shop to be inactive
-        shop.ShopToggle(false);
-
-        // start the show timer coroutine, await this process *and* the level regeneration, if it was started
-        TaskCompletionSource<bool> counterCompletion = new();
-        Coroutine coroutine = StartCoroutine(ShowTimer(counterCompletion));
-        await Task.WhenAll(counterCompletion.Task, regenLevelTask);
+        // await the counter being done
+        await counterCompletion.Task;
 
         // make the shop active again
         shop.ShopToggle(true);
