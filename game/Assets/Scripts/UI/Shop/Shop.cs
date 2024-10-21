@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,6 +41,13 @@ public class Shop : MonoBehaviour
         }
     }
 
+    // updates the store
+    public void UpdateStore()
+    {
+        //update buttons
+        for (int i = 0; i < toggles.Length; i++) toggles[i].SetButtonValues(towersInShop[i]);
+    }
+
     public void RegenerateStore()
     {
         /*
@@ -65,8 +70,7 @@ public class Shop : MonoBehaviour
         // for release we disabled randomisation because we didn't have enough towers for it to make sense and it actually disabled quality
         for (int i = 0; i < towersInShop.Length; i++) towersInShop[i] = availableTowers[i];
 
-        //update buttons
-        for (int i = 0; i < toggles.Length; i++) toggles[i].SetButtonValues(towersInShop[i]);
+        UpdateStore();
     }
 
     public void StoreButtons(int index)

@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class MoneyHandler : MonoBehaviour
@@ -6,6 +7,12 @@ public class MoneyHandler : MonoBehaviour
     [SerializeField] TMP_Text scoreUI;
     private string[] suffixes = { "", "K", "M", "B", "T", "Q" };
     [SerializeField] StoreToggle[] toggles;
+    private Shop shop = null;
+
+    private void Awake()
+    {
+        shop = FindFirstObjectByType<Shop>();
+    }
 
     private void FixedUpdate() => scoreUI.text = MoneyFormatting();
 
@@ -14,12 +21,18 @@ public class MoneyHandler : MonoBehaviour
     /// </summary>
     /// <param name="price"></param>
     /// <returns>returns true if you can pay for it, false if you cannot</returns>
-    public bool Pay(int price)
+    public bool Pay(TowerStoreData tower)
     {
+        int price = tower.ScaledCost;
+        Save save = GameManager.Instance.Save;
+
         if (GameManager.Instance.Save.data.money >= price)
         {
-            GameManager.Instance.Save.data.money -= price;
-            GameManager.Instance.Save.data.stats.IncreaseMoneySpent(price);
+            save.data.money -= price;
+            save.data.stats.IncreaseMoneySpent(price);
+            save.data.towerBoughtCount[(int)tower.towerData.towerType]++; // increase the amount bought from this type
+            shop.UpdateStore();
+
             return true;
         }
         else return false;
