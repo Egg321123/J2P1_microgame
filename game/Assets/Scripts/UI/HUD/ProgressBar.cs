@@ -16,7 +16,7 @@ public class ProgressBar : MonoBehaviour
             return;
         }
         slider.minValue = 0;
-        slider.maxValue = waves.MaxWaves - 1;
+        slider.maxValue = waves.MaxWaves;
         slider.value = waves.Wave + 1;
 
         //Adds the method to the event, so it's called when it's triggered
