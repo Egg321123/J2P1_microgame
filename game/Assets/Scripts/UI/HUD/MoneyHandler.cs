@@ -13,7 +13,7 @@ public class MoneyHandler : MonoBehaviour
         shop = FindFirstObjectByType<Shop>();
     }
 
-    private void FixedUpdate() => scoreUI.text = StringUtils.MoneyFormatting(GameManager.Instance.Save.data.money);
+    private void FixedUpdate() => scoreUI.text = StringUtils.FormatNumber(GameManager.Instance.Save.data.money);
 
     /// <summary>
     /// subtracts the amount of money you have from the total amount

@@ -31,26 +31,15 @@ public class StatsUI : MonoBehaviour
         foreach (TextMeshProUGUI ui in statUIs)
         {
             ui.text =
-                $"\nDeaths: {stats.deaths}\n " +
-                $"Kills: {stats.kills}\n " +
-                $"Towers Placed: {stats.towersPlaced}\n" +
-                $"Money Spend: {stats.moneySpent}\n\n" +
+                $"\nDeaths: {StringUtils.FormatNumber(stats.deaths)}\n " +
+                $"Kills: {StringUtils.FormatNumber(stats.kills)}\n " +
+                $"Towers Placed: {StringUtils.FormatNumber(stats.towersPlaced)}\n" +
+                $"Money Spend: {StringUtils.FormatNumber(stats.moneySpent)}\n\n" +
 
-                $"Total Deaths: {stats.totalDeaths}\n " +
-                $"Total Kills: {stats.totalKills}\n " +
-                $"Total Towers Placed: {stats.totalTowersPlaced}\n" +
-                $"Total Money Spend: {stats.totalMoneySpent}" ;
-
-            /* ui.text = string.Format(ui.text,
-                     stats.kills,                // {0}
-                     stats.towersPlaced,         // {1}
-                     stats.towersUpgraded,       // {2}
-                     stats.moneySpent,           // {3}
-                     stats.totalKills,           // {4}
-                     stats.totalTowersPlaced,    // {5}
-                     stats.totalTowersUpgraded,  // {6}
-                     stats.totalMoneySpent       // {7}
-             );*/
+                $"Total Deaths: {StringUtils.FormatNumber(stats.totalDeaths)}\n " +
+                $"Total Kills: {StringUtils.FormatNumber(stats.totalKills)}\n " +
+                $"Total Towers Placed: {StringUtils.FormatNumber(stats.totalTowersPlaced)}\n" +
+                $"Total Money Spend: {StringUtils.FormatNumber(stats.totalMoneySpent)}" ;
         }
     }
 }

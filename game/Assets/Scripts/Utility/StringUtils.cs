@@ -1,24 +1,22 @@
-
-
 public static class StringUtils
 {
-    private static string[] moneySuffixes = { "", "K", "M", "B", "T", "Q" };
+    private static string[] suffixes = { "", "K", "M", "B", "T", "Q" };
 
-    public static string MoneyFormatting(long value)
+    public static string FormatNumber(long value)
     {
-        double tempMoney = value;
+        double tmp = value;
 
         // Define the size suffixes for thousand, million, billion, trillion, etc.
         int suffixIndex = 0;
 
         // Keep dividing money by 1000 until it is less than 1000, tracking the suffix
-        while (tempMoney >= 1000 && suffixIndex < moneySuffixes.Length - 1)
+        while (tmp >= 1000 && suffixIndex < suffixes.Length - 1)
         {
-            tempMoney /= 1000;
+            tmp /= 1000;
             suffixIndex++;
         }
 
         // Format the number with the appropriate suffix and return
-        return tempMoney.ToString("0.##") + moneySuffixes[suffixIndex];
+        return tmp.ToString("0.##") + suffixes[suffixIndex];
     }
 }
