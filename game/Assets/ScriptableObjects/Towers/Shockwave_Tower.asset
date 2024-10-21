@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: Shockwave Tower
   towerInfo: This tower creates shockwaves around it every now and then to stun the
-    enemies within the radius of 3.
+    enemies within the radius of 2.
   menuSprite: {fileID: 21300000, guid: b8b2c22f278863b4badc028daefb29d1, type: 3}
   cost: 750
   towerData:
     towerType: 3
     attackSpeed: 0.15
-    attackRadius: 3
+    attackRadius: 2
     attackDamage: 100
     targetCount: -1
     projectileSpeed: -1
