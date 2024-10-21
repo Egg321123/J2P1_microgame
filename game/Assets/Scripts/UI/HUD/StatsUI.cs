@@ -31,10 +31,12 @@ public class StatsUI : MonoBehaviour
         foreach (TextMeshProUGUI ui in statUIs)
         {
             ui.text =
-                $"\nKills: {stats.kills}\n " +
+                $"\nTotal Deaths: {stats.deaths}\n " +
+                $"Kills: {stats.kills}\n " +
                 $"Towers Placed: {stats.towersPlaced}\n" +
                 $"Money Spend: {stats.moneySpent}\n\n" +
 
+                $"Total Deaths: {stats.totalDeaths}\n " +
                 $"Total Kills: {stats.totalKills}\n " +
                 $"Total Towers Placed: {stats.totalTowersPlaced}\n" +
                 $"Total Money Spend: {stats.totalMoneySpent}" ;

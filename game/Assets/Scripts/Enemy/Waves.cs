@@ -128,7 +128,8 @@ public class Waves : MonoBehaviour
         // reset all data for this level, save it and signal that the level needs to be regenerated
         Save.ResetLevelData();
         shop.UpdateStore();                     // update the shop prices
-        GameManager.Instance.Save.SaveFile();
+        Save.data.stats.IncreaseDeaths();
+        Save.SaveFile();
         regenLevel = true;
 
         // invoke the health decreased event now, because health was updated in Save.ResetLevelData
