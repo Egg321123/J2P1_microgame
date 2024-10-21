@@ -12,6 +12,20 @@ public class SpeedUp_Button : MonoBehaviour
     private int speedUpTime = 3;
     private int clickTimes;
 
+    private void Start()
+    {
+        GameManager.Instance.Waves.NewWave += CheckSpeed;
+    }
+
+    private void CheckSpeed()
+    {
+        if (Time.timeScale != speedUpTime)
+        {
+            buttonImage.sprite = normalSpeedIcon;
+            clickTimes = 0;
+        }
+    }
+
     public void ToggleSpeed()
     {
         clickTimes++;
@@ -25,4 +39,6 @@ public class SpeedUp_Button : MonoBehaviour
             clickTimes = 0;
         }
     }
+
+
 }

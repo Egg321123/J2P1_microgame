@@ -96,9 +96,11 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void Kill()
     {
         GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
-        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
+        sound.GetComponent<AudioClipPlayer>().Initialize(clip, 200);
+
         GameManager.Instance.Save.data.stats.IncreaseKills();
         moneyHandler.Earn(droppedMoney);
+
         DisableEnemy();
         Instantiate(deathParticles, transform.position, Quaternion.identity);
     }

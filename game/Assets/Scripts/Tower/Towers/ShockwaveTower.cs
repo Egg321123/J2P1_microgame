@@ -10,6 +10,12 @@ public class ShockwaveTower : TowerBase
 
     protected override void BeforeShootDelay() => StartCoroutine(TowerAnimation());
 
+    protected override void AfterShootDelay()
+    {
+        GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
+        sound.GetComponent<AudioClipPlayer>().Initialize(clip, 50);
+    }
+
     private IEnumerator TowerAnimation()
     {
         float currentTime = 0;

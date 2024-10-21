@@ -69,9 +69,6 @@ public class PlaceOnGrid : MonoBehaviour
                 continue;
             }
 
-            //avoids race condition from ui toggle (takes longer to toggle then to send raycast)
-            if (!isInPlaceMode) yield break;
-
             // check the next 5 frames whether the user moved, don't place a tower if so
             bool placeTower = true;
             for (int i = 0; i < 5; i++)
@@ -88,15 +85,12 @@ public class PlaceOnGrid : MonoBehaviour
                 }
             }
 
-            // skip if we don't place a tower
-            if (placeTower == false)
+            // skip if we don't place a tower, or are clicking on the ui instead of scene
+            if (placeTower == false || EventSystem.current.IsPointerOverGameObject(0))
             {
                 yield return null;
                 continue;
             }
-
-            //makes sure you can't click through the ui
-            if (EventSystem.current.IsPointerOverGameObject(0)) yield break;
 
             //creates the ray with proper parameters
             Ray ray = Camera.main.ScreenPointToRay(new(touch.position.x, touch.position.y, 0));
@@ -111,7 +105,7 @@ public class PlaceOnGrid : MonoBehaviour
                 if (monoLevel.Level.IsEmpty(pos) && moneyHandler.Pay(storeData))
                 {
                     GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
-                    sound.GetComponent<AudioClipPlayer>().Initialize(clip);
+                    sound.GetComponent<AudioClipPlayer>().Initialize(clip, 20, true);
                     GameManager.Instance.Save.data.stats.IncreaseTowersPlaced();
                     monoLevel.SetTile(objectToPlace, pos, TileType.TOWER, towerData, true);
                 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -28,7 +29,7 @@ public abstract class TowerBase : MonoBehaviour
     protected virtual void AfterShootDelay()                         // implementation to get when it getting ready to shoot
     {
         GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
-        sound.GetComponent<AudioClipPlayer>().Initialize(clip);
+        sound.GetComponent<AudioClipPlayer>().Initialize(clip, false);
     }  
 
 
@@ -49,7 +50,7 @@ public abstract class TowerBase : MonoBehaviour
             //wait for shooting delay
             yield return new WaitForSeconds(1 / TowerData.attackSpeed);
 
-            AfterShootDelay();
+            if (targets.ToArray().Length > 0) AfterShootDelay();
 
             foreach (EnemyBase target in targets)
                 ShotTarget(target);

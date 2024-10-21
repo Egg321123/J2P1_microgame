@@ -11,7 +11,7 @@ public class EnemyMovementSystem : MonoBehaviour
     // remove it when you want it to stop being controlled by this script.
 
     //enemies hold all enemies, enemiesToUpdate is a list of all enemies used in the current job, to avoid shifting list issues
-    private List<EnemyBase> enemies = new();
+    private readonly List<EnemyBase> enemies = new();
     private List<EnemyBase> enemiesToUpdate = new();
 
     //store some values to avoid having to call pathcreator more then needed
@@ -154,8 +154,7 @@ public struct EnemyMoveJob : IJobParallelForTransform
         // If target index is 0 (at the start of the path), position at the beginning and increment the target position
         if (targetNodeIndex == 0)
         {
-            transform.position = PathNodes[targetNodeIndex];
-            transform.rotation = Quaternion.identity;
+            transform.SetPositionAndRotation(PathNodes[targetNodeIndex], Quaternion.identity);
             targetNodeIndex++;
             TargetNodeIndices[index] = targetNodeIndex;
         }
