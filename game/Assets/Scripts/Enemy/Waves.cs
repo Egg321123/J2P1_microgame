@@ -92,6 +92,7 @@ public class Waves : MonoBehaviour
 
             shop.ShopToggle(false);                 // disable the shop
             Save.ResetLevelData();                  // reset the level data
+            shop.UpdateStore();                     // update the shop prices
         }
 
         Save.SaveFile();   // save the current state to the file
@@ -126,6 +127,7 @@ public class Waves : MonoBehaviour
 
         // reset all data for this level, save it and signal that the level needs to be regenerated
         Save.ResetLevelData();
+        shop.UpdateStore();                     // update the shop prices
         GameManager.Instance.Save.SaveFile();
         regenLevel = true;
 
