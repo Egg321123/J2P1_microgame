@@ -36,7 +36,7 @@ public class Shop : MonoBehaviour
     private void FixedUpdate()
     {
         //update the ui
-        for (int i = 0; i < toggles.Length; i++) 
+        for (int i = 0; i < toggles.Length; i++)
         {
             bool available = towersInShop[i].cost <= GameManager.Instance.Save.data.money;
             toggles[i].UpdateAvailable(available);
@@ -45,6 +45,7 @@ public class Shop : MonoBehaviour
 
     public void RegenerateStore()
     {
+        /*
         List<TowerStoreData> towers = availableTowers.ToList();
 
         //fill in the store with new random towers
@@ -59,6 +60,10 @@ public class Shop : MonoBehaviour
             //remove the random tower from the available list for this itteration
             towers.Remove(towers[randomIndex]);
         }
+        */
+
+        // for release we disabled randomisation because we didn't have enough towers for it to make sense and it actually disabled quality
+        for (int i = 0; i < towersInShop.Length; i++) towersInShop[i] = availableTowers[i];
 
         //update buttons
         for (int i = 0; i < toggles.Length; i++) toggles[i].SetButtonValues(towersInShop[i]);
