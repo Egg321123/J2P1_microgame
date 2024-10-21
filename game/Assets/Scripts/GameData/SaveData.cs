@@ -28,7 +28,7 @@ public struct SaveData
         wave = 0;
         money = 500;
         towers = new TileData[0]; // initialize the towers as an empty array, so it serializes properly with 0 towers, and also doesn't cause other nasty errors
-        towerBoughtCount = new int[(int)TowerType.TOWER_COUNT - 1]; // initializes the array with zeroes
+        towerBoughtCount = new int[(int)TowerType.TOWER_COUNT]; // initializes the array with zeroes
 
         // initialize statistics with their default values
         stats = new Statistics();

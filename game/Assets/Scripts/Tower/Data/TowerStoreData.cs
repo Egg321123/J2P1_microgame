@@ -11,13 +11,14 @@ public class TowerStoreData : ScriptableObject
     public Sprite menuSprite;
     public int cost = 1;
 
+    // gets the cost scaled with how many times the tower has bought
     public int ScaledCost
     {
         get
         {
             Save save = GameManager.Instance.Save;
             TowerType type = towerData.towerType;
-            return save.data.towerBoughtCount[(int)type];
+            return (save.data.towerBoughtCount[(int)type] * (cost / 2)) + cost;
         }
     }
 
@@ -28,6 +29,7 @@ public class TowerStoreData : ScriptableObject
         attackSpeed = 0.5f,
         attackRadius = 5,
         attackDamage = 1,
+        targetCount = 1,
         projectileSpeed = 2,
         level = 1
     };
