@@ -223,12 +223,15 @@ public class Waves : MonoBehaviour
     // progresses to the next wave and shows relative UI
     public async void NextWave()
     {
+        // signal that a new wave has started.
+        NewWave?.Invoke();
+
         // set the shop to be inactive
         shop.ShopToggle(false);
 
         // start the show timer coroutine
         TaskCompletionSource<bool> counterCompletion = new();
-        Coroutine coroutine = StartCoroutine(ShowTimer(counterCompletion));
+        StartCoroutine(ShowTimer(counterCompletion));
 
         // if the level needs to be regenerated, regenerate it
         if (regenLevel == true)
@@ -247,9 +250,8 @@ public class Waves : MonoBehaviour
         // make the shop active again
         shop.ShopToggle(true);
 
-        // start spawning the enemies and signal that a new wave has started.
+        // start spawning the enemies
         StartCoroutine(SpawnEnemies(Wave));
-        NewWave?.Invoke();
         Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
     }
 
