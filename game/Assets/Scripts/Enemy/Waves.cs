@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random; // define which random we wanna use
@@ -10,9 +11,10 @@ using Random = UnityEngine.Random; // define which random we wanna use
 // if the last wave has been reached, a new level is generated
 public class Waves : MonoBehaviour
 {
+    #region fields
     [Header("UI stuff")]
-    [SerializeField] private GameObject winUI = null;           // the UI that is shown when the game is won
-    [SerializeField] private GameObject LoseUI = null;          // the UI that is shown when u didn't survive the level
+    [SerializeField] private StatsUI winUI = null;              // the UI that is shown when the game is won
+    [SerializeField] private StatsUI loseUI = null;             // the UI that is shown when u didn't survive the level
     [SerializeField] private TextMeshProUGUI counter = null;    // for showing a count down between waves
     [SerializeField, Min(0)] private int waveDelaySeconds = 5;  // the delay in seconds between waves
 
@@ -22,7 +24,7 @@ public class Waves : MonoBehaviour
     [SerializeField] private EnemyTypeData[] enemyTypes = null; // the different enemy types
     [SerializeField] private SpawnData[] waves = null;          // the different waves constructed
 
-    // event
+    // events
     public event Action NewWave;
     public event Action HealthDecreased;
 
@@ -34,40 +36,17 @@ public class Waves : MonoBehaviour
     private MonoLevel monoLevel = null;                         // reference to the MonoLevel for regenerating the level on win
     private Shop shop = null;                                   // reference to the shop so we can disable it
 
+    private bool regenLevel = false;
+
     // property shorthands
     public int MaxWaves => waves.Length;
     private Save Save => GameManager.Instance.Save;
     public int Wave { get => Save.data.wave; set => Save.data.wave = value; }
     private int Level { get => Save.data.level; set => Save.data.level = value; }
-    private bool newLevel = false;
+    #endregion // fields
 
 
-    public void NextWave()
-    {
-        if (Wave == 0) GameManager.Instance.Save.data.moneyStartLVL = GameManager.Instance.Save.data.money;
-
-        if (newLevel == true)
-        {
-            monoLevel.RegenerateLevel(Level, Save.data.towers);     // regenerate the level
-            newLevel = false;
-        }
-
-        winUI.SetActive(false);                                     // hide the win UI (again)
-        shop.ShopToggle(true);                                      // make the shop active again
-
-        StartCoroutine(SpawnEnemies(Wave));
-        NewWave?.Invoke();
-        Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
-    }
-    public void TryAgain()/*Dani�l*/
-    {
-        //acitvate and deactivate the UI so the player can paly again
-        Time.timeScale = 1.0f;
-        LoseUI.SetActive(false);
-        
-        NextWave();
-    }
-
+    #region utility
     // get the enemies within a radius
     public IEnumerable<EnemyBase> GetEnemiesInRadius(Vector3 pos, float radius, int count = -1)
     {
@@ -86,12 +65,109 @@ public class Waves : MonoBehaviour
             select enemy
         ).Take(count);
     }
+    #endregion // utility
+
+    #region win / lose checks
+    // checks whether the win condition has been met and all the enemies are no longer alive. (is called after the last enemy has been spawned :3)
+    private IEnumerator WinCheck()
+    {
+        // hold the thread for as it takes till the amount of enemies alive is 0
+        while (allEnemies.Where(e => e.IsAlive).Count() > 0)
+            yield return new WaitForFixedUpdate();  // check every fixed update, as we don't need to check every frame. :3
+
+        // all enemies have perished, increase the wave!
+        Wave++;
+
+        // increase the level if the waves have been reached
+        if (Wave >= waves.Length)
+        {
+            Wave = 0;                       // reset wave
+            Level++;                        // increase the level
+            monoLevel.Level.ClearLevel();   // clear the level so we don't save towers
+
+            regenLevel = true;
+            Debug.Log($"progressed to level {Level}!");
+            winUI.gameObject.SetActive(true);       // set the Win UI active
+            winUI.UpdateStats(true);
+
+            shop.ShopToggle(false);                 // disable the shop
+            Save.ResetLevelData();                  // reset the level data
+        }
+
+        Save.SaveFile();   // save the current state to the file
+
+        // if we are not at a new level, show the wave count down
+        if (regenLevel == false)
+            NextWave(); // shop is set active in this method
+
+        yield return null;
+    }
+
+    // checks whether the player has lost and runs associated code; called every time the player was dealt damage.
+    public void LoseCheck() /*Daniel*/
+    {
+        // if the health is greater than 0 = alive
+        if (Save.data.hp > 0)
+        {
+            // invoke the health decreased event and just return
+            HealthDecreased?.Invoke();
+            return;
+        }
+
+        // cleanup
+        StopAllCoroutines();                                                                // stop all coroutines within this behaviour
+        foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();    // disable all enemies that are alive
+        Wave = 0;                                                                           // set wave back to 0
+
+        // switch between UI
+        loseUI.gameObject.SetActive(true);
+        loseUI.UpdateStats(true);
+        shop.ShopToggle(false);
+
+        // reset all data for this level, save it and signal that the level needs to be regenerated
+        Save.ResetLevelData();
+        GameManager.Instance.Save.SaveFile();
+        regenLevel = true;
+
+        // invoke the health decreased event now, because health was updated in Save.ResetLevelData
+        HealthDecreased?.Invoke();
+
+        // pause the game
+        Time.timeScale = 0;
+    }
+    #endregion // win / lose checks
+
+    #region enemy spawning
+    // spawns an enemy of a specific difficulty
+    private void SpawnEnemy(EnemyDifficulty difficulty)
+    {
+        // create a list for the indices of the enemies with the capacity set to the amount of existing enemy types
+        // because that is the max it will ever be so we don't have to redefine the internal array when adding items.
+        List<int> enemyIndices = new(enemyTypes.Length);
+
+        // get the indices of the enemies that match the difficult requested
+        for (int i = 0; i < enemyTypes.Length; i++)
+            if (enemyTypes[i].difficulty == difficulty)
+                enemyIndices.Add(i);
+
+        // get a random index of the previoursly selected indecencies
+        int index = Random.Range(0, enemyIndices.Count);
+
+        // use the index to get an enemy within the pool
+        int targetIndex = enemyIndices[index];
+        ObjectPool<EnemyBase> pool = enemyPools[targetIndex];
+        EnemyBase enemy = pool.GetPooledObject(enemyTypes[targetIndex].enemy, transform, enemy => allEnemies.Add(enemy));
+
+        // initialize the enemy
+        enemy.Initialize(GameManager.Instance.Save.data.level);
+    }
 
     // spawns the enemies
     private IEnumerator SpawnEnemies(int wave)
     {
         List<EnemySpawnData> spawnData = waves[wave].enemySpawnData.ToList(); // create a copy of the enemy spawn data as a list for this wave to operate on
 
+        // while we still have spawn data left
         while (spawnData.Count > 0)
         {
             // await the spawn rate
@@ -122,96 +198,70 @@ public class Waves : MonoBehaviour
 
         yield return null;
     }
+    #endregion // enemy spawning
 
-    // checks whether the win condition has been met and all the enemies are no longer alive. (is called after the last enemy has been spawned :3)
-    private IEnumerator WinCheck()
+    #region wave progression
+    private IEnumerator ShowTimer(TaskCompletionSource<bool> completion)
     {
-        // hold the thread for as it takes till the amount of enemies alive is 0
-        while (allEnemies.Where(e => e.IsAlive).Count() > 0)
-            yield return new WaitForFixedUpdate();  // check every fixed update, as we don't need to check every frame. :3
+        counter.gameObject.SetActive(true);
 
-        // all enemies have perished, increase the wave!
-        Wave++;
-
-        // increase the level if the waves have been reached
-        if (Wave >= waves.Length)
+        // counts down every second. :3
+        for (int i = waveDelaySeconds; i > 0; i--)
         {
-            Wave = 0;                       // reset wave
-            Level++;                        // increase the level
-            monoLevel.Level.ClearLevel();   // clear the level so we don't save towers
-
-            newLevel = true;
-            Debug.Log($"progressed to level {Level}!");
-            winUI.SetActive(true);                  // set the Win UI active
-            shop.ShopToggle(false);                 // disable the shop
-
+            counter.text = i.ToString();
+            yield return new WaitForSecondsRealtime(1.0F);
         }
 
-        GameManager.Instance.Save.SaveFile();   // save the current state to the file
-
-        if (newLevel == false)
-        {
-            counter.gameObject.SetActive(true);
-            shop.ShopToggle(false);
-
-            for (int i = 0; i < waveDelaySeconds; i++)
-            {
-                counter.text = (waveDelaySeconds - i).ToString();
-                yield return new WaitForSecondsRealtime(1.0F);
-            }
-
-            counter.gameObject.SetActive(false);
-            NextWave(); // shop is set active in this method
-        }
-
+        counter.gameObject.SetActive(false);
+        completion.SetResult(true);
         yield return null;
     }
-    public void LoseCheck()/*Dani�l*/
+
+    // progresses to the next wave and shows relative UI
+    public async void NextWave()
     {
-        HealthDecreased?.Invoke();
-        if (Save.data.hp > 0) return;
+        // if the level needs to be regenerated, regenerate it
+        Task regenLevelTask = Task.CompletedTask;
+        if (regenLevel == true)
+        {
+            // hide the win ui, as this is the only time when it needs to be active
+            winUI.gameObject.SetActive(false);
 
-        StopAllCoroutines();
-        foreach (EnemyBase enemy in allEnemies) if (enemy.IsAlive) enemy.DisableEnemy();
-        Wave = 0;
+            // regenerate the level asynchronously and store the task of this process
+            regenLevelTask = new Task(() => monoLevel.RegenerateLevel(Level, Save.data.towers));
+            regenLevel = false;
+        }
 
-        //switch between UI
-        LoseUI.SetActive(true);
+        // set the shop to be inactive
         shop.ShopToggle(false);
-        //clear all the saved data or this level, clear the 
 
-        Save.ResetLevelData();
-        GameManager.Instance.Save.data.money = GameManager.Instance.Save.data.moneyStartLVL;
-        GameManager.Instance.Save.SaveFile();
-        monoLevel.RegenerateLevel(Level, Save.data.towers);
+        // start the show timer coroutine, await this process *and* the level regeneration, if it was started
+        TaskCompletionSource<bool> completion = new();
+        Coroutine coroutine = StartCoroutine(ShowTimer(completion));
+        await Task.WhenAll(completion.Task, regenLevelTask);
 
-        Time.timeScale = 0;
+        // make the shop active again
+        shop.ShopToggle(true);
+
+        // start spawning the enemies and signal that a new wave has started.
+        StartCoroutine(SpawnEnemies(Wave));
+        NewWave?.Invoke();
+        Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
     }
 
-    // spawns an enemy of a specific difficulty
-    private void SpawnEnemy(EnemyDifficulty difficulty)
+    // called when the "Try again" button is pressed, is meant to start the wave when
+    public void TryAgain() /*Daniel*/
     {
-        // create a list for the indices of the enemies with the capacity set to the amount of existing enemy types
-        // because that is the max it will ever be so we don't have to redefine the internal array when adding items.
-        List<int> enemyIndices = new(enemyTypes.Length);
+        //activate and deactivate the UI so the player can play again
+        Time.timeScale = 1.0F;
+        loseUI.gameObject.SetActive(false);
 
-        // get the indices of the enemies that match the difficult requested
-        for (int i = 0; i < enemyTypes.Length; i++)
-            if (enemyTypes[i].difficulty == difficulty)
-                enemyIndices.Add(i);
-
-        // get a random index of the previoursly selected indecencies
-        int index = Random.Range(0, enemyIndices.Count);
-
-        // use the index to get an enemy within the pool
-        int targetIndex = enemyIndices[index];
-        ObjectPool<EnemyBase> pool = enemyPools[targetIndex];
-        EnemyBase enemy = pool.GetPooledObject(enemyTypes[targetIndex].enemy, transform, enemy => allEnemies.Add(enemy));
-
-        // initialize the enemy
-        enemy.Initialize(GameManager.Instance.Save.data.level);
+        // initiate the next wave
+        NextWave();
     }
+    #endregion // wave progression
 
+    #region unity functions
     // called when the script is being loaded
     private void Awake()
     {
@@ -230,4 +280,5 @@ public class Waves : MonoBehaviour
         for (int i = 0; i < enemyTypes.Length; i++)
             enemyPools[i] = new ObjectPool<EnemyBase>();
     }
+    #endregion // unity functions
 }

@@ -20,17 +20,24 @@ public abstract class TowerBase : MonoBehaviour
 
     // unity update functions
     protected virtual void Start() => StartCoroutine(ShootLoop());
-    protected virtual void FixedUpdate() => targets = SelectTargets(); //only try finding target every fixed updated (for fewer updates)
+    protected virtual void FixedUpdate() => targets = SelectTargets();  //only try finding target every fixed updated (for fewer updates)
 
-    protected abstract IEnumerable<EnemyBase> SelectTargets();  // implementation for selecting targets
-    protected abstract void ShotTarget(EnemyBase target);       // implementation for when a target has been shot
+    protected abstract void ShotTarget(EnemyBase target);               // implementation for when a target has been shot
 
-    protected virtual void BeforeShootDelay() { }                    // implementation to get when it getting ready to shoot
+    protected virtual void BeforeShootDelay() { }                       // implementation to get when it getting ready to shoot
     protected virtual void AfterShootDelay()                         // implementation to get when it getting ready to shoot
     {
         GameObject sound = Instantiate(audioPrefab, firingPoint.position, Quaternion.identity);
         sound.GetComponent<AudioClipPlayer>().Initialize(clip);
-    }                    
+    }  
+
+
+    // selects the targets that will be shot
+    private IEnumerable<EnemyBase> SelectTargets()
+    {
+        // use the tower data to get the enemies within a radius of this tower
+        return Waves.GetEnemiesInRadius(transform.position, towerData.attackRadius, towerData.targetCount);
+    }
 
     // timer for shooting
     private IEnumerator ShootLoop()
@@ -57,7 +64,7 @@ public abstract class TowerBase : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, TowerData.attackRange);
+        Gizmos.DrawWireSphere(transform.position, TowerData.attackRadius);
 
         Gizmos.color = Color.red;
         if (targets != null)

@@ -24,10 +24,10 @@ public class MonoTowerTile : MonoTile
         // update this list if you add new towers to the game
         return TowerData.towerType switch
         {
-            TowerType.ArrowTower => ArrowTower,
-            TowerType.CannonTower => CannonTower,
-            TowerType.MagicTower => MagicTower,
-            TowerType.ShockwaveTower => ShockwaveTower,
+            TowerType.ARROW_TOWER => ArrowTower,
+            TowerType.CANNON_TOWER => CannonTower,
+            TowerType.MAGIC_TOWER => MagicTower,
+            TowerType.SHOCKWAVE_TOWER => ShockwaveTower,
             _ => throw new IndexOutOfRangeException($"didn't recognise the tower: {TowerData.towerType}!"),
         };
     }

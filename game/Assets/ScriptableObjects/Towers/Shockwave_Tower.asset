@@ -20,7 +20,8 @@ MonoBehaviour:
   towerData:
     towerType: 3
     attackSpeed: 0.15
-    attackRange: 4
+    attackRadius: 5
     attackDamage: 150
+    targetCount: -1
     projectileSpeed: -1
     level: 1

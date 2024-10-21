@@ -7,17 +7,29 @@ public class TowerStoreData : ScriptableObject
 
     [Header("Store specific values")]
     public string towerName = "Default";
-    [TextArea]public string towerInfo = "Default";
+    [TextArea] public string towerInfo = "Default";
     public Sprite menuSprite;
     public int cost = 1;
+
+    // gets the cost scaled with how many times the tower has bought
+    public int ScaledCost
+    {
+        get
+        {
+            Save save = GameManager.Instance.Save;
+            TowerType type = towerData.towerType;
+            return (save.data.towerBoughtCount[(int)type] * (cost / 2)) + cost;
+        }
+    }
 
     [Header("Base tower information")]
     public TowerData towerData = new()
     {
-        towerType = TowerType.ArrowTower,
+        towerType = TowerType.ARROW_TOWER,
         attackSpeed = 0.5f,
-        attackRange = 5,
+        attackRadius = 5,
         attackDamage = 1,
+        targetCount = 1,
         projectileSpeed = 2,
         level = 1
     };
