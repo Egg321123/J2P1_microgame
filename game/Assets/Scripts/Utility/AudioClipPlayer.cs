@@ -18,7 +18,7 @@ public class AudioClipPlayer : MonoBehaviour
         source.clip = clip;
         source.priority = priority;
 
-        if (!realTime) source.pitch = Time.timeScale;
+        if (!realTime && Time.timeScale != 1) source.pitch = Time.timeScale / 2;
         else source.pitch = Random.Range(0.8f, 1.2f);
 
         source.Play();

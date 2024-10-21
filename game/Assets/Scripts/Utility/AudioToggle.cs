@@ -26,7 +26,7 @@ public class AudioToggle : MonoBehaviour
     public void ToggleFX()
     {
         bool isOn = toggleFX.isOn;
-        float volume = isOn ? 0 : -80;
+        float volume = isOn ? 10 : -80;
 
         audioMixer.SetFloat("FXVol", volume);
         PlayerPrefs.SetInt("toggleFX", Convert.ToInt32(isOn));

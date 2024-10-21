@@ -5,7 +5,6 @@ using UnityEngine;
 public class MoneyHandler : MonoBehaviour
 {
     [SerializeField] TMP_Text scoreUI;
-    private string[] suffixes = { "", "K", "M", "B", "T", "Q" };
     [SerializeField] StoreToggle[] toggles;
     private Shop shop = null;
 
@@ -14,7 +13,7 @@ public class MoneyHandler : MonoBehaviour
         shop = FindFirstObjectByType<Shop>();
     }
 
-    private void FixedUpdate() => scoreUI.text = MoneyFormatting();
+    private void FixedUpdate() => scoreUI.text = StringUtils.MoneyFormatting(GameManager.Instance.Save.data.money);
 
     /// <summary>
     /// subtracts the amount of money you have from the total amount
@@ -43,22 +42,4 @@ public class MoneyHandler : MonoBehaviour
     /// </summary>
     /// <param name="amount"></param>
     public void Earn(int amount) => GameManager.Instance.Save.data.money += amount;
-
-    string MoneyFormatting()
-    {
-        double tempMoney = GameManager.Instance.Save.data.money;
-
-        // Define the size suffixes for thousand, million, billion, trillion, etc.
-        int suffixIndex = 0;
-
-        // Keep dividing money by 1000 until it is less than 1000, tracking the suffix
-        while (tempMoney >= 1000 && suffixIndex < suffixes.Length - 1)
-        {
-            tempMoney /= 1000;
-            suffixIndex++;
-        }
-
-        // Format the number with the appropriate suffix and return
-        return tempMoney.ToString("0.##") + suffixes[suffixIndex];
-    }
 }
