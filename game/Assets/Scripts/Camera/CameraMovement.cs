@@ -5,7 +5,8 @@ public class CameraMovement : MonoBehaviour
 {
     // tau is a better mathematical constant to use than pi, because pi is only half a circle in radians, instead of a full circle.
     // in the various formulas it's thus more intuitive to use tau.
-    public const float TAU = MathF.PI * 2; // τ > π
+    public const float TAU = MathF.PI * 2.0F;   // τ > π
+    private const float MOVE_TRESHOLD = 0.0F;   // the treshold for how much needs to be moved on an axis to be viewed as movement
 
     [Header("camera tilt (radians)")]
     [SerializeField, Range(0.0F, TAU)] private float tiltAmount = 3.0F;             // the amount that the camera is tilted
@@ -21,6 +22,15 @@ public class CameraMovement : MonoBehaviour
     private int lvlWidth = 0;
     private int lvlHeight = 0;
 
+    //
+    private float cameraPosX = 0.0F;
+
+    private bool IsMoving(Touch finger)
+    {
+        return
+                finger.phase == TouchPhase.Moved;
+    }
+
     // updates the input variables
     private void UpdateInput(int fingers)
     {
@@ -30,8 +40,21 @@ public class CameraMovement : MonoBehaviour
             // if only one finger is touching the screen
             case 1:
                 Touch touch = Input.GetTouch(0);                                                    // get the finger
-                float moveAmount = touch.deltaPosition.y / Screen.height * TAU;                     // get the amount that should be tilted
-                tiltAmount = Mathf.Clamp(tiltAmount - moveAmount, minTiltAmount, maxTiltAmount);    // apply the tilt amount, clamping the value between the min and max
+
+                // ignore if it's not moving
+                if (IsMoving(touch) == false)
+                {
+                    Debug.Log("uwu");
+                    return;
+                }
+
+                // tilt movement
+                float moveAmountY = touch.deltaPosition.y / Screen.height * TAU;                    // get the amount that should be tilted
+                tiltAmount = Mathf.Clamp(tiltAmount - moveAmountY, minTiltAmount, maxTiltAmount);   // apply the tilt amount, clamping the value between the min and max
+
+                // side-to-side movement (adding 1 to lvlWidth to include the *whole* tile, rather than stopping one before)
+                float moveAmountX = touch.deltaPosition.x / Screen.width * (lvlWidth + 1) * 0.5F;   // multiplying by 0.5, because 1.0 is too fast
+                cameraPosX = Mathf.Clamp(cameraPosX - moveAmountX, 0.0F, lvlWidth + 1);
                 break;
 
             // if two fingers are touching the screens
@@ -39,6 +62,10 @@ public class CameraMovement : MonoBehaviour
                 // get the fingers
                 Touch t1 = Input.GetTouch(0);
                 Touch t2 = Input.GetTouch(1);
+
+                // ignore if it's not moving
+                if (IsMoving(t1) == false || IsMoving(t2) == false)
+                    return;
 
                 // get where the finger was last frame
                 Vector2 t1d = t1.position - t1.deltaPosition;
@@ -60,7 +87,7 @@ public class CameraMovement : MonoBehaviour
         float y = MathF.Cos(tiltAmount + (TAU / 2.0F)) * radius;
 
         // return the camera position, relative to the level's dimensions (assuming level is rendered from 0,0 towards the positive axes)
-        return new Vector3(lvlWidth / 2.0F, y, (lvlHeight / 2.0F) + z);
+        return new Vector3(cameraPosX, y, (lvlHeight / 2.0F) + z);
     }
 
     // start is called before the first frame update
@@ -70,6 +97,7 @@ public class CameraMovement : MonoBehaviour
         Level level = FindFirstObjectByType<MonoLevel>().Level;
         lvlWidth = level.width;
         lvlHeight = level.height;
+        cameraPosX = lvlWidth / 2.0F;
     }
 
     // update is called every frame
@@ -84,7 +112,7 @@ public class CameraMovement : MonoBehaviour
 
         // set the camera position
         transform.position = GetCameraPosition();
-        transform.LookAt(new Vector3(lvlWidth / 2.0F, 0.0F, lvlHeight / 2.0F));
+        transform.LookAt(new Vector3(cameraPosX, 0.0F, lvlHeight / 2.0F));
     }
 
 #if UNITY_EDITOR // debugging utility

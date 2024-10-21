@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using UnityEngine;
 
 public class PlaceOnGrid : MonoBehaviour
@@ -53,7 +54,7 @@ public class PlaceOnGrid : MonoBehaviour
         while (isInPlaceMode)
         {
             //check if screen has been touched
-            if (Input.touchCount > 0)
+            if (Input.touchCount == 1)
             {
                 //grab only the first finger touching the screen
                 Touch touch = Input.GetTouch(0);
@@ -62,8 +63,30 @@ public class PlaceOnGrid : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
                 if (!isInPlaceMode) yield break;
 
+                bool placeTower = false;
+
                 //when it registers the touch from the screen
                 if (touch.phase == TouchPhase.Began)
+                {
+                    // check the next 5 frames whether the user moved, don't place a tower if so
+                    placeTower = true;
+                    for (int i = 0; i < 5; i++)
+                    {
+                        yield return null;
+                        if (Input.touchCount == 0) break;
+
+                        Touch checkTouch = Input.GetTouch(0);
+                        if (checkTouch.phase == TouchPhase.Ended) break;
+                        if (checkTouch.phase == TouchPhase.Moved)
+                        {
+                            placeTower = false;
+                            break;
+                        }
+                    }
+                }
+
+                // if we need to place a tower
+                if (placeTower == true)
                 {
                     //creates the ray with proper parameters
                     Ray ray = Camera.main.ScreenPointToRay(new(touch.position.x, touch.position.y, 0));
