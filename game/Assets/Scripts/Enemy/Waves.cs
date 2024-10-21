@@ -25,8 +25,8 @@ public class Waves : MonoBehaviour
     [SerializeField] private SpawnData[] waves = null;          // the different waves constructed
 
     // events
-    public event Action NewWave;
-    public event Action HealthDecreased;
+    public event Action NewWave;                                // called when a new wave is starting
+    public event Action HealthDecreased;                        // called when the player's health has been decreased
 
     // enemy storage
     private ObjectPool<EnemyBase>[] enemyPools = null;          // the pools for enemy pooling
@@ -36,7 +36,7 @@ public class Waves : MonoBehaviour
     private MonoLevel monoLevel = null;                         // reference to the MonoLevel for regenerating the level on win
     private Shop shop = null;                                   // reference to the shop so we can disable it
 
-    private bool regenLevel = false;
+    private bool regenLevel = false;                            // if true, the level is regenerated with the current level
 
     // property shorthands
     public int MaxWaves => waves.Length;

@@ -6,7 +6,6 @@ public class CameraMovement : MonoBehaviour
     // tau is a better mathematical constant to use than pi, because pi is only half a circle in radians, instead of a full circle.
     // in the various formulas it's thus more intuitive to use tau.
     public const float TAU = MathF.PI * 2.0F;   // τ > π
-    private const float MOVE_TRESHOLD = 0.0F;   // the treshold for how much needs to be moved on an axis to be viewed as movement
 
     [Header("camera tilt (radians)")]
     [SerializeField, Range(0.0F, TAU)] private float tiltAmount = 3.0F;             // the amount that the camera is tilted

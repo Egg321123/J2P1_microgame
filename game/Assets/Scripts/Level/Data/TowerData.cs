@@ -11,7 +11,7 @@ public struct TowerData
     public int targetCount;         // <0: select all targets
     public float projectileSpeed;
 
-    public TowerData(TowerType towerType, float attackSpeed, float attackRadius, int attackDamage, int targetCount, float projectileSpeed, int level = 1)
+    public TowerData(TowerType towerType, float attackSpeed, float attackRadius, int attackDamage, int targetCount, float projectileSpeed)
     {
         this.towerType = towerType;
         this.attackSpeed = attackSpeed;

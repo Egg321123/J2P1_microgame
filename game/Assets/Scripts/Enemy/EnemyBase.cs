@@ -17,22 +17,22 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField] private int extraDroppedMoneyPerLevel = 1;
 
     //saves the movement script that controls all ai
-    EnemyMovementSystem movement;
-    MoneyHandler moneyHandler;
-    public GameObject deathParticles;
+    private EnemyMovementSystem movement;           // for moving the enemy
+    private MoneyHandler moneyHandler;              // for adding money when the enemy dies
+    public GameObject deathParticles;               // the particles that spawn in when the enemy dies
 
     // enemy stats
     private int health;
     private int droppedMoney;
-    public float Speed { get; private set; }
-    public Vector3 RandomOffset { get { return randomOffset; }}
     protected Vector3 randomOffset = Vector3.zero;
+    public float Speed { get; private set; }
+    public Vector3 RandomOffset { get { return randomOffset; } }
 
     // utility
-    public bool OpenForPooling { get; private set; } // OpenForPooling = false is the same as this enemy being alive
-    public bool IsAlive => !OpenForPooling;
-    [HideInInspector] public int TargetNodeIndex = 0;
-    private bool isStunned = false;
+    public bool OpenForPooling { get; private set; }    // whether the enemy is allowed to be pooled OpenForPooling = false is the same as this enemy being alive
+    public bool IsAlive => !OpenForPooling;             // says whether the enemy is alive or not
+    [HideInInspector] public int TargetNodeIndex = 0;   // the current target node
+    private bool isStunned = false;                     // whether the enemy has been stunned
 
     protected virtual void Update() { }
 
@@ -166,5 +166,4 @@ public abstract class EnemyBase : MonoBehaviour
 
         yield return null;
     }
-
 }

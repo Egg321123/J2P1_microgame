@@ -50,6 +50,7 @@ public class Shop : MonoBehaviour
 
     public void RegenerateStore()
     {
+        // for release we disabled randomisation because we didn't have enough towers for it to make sense and it actually disabled quality
         /*
         List<TowerStoreData> towers = availableTowers.ToList();
 
@@ -67,7 +68,6 @@ public class Shop : MonoBehaviour
         }
         */
 
-        // for release we disabled randomisation because we didn't have enough towers for it to make sense and it actually disabled quality
         for (int i = 0; i < towersInShop.Length; i++) towersInShop[i] = availableTowers[i];
 
         UpdateStore();

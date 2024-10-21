@@ -1,6 +1,4 @@
 // update this list if you add new towers to the game
-using System;
-
 public enum TowerType
 {
     ARROW_TOWER = 0,
