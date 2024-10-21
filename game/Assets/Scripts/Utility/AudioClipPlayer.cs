@@ -5,7 +5,10 @@ public class AudioClipPlayer : MonoBehaviour
 {
     [SerializeField] AudioSource source;
 
-    public void Initialize(AudioClip clip) => StartCoroutine(DestroyAfterPlay(clip));
+    public void Initialize(AudioClip clip)
+    {
+        StartCoroutine(DestroyAfterPlay(clip));
+    }
 
     IEnumerator DestroyAfterPlay(AudioClip clip)
     {
@@ -15,7 +18,7 @@ public class AudioClipPlayer : MonoBehaviour
         source.pitch = (Random.Range(0.8f, 1.2f));
         source.Play();
 
-        yield return new WaitForSeconds(clipLength);
+        yield return new WaitForSecondsRealtime(clipLength);
 
         Destroy(gameObject);
 

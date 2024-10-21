@@ -2805,7 +2805,7 @@ MonoBehaviour:
   tiltAmount: 3
   minTiltAmount: 2.2
   maxTiltAmount: 3.1415927
-  radius: 11.5
+  radius: 25
   minRadius: 10
   maxRadius: 35
 --- !u!114 &479919286
@@ -2869,7 +2869,7 @@ Transform:
   m_GameObject: {fileID: 479919282}
   serializedVersion: 2
   m_LocalRotation: {x: 0.42261827, y: -0, z: -0, w: 0.9063079}
-  m_LocalPosition: {x: 0, y: 11.384914, z: -1.6228764}
+  m_LocalPosition: {x: 0, y: 24.749813, z: -3.5279922}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4802,7 +4802,7 @@ MonoBehaviour:
   m_MinValue: 1
   m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 3
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4892,7 +4892,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 3.04
+  m_Value: 5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

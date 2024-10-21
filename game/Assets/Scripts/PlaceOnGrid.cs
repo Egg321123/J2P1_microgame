@@ -59,9 +59,6 @@ public class PlaceOnGrid : MonoBehaviour
                 //grab only the first finger touching the screen
                 Touch touch = Input.GetTouch(0);
 
-                //avoids race condition from ui toggle (takes longer to toggle then to send raycast)
-                if (!isInPlaceMode) yield break;
-
                 //when it registers the touch from the screen
                 if (touch.phase == TouchPhase.Began)
                 {
