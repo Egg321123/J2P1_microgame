@@ -95,13 +95,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f05e0840e6c86038d15e5a9388f5c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyName: 
   audioPrefab: {fileID: 4802490785545733137, guid: e030aead0e54bee4fae12bb0e2ea6380,
     type: 3}
-  clip: {fileID: 8300000, guid: b8456a8dbfa31f444ab22d6fba02fc63, type: 3}
+  clip: {fileID: 8300000, guid: 81bd9ee7c7c7f4c4fba03a95e215185c, type: 3}
   baseHealth: 100
   baseSpeed: 2
   baseDroppedMoney: 15
-  extraHealthPerLevel: 0.375
+  extraHealthPerLevel: 0
   extraSpeedPerLevel: 0.02
   extraDroppedMoneyPerLevel: 0
   deathParticles: {fileID: 3975219934923308966, guid: ebba3ea0eaeda634fb9b03546677f01f,
