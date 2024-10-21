@@ -97,11 +97,13 @@ public class Waves : MonoBehaviour
 
         Save.SaveFile();   // save the current state to the file
 
+        // disable time
+        Time.timeScale = 0.0F;
+
         // if we are not at a new level, show the wave count down
         if (regenLevel == false)
             NextWave(); // shop is set active in this method
 
-        Time.timeScale = 0.0F;
         yield return null;
     }
 
