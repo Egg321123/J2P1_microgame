@@ -18,7 +18,7 @@ public class TowerStoreData : ScriptableObject
         {
             Save save = GameManager.Instance.Save;
             TowerType type = towerData.towerType;
-            return (save.data.towerBoughtCount[(int)type] * (cost / 2)) + cost;
+            return (save.data.towerBoughtCount[(int)type] * (cost / 5)) + cost;
         }
     }
 
