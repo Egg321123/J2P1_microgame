@@ -31,15 +31,15 @@ public class StatsUI : MonoBehaviour
         foreach (TextMeshProUGUI ui in statUIs)
         {
             ui.text =
-                $"\nDeaths: {StringUtils.FormatNumber(stats.deaths)}\n " +
-                $"Kills: {StringUtils.FormatNumber(stats.kills)}\n " +
+                $"\nDeaths: {StringUtils.FormatNumber(stats.deaths)}\n" +
+                $"Kills: {StringUtils.FormatNumber(stats.kills)}\n" +
                 $"Towers Placed: {StringUtils.FormatNumber(stats.towersPlaced)}\n" +
                 $"Money Spend: {StringUtils.FormatNumber(stats.moneySpent)}\n\n" +
 
-                $"Total Deaths: {StringUtils.FormatNumber(stats.totalDeaths)}\n " +
-                $"Total Kills: {StringUtils.FormatNumber(stats.totalKills)}\n " +
+                $"Total Deaths: {StringUtils.FormatNumber(stats.totalDeaths)}\n" +
+                $"Total Kills: {StringUtils.FormatNumber(stats.totalKills)}\n" +
                 $"Total Towers Placed: {StringUtils.FormatNumber(stats.totalTowersPlaced)}\n" +
-                $"Total Money Spend: {StringUtils.FormatNumber(stats.totalMoneySpent)}" ;
+                $"Total Money Spend: {StringUtils.FormatNumber(stats.totalMoneySpent)}";
         }
     }
 }
