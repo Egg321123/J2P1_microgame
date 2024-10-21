@@ -54,63 +54,55 @@ public class PlaceOnGrid : MonoBehaviour
     {
         while (isInPlaceMode)
         {
-            //check if screen has been touched
-            if (Input.touchCount == 1)
+            // ignore if the touch count is anything but 1
+            if (Input.touchCount != 1) continue;
+
+            // grab only the first finger touching the screen and continue if it's not the first touch
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase != TouchPhase.Began) continue;
+
+            //avoids race condition from ui toggle (takes longer to toggle then to send raycast)
+            if (!isInPlaceMode) yield break;
+
+            // check the next 5 frames whether the user moved, don't place a tower if so
+            bool placeTower = true;
+            for (int i = 0; i < 5; i++)
             {
-                //grab only the first finger touching the screen
-                Touch touch = Input.GetTouch(0);
+                yield return null;
+                if (Input.touchCount == 0) break;
 
-                //avoids race condition from ui toggle (takes longer to toggle then to send raycast)
-                if (!isInPlaceMode) yield break;
-
-                bool placeTower = false;
-
-                //when it registers the touch from the screen
-                if (touch.phase == TouchPhase.Began)
+                Touch checkTouch = Input.GetTouch(0);
+                if (checkTouch.phase == TouchPhase.Ended) break;
+                if (checkTouch.phase == TouchPhase.Moved)
                 {
-                    // check the next 5 frames whether the user moved, don't place a tower if so
-                    placeTower = true;
-                    for (int i = 0; i < 5; i++)
-                    {
-                        yield return null;
-                        if (Input.touchCount == 0) break;
-
-                        Touch checkTouch = Input.GetTouch(0);
-                        if (checkTouch.phase == TouchPhase.Ended) break;
-                        if (checkTouch.phase == TouchPhase.Moved)
-                        {
-                            placeTower = false;
-                            break;
-                        }
-                    }
+                    placeTower = false;
+                    break;
                 }
+            }
 
-                // if we need to place a tower
-                if (placeTower == true)
+            // skip if we don't place a tower
+            if (placeTower == false)
+                continue;
+
+            //makes sure you can't click through the ui
+            if (EventSystem.current.IsPointerOverGameObject(0)) yield break;
+
+            //creates the ray with proper parameters
+            Ray ray = Camera.main.ScreenPointToRay(new(touch.position.x, touch.position.y, 0));
+
+            // Does the raycast check
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, targetLayer))
+            {
+                // Gets the world position
+                Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
+
+                // Places object in the scene if you are allowed to place there
+                if (monoLevel.Level.IsEmpty(pos) && moneyHandler.Pay(storeData.ScaledCost))
                 {
-                    //makes sure you can't click through the ui
-                    if (EventSystem.current.IsPointerOverGameObject(0)) yield break;
-
-                    //creates the ray with proper parameters
-                    Ray ray = Camera.main.ScreenPointToRay(new(touch.position.x, touch.position.y, 0));
-
-                    // Does the raycast check
-                    if (Physics.Raycast(ray, out RaycastHit hit, 1000f, targetLayer))
-                    {
-
-                        // Gets the world position
-                        Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
-
-                        // Places object in the scene if you are allowed to place there
-                        if (monoLevel.Level.IsEmpty(pos) && moneyHandler.Pay(storeData.ScaledCost))
-                        {
-                            GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
-                            sound.GetComponent<AudioClipPlayer>().Initialize(clip);
-                            GameManager.Instance.Save.data.stats.IncreaseTowersPlaced();
-                            monoLevel.SetTile(objectToPlace, pos, TileType.TOWER, towerData, true);
-                        }
-                    }
-
+                    GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
+                    sound.GetComponent<AudioClipPlayer>().Initialize(clip);
+                    GameManager.Instance.Save.data.stats.IncreaseTowersPlaced();
+                    monoLevel.SetTile(objectToPlace, pos, TileType.TOWER, towerData, true);
                 }
             }
 

@@ -27,8 +27,7 @@ public class CameraMovement : MonoBehaviour
 
     private bool IsMoving(Touch finger)
     {
-        return
-                finger.phase == TouchPhase.Moved;
+        return finger.phase == TouchPhase.Moved;
     }
 
     // updates the input variables
