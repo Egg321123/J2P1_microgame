@@ -13,15 +13,14 @@ MonoBehaviour:
   m_Name: Cannon_Tower
   m_EditorClassIdentifier: 
   towerName: Cannon Tower
-  towerInfo: This tower shoots an explosive projectile that hurts enemies in a radius
-    around the explosion.
+  towerInfo: This tower shoots an explosive projectile at an enemy in a radius of
+    4.5 that hurts enemies in a radius of 2 around the explosion.
   menuSprite: {fileID: 21300000, guid: 749d188948f13bb43a3f9bd7c328bbed, type: 3}
-  cost: 5000
+  cost: 1000
   towerData:
     towerType: 1
-    attackSpeed: 0.25
-    attackRadius: 5
-    attackDamage: 300
+    attackSpeed: 0.5
+    attackRadius: 4.5
+    attackDamage: 200
     targetCount: 1
     projectileSpeed: 2
-    level: 1

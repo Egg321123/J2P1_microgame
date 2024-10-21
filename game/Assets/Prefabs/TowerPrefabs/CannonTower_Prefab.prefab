@@ -131,7 +131,7 @@ MonoBehaviour:
   clip: {fileID: 8300000, guid: 99777da520abb0945a6af9b0c6ee3c39, type: 3}
   projectile: {fileID: 404085437239518119, guid: a56492e2a2a62b8488c47c80d54118fc,
     type: 3}
-  explosionSize: 1.5
+  explosionSize: 2
   explosionParticles: {fileID: 3975219934923308966, guid: cb39fb7de21912f4dac60956c4dbc86a,
     type: 3}
   animatedComponent: {fileID: 7199901029681279640}
