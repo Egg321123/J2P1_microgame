@@ -13,8 +13,8 @@ public class Waves : MonoBehaviour
 {
     #region fields
     [Header("UI stuff")]
-    [SerializeField] private GameObject winUI = null;           // the UI that is shown when the game is won
-    [SerializeField] private GameObject LoseUI = null;          // the UI that is shown when u didn't survive the level
+    [SerializeField] private StatsUI winUI = null;              // the UI that is shown when the game is won
+    [SerializeField] private StatsUI loseUI = null;             // the UI that is shown when u didn't survive the level
     [SerializeField] private TextMeshProUGUI counter = null;    // for showing a count down between waves
     [SerializeField, Min(0)] private int waveDelaySeconds = 5;  // the delay in seconds between waves
 
@@ -87,12 +87,14 @@ public class Waves : MonoBehaviour
 
             regenLevel = true;
             Debug.Log($"progressed to level {Level}!");
-            winUI.SetActive(true);                  // set the Win UI active
-            shop.ShopToggle(false);                 // disable the shop
+            winUI.gameObject.SetActive(true);       // set the Win UI active
+            winUI.UpdateStats(true);
 
+            shop.ShopToggle(false);                 // disable the shop
+            Save.ResetLevelData();                  // reset the level data
         }
 
-        GameManager.Instance.Save.SaveFile();   // save the current state to the file
+        Save.SaveFile();   // save the current state to the file
 
         // if we are not at a new level, show the wave count down
         if (regenLevel == false)
@@ -118,7 +120,8 @@ public class Waves : MonoBehaviour
         Wave = 0;                                                                           // set wave back to 0
 
         // switch between UI
-        LoseUI.SetActive(true);
+        loseUI.gameObject.SetActive(true);
+        loseUI.UpdateStats(true);
         shop.ShopToggle(false);
 
         // reset all data for this level, save it and signal that the level needs to be regenerated
@@ -228,7 +231,7 @@ public class Waves : MonoBehaviour
             regenLevel = false;
 
             // hide the win ui, as this is the only time when it needs to be active
-            winUI.SetActive(false);
+            winUI.gameObject.SetActive(false);
         }
 
         // make the shop active again
@@ -244,7 +247,7 @@ public class Waves : MonoBehaviour
     {
         //activate and deactivate the UI so the player can play again
         Time.timeScale = 1.0F;
-        LoseUI.SetActive(false);
+        loseUI.gameObject.SetActive(false);
 
         // initiate the next wave
         NextWave();
