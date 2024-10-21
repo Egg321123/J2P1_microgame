@@ -91,7 +91,7 @@ public class Waves : MonoBehaviour
             winUI.UpdateStats(true);
 
             shop.ShopToggle(false);                 // disable the shop
-            Save.ResetLevelData();                  // reset the level data
+            Save.ResetLevelData(true);              // reset the level data
             shop.UpdateStore();                     // update the shop prices
         }
 
