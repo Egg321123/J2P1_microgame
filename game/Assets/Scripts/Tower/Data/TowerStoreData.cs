@@ -26,7 +26,7 @@ public class TowerStoreData : ScriptableObject
     {
         towerType = TowerType.ARROW_TOWER,
         attackSpeed = 0.5f,
-        attackRange = 5,
+        attackRadius = 5,
         attackDamage = 1,
         projectileSpeed = 2,
         level = 1

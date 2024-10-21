@@ -9,8 +9,6 @@ public class CannonTower : ProjectileTowerBase
     [SerializeField] private GameObject explosionParticles;
     [SerializeField] GameObject animatedComponent;
 
-    protected override IEnumerable<EnemyBase> SelectTargets() => Waves.GetEnemiesInRadius(transform.position,TowerData.attackRange, 1);
-
     protected override void ShotTarget(EnemyBase target)
     {
         Vector3 dir = (target.transform.position - animatedComponent.transform.position).normalized;
