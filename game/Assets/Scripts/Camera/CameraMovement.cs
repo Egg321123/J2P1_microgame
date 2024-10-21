@@ -22,9 +22,10 @@ public class CameraMovement : MonoBehaviour
     private int lvlWidth = 0;
     private int lvlHeight = 0;
 
-    //
+    // the X position of the camera
     private float cameraPosX = 0.0F;
 
+    // checks whether the finger is moving
     private bool IsMoving(Touch finger)
     {
         return finger.phase == TouchPhase.Moved;
@@ -42,10 +43,7 @@ public class CameraMovement : MonoBehaviour
 
                 // ignore if it's not moving
                 if (IsMoving(touch) == false)
-                {
-                    Debug.Log("uwu");
                     return;
-                }
 
                 // tilt movement
                 float moveAmountY = touch.deltaPosition.y / Screen.height * TAU;                    // get the amount that should be tilted

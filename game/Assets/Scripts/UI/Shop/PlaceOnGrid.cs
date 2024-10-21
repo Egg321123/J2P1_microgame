@@ -55,11 +55,19 @@ public class PlaceOnGrid : MonoBehaviour
         while (isInPlaceMode)
         {
             // ignore if the touch count is anything but 1
-            if (Input.touchCount != 1) continue;
+            if (Input.touchCount != 1)
+            {
+                yield return null;
+                continue;
+            }
 
             // grab only the first finger touching the screen and continue if it's not the first touch
             Touch touch = Input.GetTouch(0);
-            if (touch.phase != TouchPhase.Began) continue;
+            if (touch.phase != TouchPhase.Began)
+            {
+                yield return null;
+                continue;
+            }
 
             //avoids race condition from ui toggle (takes longer to toggle then to send raycast)
             if (!isInPlaceMode) yield break;
@@ -82,7 +90,10 @@ public class PlaceOnGrid : MonoBehaviour
 
             // skip if we don't place a tower
             if (placeTower == false)
+            {
+                yield return null;
                 continue;
+            }
 
             //makes sure you can't click through the ui
             if (EventSystem.current.IsPointerOverGameObject(0)) yield break;
