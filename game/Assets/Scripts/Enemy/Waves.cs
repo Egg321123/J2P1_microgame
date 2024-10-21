@@ -229,6 +229,7 @@ public class Waves : MonoBehaviour
 
             // regenerate the level asynchronously and store the task of this process
             regenLevelTask = new Task(() => monoLevel.RegenerateLevel(Level, Save.data.towers));
+            regenLevelTask.Start();
             regenLevel = false;
         }
 
@@ -236,9 +237,9 @@ public class Waves : MonoBehaviour
         shop.ShopToggle(false);
 
         // start the show timer coroutine, await this process *and* the level regeneration, if it was started
-        TaskCompletionSource<bool> completion = new();
-        Coroutine coroutine = StartCoroutine(ShowTimer(completion));
-        await Task.WhenAll(completion.Task, regenLevelTask);
+        TaskCompletionSource<bool> counterCompletion = new();
+        Coroutine coroutine = StartCoroutine(ShowTimer(counterCompletion));
+        await Task.WhenAll(counterCompletion.Task, regenLevelTask);
 
         // make the shop active again
         shop.ShopToggle(true);
