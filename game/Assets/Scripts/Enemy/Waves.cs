@@ -209,7 +209,7 @@ public class Waves : MonoBehaviour
         for (int i = waveDelaySeconds; i > 0; i--)
         {
             counter.text = i.ToString();
-            yield return new WaitForSecondsRealtime(1.0F);
+            yield return new WaitForSeconds(1.0F);
         }
 
         counter.gameObject.SetActive(false);
