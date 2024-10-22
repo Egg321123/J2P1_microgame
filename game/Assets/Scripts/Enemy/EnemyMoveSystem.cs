@@ -27,6 +27,7 @@ public class EnemyMovementSystem : MonoBehaviour
     private CreateAIPath pathCreator;
     // stores a reference to the job itself
     private JobHandle jobHandle;
+    private bool jobAlreadyCompleted = false;
 
     // allow enemy to add and remove itself to the movement job
     public void AddEnemy(EnemyBase enemy) => enemies.Add(enemy);
@@ -45,7 +46,10 @@ public class EnemyMovementSystem : MonoBehaviour
 
         // Displose the pathnodes if it has alweady been cweated >//<
         if (pathNodes.IsCreated)
+        {
+            jobHandle.Complete(); //ensure the job is completed before disposing of path native array
             pathNodes.Dispose();
+        }
 
         pathNodes = new NativeArray<Vector3>(pathCreator.Path.ToArray(), Allocator.Persistent);
     }
@@ -53,28 +57,40 @@ public class EnemyMovementSystem : MonoBehaviour
     // called after when update functions have been called
     private void LateUpdate()
     {
-        //if the job is completed, complete the job, write some data to the ai and create a new job
+        // if the job is completed, complete the job, write some data to the ai and create a new job
         if (jobHandle.IsCompleted)
         {
-            // Complete the job at the end of the frame
+            // force job to complete
             jobHandle.Complete();
 
-            //check if the enemy count is higher then 0, and if all the arrays are made (by checking the main one)
-            if (enemiesToUpdate.Count > 0 && enemyTransforms.isCreated)
+            // if this is the first time this job has been marked as isCompleted run this code,
+            // to avoid unneeded amount of times of writing to the enemies
+            if (!jobAlreadyCompleted)
             {
-                // Update target indices of the enemies using information from the job
-                for (int i = 0; i < enemiesToUpdate.Count; i++)
+                // check if the enemy count is higher then 0, and if all the arrays are made (by checking the main one)
+                if (enemiesToUpdate.Count > 0 && enemyTransforms.isCreated)
                 {
-                    enemiesToUpdate[i].TargetNodeIndex = targetNodeIndices[i];
-                    if (enemiesToUpdate[i].TargetNodeIndex == pathReachedEndIndex) enemiesToUpdate[i].HasReachedEnd();
+                    // Update target indices of the enemies using information from the job
+                    for (int i = 0; i < enemiesToUpdate.Count; i++)
+                    {
+                        enemiesToUpdate[i].TargetNodeIndex = targetNodeIndices[i];
+                        if (enemiesToUpdate[i].TargetNodeIndex == pathReachedEndIndex) enemiesToUpdate[i].HasReachedEnd();
+                    }
                 }
+
+                // Dispose of the data that changes between jobs to free up space
+                DisposeMost();
+
+                //mark this job as already been done once
+                jobAlreadyCompleted = true;
             }
 
-            // Dispose of the data that changes between jobs to free up space
-            DisposeMost();
-
             // Create and run a new job only if there are enemies present
-            if (enemies.Count > 0) jobHandle = CreateJobData().Schedule(enemyTransforms);
+            if (enemies.Count > 0)
+            {
+                jobAlreadyCompleted = false;
+                jobHandle = CreateJobData().Schedule(enemyTransforms);
+            }
         }
     }
 
