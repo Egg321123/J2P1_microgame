@@ -98,7 +98,7 @@ public class Waves : MonoBehaviour
         Save.SaveFile();   // save the current state to the file
 
         // disable time
-        Time.timeScale = 0.0F;
+        //Time.timeScale = 0.0F; RE-ADD if anything breaks
 
         // if we are not at a new level, show the wave count down
         if (regenLevel == false)
@@ -139,7 +139,7 @@ public class Waves : MonoBehaviour
         HealthDecreased?.Invoke();
 
         // pause the game
-        Time.timeScale = 0.0F;
+        //Time.timeScale = 0.0F; RE-ADD if anything breaks
     }
     #endregion // win / lose checks
 
@@ -230,7 +230,7 @@ public class Waves : MonoBehaviour
         NewWave?.Invoke();
 
         // re-enable time :3
-        Time.timeScale = 1.0F;
+        //Time.timeScale = 1.0F; RE-ADD if anything breaks
 
         // set the shop to be inactive
         shop.ShopToggle(false);
