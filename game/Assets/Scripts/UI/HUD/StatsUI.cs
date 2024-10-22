@@ -5,7 +5,7 @@ public class StatsUI : MonoBehaviour
 {
     private bool ignoreNextCall = false;
 
-    [SerializeField] TextMeshProUGUI[] statUIs;
+    [SerializeField] TextMeshProUGUI statUI;
     private void Start()
     {
         UpdateStats();
@@ -28,9 +28,7 @@ public class StatsUI : MonoBehaviour
         this.ignoreNextCall = ignoreNextCall;
         Statistics stats = GameManager.Instance.Save.data.stats;
 
-        foreach (TextMeshProUGUI ui in statUIs)
-        {
-            ui.text =
+        statUI.text =
                 $"\nDeaths: {StringUtils.FormatNumber(stats.deaths)}\n" +
                 $"Kills: {StringUtils.FormatNumber(stats.kills)}\n" +
                 $"Towers Placed: {StringUtils.FormatNumber(stats.towersPlaced)}\n" +
@@ -40,6 +38,5 @@ public class StatsUI : MonoBehaviour
                 $"Total Kills: {StringUtils.FormatNumber(stats.totalKills)}\n" +
                 $"Total Towers Placed: {StringUtils.FormatNumber(stats.totalTowersPlaced)}\n" +
                 $"Total Money Spend: {StringUtils.FormatNumber(stats.totalMoneySpent)}";
-        }
     }
 }
