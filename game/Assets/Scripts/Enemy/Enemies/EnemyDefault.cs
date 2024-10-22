@@ -1,4 +1,4 @@
-public class EnemyGoblin : EnemyBase
+public class EnemyDefault : EnemyBase
 {
     //your own initialize behavior, for example if you want it to do fancy particles when it spawns
     public override void Initialize(int level)

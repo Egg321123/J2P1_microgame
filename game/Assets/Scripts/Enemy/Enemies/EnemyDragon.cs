@@ -18,7 +18,7 @@ public class EnemyDragon : EnemyBase
     {
         enemyTime += Time.deltaTime;
 
-        verticalOffset.y = (Mathf.Sin(enemyTime * 1) * 0.3f) + randomVerticalOffset;
+        verticalOffset.y = (Mathf.Sin(enemyTime * 5.0F) * 0.5F) + randomVerticalOffset;
         animTarget.transform.transform.localPosition = verticalOffset;
 
         base.Update();
