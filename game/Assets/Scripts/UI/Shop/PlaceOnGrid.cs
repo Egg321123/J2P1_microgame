@@ -17,6 +17,7 @@ public class PlaceOnGrid : MonoBehaviour
 
     private TowerStoreData storeData;
     private TowerData towerData;
+    private bool canPlace;
 
     private void Start()
     {
@@ -53,6 +54,12 @@ public class PlaceOnGrid : MonoBehaviour
     {
         while (isInPlaceMode)
         {
+            //check if the original touch isn't ontop of the ui
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                canPlace = !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
+            }
+
             // ignore if the touch count is anything but 1
             if (Input.touchCount != 1)
             {
@@ -85,28 +92,31 @@ public class PlaceOnGrid : MonoBehaviour
             }
 
             // skip if we don't place a tower, or are clicking on the ui instead of scene
-            if (placeTower == false || EventSystem.current.IsPointerOverGameObject(0))
+            if (placeTower == false || !canPlace)
             {
                 yield return null;
                 continue;
             }
 
-            //creates the ray with proper parameters
-            Ray ray = Camera.main.ScreenPointToRay(new(touch.position.x, touch.position.y, 0));
-
-            // Does the raycast check
-            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, targetLayer))
+            if (canPlace)
             {
-                // Gets the world position
-                Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
+                //creates the ray with proper parameters
+                Ray ray = Camera.main.ScreenPointToRay(new(touch.position.x, touch.position.y, 0));
 
-                // Places object in the scene if you are allowed to place there
-                if (monoLevel.Level.IsEmpty(pos) && moneyHandler.Pay(storeData))
+                // Does the raycast check
+                if (Physics.Raycast(ray, out RaycastHit hit, 1000f, targetLayer))
                 {
-                    GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
-                    sound.GetComponent<AudioClipPlayer>().Initialize(clip, 20, true);
-                    GameManager.Instance.Save.data.stats.IncreaseTowersPlaced();
-                    monoLevel.SetTile(objectToPlace, pos, TileType.TOWER, towerData, true);
+                    // Gets the world position
+                    Vector2Int pos = new((int)Mathf.Floor(hit.point.x), (int)Mathf.Floor(hit.point.z));
+
+                    // Places object in the scene if you are allowed to place there
+                    if (monoLevel.Level.IsEmpty(pos) && moneyHandler.Pay(storeData))
+                    {
+                        GameObject sound = Instantiate(audioPrefab, transform.position, Quaternion.identity);
+                        sound.GetComponent<AudioClipPlayer>().Initialize(clip, 20, true);
+                        GameManager.Instance.Save.data.stats.IncreaseTowersPlaced();
+                        monoLevel.SetTile(objectToPlace, pos, TileType.TOWER, towerData, true);
+                    }
                 }
             }
 
