@@ -134,6 +134,8 @@ public abstract class EnemyBase : MonoBehaviour
     /// </summary>
     public void HasReachedEnd()
     {
+        print("has reach end triggered");
+
         DisableEnemy();
 
         // damage the player

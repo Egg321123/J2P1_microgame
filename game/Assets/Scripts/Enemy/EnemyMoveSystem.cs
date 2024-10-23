@@ -55,7 +55,7 @@ public class EnemyMovementSystem : MonoBehaviour
     }
 
     // called after when update functions have been called
-    private void LateUpdate()
+    private void Update()
     {
         // if the job is completed, complete the job, write some data to the ai and create a new job
         if (jobHandle.IsCompleted)
@@ -67,6 +67,9 @@ public class EnemyMovementSystem : MonoBehaviour
             // to avoid unneeded amount of times of writing to the enemies
             if (!jobAlreadyCompleted)
             {
+                //mark this job as already been done once
+                jobAlreadyCompleted = true;
+
                 // check if the enemy count is higher then 0, and if all the arrays are made (by checking the main one)
                 if (enemiesToUpdate.Count > 0 && enemyTransforms.isCreated)
                 {
@@ -74,15 +77,12 @@ public class EnemyMovementSystem : MonoBehaviour
                     for (int i = 0; i < enemiesToUpdate.Count; i++)
                     {
                         enemiesToUpdate[i].TargetNodeIndex = targetNodeIndices[i];
-                        if (enemiesToUpdate[i].TargetNodeIndex == pathReachedEndIndex) enemiesToUpdate[i].HasReachedEnd();
+                        if (enemiesToUpdate[i].TargetNodeIndex >= pathReachedEndIndex) enemiesToUpdate[i].HasReachedEnd();
                     }
                 }
 
                 // Dispose of the data that changes between jobs to free up space
                 DisposeMost();
-
-                //mark this job as already been done once
-                jobAlreadyCompleted = true;
             }
 
             // Create and run a new job only if there are enemies present
@@ -162,6 +162,13 @@ public struct EnemyMoveJob : IJobParallelForTransform
     // Move every object with its own data
     public void Execute(int index, TransformAccess transform)
     {
+        //if target index is too big, just don't
+        if (TargetNodeIndices[index] >= PathNodes.Length)
+        {
+            Debug.LogWarning($"target index of enemy {index} was out of range of the path");
+            return;
+        }
+
         // Get the information for this specific index
         float speed = Speeds[index];
         Vector3 offset = Offsets[index];

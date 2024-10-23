@@ -29,14 +29,16 @@ public class StatsUI : MonoBehaviour
         Statistics stats = GameManager.Instance.Save.data.stats;
 
         statUI.text =
-                $"\nDeaths: {StringUtils.FormatNumber(stats.deaths)}\n" +
+                $"<size=75>Current level:</size>\n" +
+                $"Deaths: {StringUtils.FormatNumber(stats.deaths)}\n" +
                 $"Kills: {StringUtils.FormatNumber(stats.kills)}\n" +
                 $"Towers Placed: {StringUtils.FormatNumber(stats.towersPlaced)}\n" +
-                $"Money Spend: {StringUtils.FormatNumber(stats.moneySpent)}\n\n" +
+                $"Money Spend: {StringUtils.FormatNumber(stats.moneySpent)}\n" +
 
-                $"Total Deaths: {StringUtils.FormatNumber(stats.totalDeaths)}\n" +
-                $"Total Kills: {StringUtils.FormatNumber(stats.totalKills)}\n" +
-                $"Total Towers Placed: {StringUtils.FormatNumber(stats.totalTowersPlaced)}\n" +
-                $"Total Money Spend: {StringUtils.FormatNumber(stats.totalMoneySpent)}";
+                $"\n<size=75>Total:</size>\n" +
+                $"Deaths: {StringUtils.FormatNumber(stats.totalDeaths)}\n" +
+                $"Kills: {StringUtils.FormatNumber(stats.totalKills)}\n" +
+                $"Towers Placed: {StringUtils.FormatNumber(stats.totalTowersPlaced)}\n" +
+                $"Money Spend: {StringUtils.FormatNumber(stats.totalMoneySpent)}";
     }
 }
