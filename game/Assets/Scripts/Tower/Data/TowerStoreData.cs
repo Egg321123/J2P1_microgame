@@ -19,7 +19,7 @@ public class TowerStoreData : ScriptableObject
         {
             Save save = GameManager.Instance.Save;
             TowerType type = towerData.towerType;
-            return (int)MathF.Round(cost * MathF.Pow(1.3F, save.data.towerBoughtCount[(int)type]));
+            return (int)MathF.Round(cost * MathF.Pow(1.35F, save.data.towerBoughtCount[(int)type]));
         }
     }
 
