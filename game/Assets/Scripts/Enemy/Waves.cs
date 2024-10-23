@@ -232,8 +232,8 @@ public class Waves : MonoBehaviour
         // re-enable time :3
         //Time.timeScale = 1.0F; RE-ADD if anything breaks
 
-        // set the shop to be inactive
-        shop.ShopToggle(false);
+        // make the shop active, if it isn't already
+        shop.ShopToggle(true);
 
         // start the show timer coroutine
         TaskCompletionSource<bool> counterCompletion = new();
@@ -252,9 +252,6 @@ public class Waves : MonoBehaviour
 
         // await the counter being done
         await counterCompletion.Task;
-
-        // make the shop active again
-        shop.ShopToggle(true);
 
         // start spawning the enemies
         StartCoroutine(SpawnEnemies(Wave));
