@@ -73,14 +73,16 @@ public class Save
         data.towerBoughtCount = new int[(int)TowerType.TOWER_COUNT];
         data.money = 500 + (250 * data.level); // calculation for what the money amount should be for this level
 
-        // level-specific
-        data.stats.kills = 0;
-        data.stats.towersPlaced = 0;
-        data.stats.towersUpgraded = 0;
-        data.stats.moneySpent = 0;
 
+        // clear level-specific stats on new level
         if (levelUp == true)
+        {
             data.stats.deaths = 0;
+            data.stats.kills = 0;
+            data.stats.towersPlaced = 0;
+            data.stats.towersUpgraded = 0;
+            data.stats.moneySpent = 0;
+        }
 
         // clear the level
         Level level = GameManager.Instance.Level;
