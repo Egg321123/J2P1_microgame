@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Default", menuName = "Shop item (Tower)")]
@@ -18,7 +19,7 @@ public class TowerStoreData : ScriptableObject
         {
             Save save = GameManager.Instance.Save;
             TowerType type = towerData.towerType;
-            return (save.data.towerBoughtCount[(int)type] * (cost / 5)) + cost;
+            return (int)MathF.Round(cost * MathF.Pow(1.5F, save.data.towerBoughtCount[(int)type]));
         }
     }
 
