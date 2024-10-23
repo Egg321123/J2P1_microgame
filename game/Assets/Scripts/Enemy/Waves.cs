@@ -261,7 +261,7 @@ public class Waves : MonoBehaviour
         Debug.Log($"started wave {Wave + 1}/{waves.Length} in level {Level + 1}");
     }
 
-    // called when the "Try again" button is pressed, is meant to start the wave when
+    // called when the "Try again" button is pressed, is meant to start the wave
     public void TryAgain() /*Daniel*/
     {
         //activate and deactivate the UI so the player can play again
